@@ -1554,5 +1554,6 @@
   "expire_date": "Expire Date",
   "duration" : "Duration",
   "tin_number" : "Tin Number",
-  "vat_tax_inc" : "(Vat/Tax Incl.)"
+  "vat_tax_inc" : "(Vat/Tax Incl.)",
+  "popular_cuisines": "Popular Cuisines"
 }

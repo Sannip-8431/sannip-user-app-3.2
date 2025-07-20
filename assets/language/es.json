@@ -1547,5 +1547,6 @@
   "expire_date": "Fecha de vencimiento",
   "duration": "Duración",
   "tin_number": "Número TIN",
-  "vat_tax_inc" : "(IVA incluido)"
+  "vat_tax_inc" : "(IVA incluido)",
+  "popular_cuisines": "Cocinas populares"
 }
