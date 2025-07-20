@@ -439,7 +439,7 @@ class FoodCategoryView extends StatelessWidget {
     return Stack(children: [
       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         SizedBox(
-          height: 160,
+          height: 290,
           child: categoryController.categoryList != null
             /*  ? ListView.builder(
                   controller: scrollController,
@@ -566,7 +566,7 @@ class FoodCategoryView extends StatelessWidget {
                     );
                   },
                 )*/
-        ?  Column(
+        ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
@@ -687,7 +687,7 @@ class FoodCategoryView extends StatelessWidget {
                                             Radius.circular(100)),
                                         child: CustomImage(
                                           image:
-                                          '${categoryController.categoryList![index+number].imageFullUrl}',
+                                          '${categoryController.categoryList![index + number].imageFullUrl}',
                                           height: 60,
                                           width: double.infinity,
                                           fit: BoxFit.cover,
