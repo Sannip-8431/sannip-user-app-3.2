@@ -12,9 +12,8 @@ class TaxiProviderReviewModel {
     totalSize = json['total_size'];
     limit = json['limit'];
     offset = json['offset'];
-    provider = json['provider'] != null
-        ? Provider.fromJson(json['provider'])
-        : null;
+    provider =
+        json['provider'] != null ? Provider.fromJson(json['provider']) : null;
     if (json['reviews'] != null) {
       reviews = <Reviews>[];
       json['reviews'].forEach((v) {
@@ -87,25 +86,25 @@ class Reviews {
 
   Reviews(
       {this.id,
-        this.providerId,
-        this.moduleId,
-        this.userId,
-        this.tripId,
-        this.vehicleId,
-        this.vehicleIdentityId,
-        this.rating,
-        this.comment,
-        this.attachment,
-        this.status,
-        this.reply,
-        this.reviewId,
-        this.repliedAt,
-        this.createdAt,
-        this.updatedAt,
-        this.vehicleName,
-        this.vehicleImage,
-        this.customerName,
-        this.vehicleImageFullUrl});
+      this.providerId,
+      this.moduleId,
+      this.userId,
+      this.tripId,
+      this.vehicleId,
+      this.vehicleIdentityId,
+      this.rating,
+      this.comment,
+      this.attachment,
+      this.status,
+      this.reply,
+      this.reviewId,
+      this.repliedAt,
+      this.createdAt,
+      this.updatedAt,
+      this.vehicleName,
+      this.vehicleImage,
+      this.customerName,
+      this.vehicleImageFullUrl});
 
   Reviews.fromJson(Map<String, dynamic> json) {
     id = json['id'];

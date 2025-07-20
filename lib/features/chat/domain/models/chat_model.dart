@@ -8,14 +8,22 @@ class ChatModel {
   Conversation? conversation;
   List<Message>? messages;
 
-  ChatModel({this.totalSize, this.limit, this.offset, this.status, this.conversation, this.messages});
+  ChatModel(
+      {this.totalSize,
+      this.limit,
+      this.offset,
+      this.status,
+      this.conversation,
+      this.messages});
 
   ChatModel.fromJson(Map<String, dynamic> json) {
     totalSize = json['total_size'];
     limit = json['limit'];
     offset = json['offset'];
     status = json['status'];
-    conversation = json['conversation'] != null ? Conversation.fromJson(json['conversation']) : null;
+    conversation = json['conversation'] != null
+        ? Conversation.fromJson(json['conversation'])
+        : null;
     if (json['messages'] != null) {
       messages = <Message>[];
       json['messages'].forEach((v) {
@@ -70,10 +78,10 @@ class Message {
     conversationId = json['conversation_id'];
     senderId = json['sender_id'];
     message = json['message'];
-    if(json['file_full_url'] != null) {
+    if (json['file_full_url'] != null) {
       fileFullUrl = [];
       json['file_full_url'].forEach((v) {
-        if(v != null) {
+        if (v != null) {
           fileFullUrl!.add(v.toString());
         }
       });
@@ -111,12 +119,13 @@ class Order {
   int? detailsCount;
   Address? deliveryAddress;
 
-  Order({this.id,
-        this.orderAmount,
-        this.orderStatus,
-        this.createdAt,
-        this.detailsCount,
-        this.deliveryAddress});
+  Order(
+      {this.id,
+      this.orderAmount,
+      this.orderStatus,
+      this.createdAt,
+      this.detailsCount,
+      this.deliveryAddress});
 
   Order.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -124,7 +133,9 @@ class Order {
     orderStatus = json['order_status'];
     createdAt = json['created_at'];
     detailsCount = json['details_count'];
-    deliveryAddress = json['delivery_address'] != null ? Address.fromJson(json['delivery_address']) : null;
+    deliveryAddress = json['delivery_address'] != null
+        ? Address.fromJson(json['delivery_address'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -155,15 +166,15 @@ class Address {
 
   Address(
       {this.contactPersonName,
-        this.contactPersonNumber,
-        this.contactPersonEmail,
-        this.addressType,
-        this.address,
-        this.floor,
-        this.road,
-        this.house,
-        this.longitude,
-        this.latitude});
+      this.contactPersonNumber,
+      this.contactPersonEmail,
+      this.addressType,
+      this.address,
+      this.floor,
+      this.road,
+      this.house,
+      this.longitude,
+      this.latitude});
 
   Address.fromJson(Map<String, dynamic> json) {
     contactPersonName = json['contact_person_name'];

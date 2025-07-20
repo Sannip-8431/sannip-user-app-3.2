@@ -22,8 +22,10 @@ class ProfileService implements ProfileServiceInterface {
   }*/
 
   @override
-  Future<ResponseModel> updateProfile(UpdateUserModel userInfoModel, XFile? data, String token) async {
-    return await profileRepositoryInterface.updateProfile(userInfoModel, data, token);
+  Future<ResponseModel> updateProfile(
+      UpdateUserModel userInfoModel, XFile? data, String token) async {
+    return await profileRepositoryInterface.updateProfile(
+        userInfoModel, data, token);
   }
 
   @override
@@ -39,17 +41,17 @@ class ProfileService implements ProfileServiceInterface {
   @override
   Future<XFile?> pickImageFromGallery() async {
     XFile? pickedFile;
-    XFile? pickLogo = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if(pickLogo != null) {
+    XFile? pickLogo =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickLogo != null) {
       await pickLogo.length().then((value) {
-        if(value > 1000000) {
+        if (value > 1000000) {
           showCustomSnackBar('please_upload_lower_size_file'.tr);
-        }else {
+        } else {
           pickedFile = pickLogo;
         }
       });
     }
     return pickedFile;
   }
-
 }

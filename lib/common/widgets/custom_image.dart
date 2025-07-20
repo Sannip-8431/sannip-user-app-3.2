@@ -13,7 +13,16 @@ class CustomImage extends StatelessWidget {
   final String placeholder;
   final bool isHovered;
   final Color? color;
-  const CustomImage({super.key, required this.image, this.height, this.width, this.fit = BoxFit.cover, this.isNotification = false, this.placeholder = '', this.isHovered = false, this.color});
+  const CustomImage(
+      {super.key,
+      required this.image,
+      this.height,
+      this.width,
+      this.fit = BoxFit.cover,
+      this.isNotification = false,
+      this.placeholder = '',
+      this.isHovered = false,
+      this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +32,30 @@ class CustomImage extends StatelessWidget {
       curve: Curves.easeInOut,
       child: CachedNetworkImage(
         color: color,
-        imageUrl: kIsWeb ? '${AppConstants.baseUrl}/image-proxy?url=$image' : image, height: height, width: width, fit: fit,
+        imageUrl:
+            kIsWeb ? '${AppConstants.baseUrl}/image-proxy?url=$image' : image,
+        height: height,
+        width: width,
+        fit: fit,
         placeholder: (context, url) => Image.asset(
-          placeholder.isNotEmpty ? placeholder : (isNotification ? Images.notificationPlaceholder : Images.placeholder),
-          height: height, width: width, fit: fit,
+          placeholder.isNotEmpty
+              ? placeholder
+              : (isNotification
+                  ? Images.notificationPlaceholder
+                  : Images.placeholder),
+          height: height,
+          width: width,
+          fit: fit,
         ),
         errorWidget: (context, url, error) => Image.asset(
-          placeholder.isNotEmpty ? placeholder : (isNotification ? Images.notificationPlaceholder : Images.placeholder),
-          height: height, width: width, fit: fit,
+          placeholder.isNotEmpty
+              ? placeholder
+              : (isNotification
+                  ? Images.notificationPlaceholder
+                  : Images.placeholder),
+          height: height,
+          width: width,
+          fit: fit,
         ),
       ),
     );

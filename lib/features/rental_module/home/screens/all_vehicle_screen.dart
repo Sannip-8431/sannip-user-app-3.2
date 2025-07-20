@@ -6,6 +6,7 @@ import 'package:sixam_mart/features/rental_module/home/controllers/taxi_home_con
 import 'package:sixam_mart/features/rental_module/widgets/vehicle_card.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/styles.dart';
+
 class AllVehicleScreen extends StatefulWidget {
   const AllVehicleScreen({super.key});
 
@@ -31,32 +32,49 @@ class _AllVehicleScreenState extends State<AllVehicleScreen> {
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () => Get.back(),
         ),
-        title: Text('top_rated_vehicles'.tr, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
+        title: Text('top_rated_vehicles'.tr,
+            style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
         centerTitle: true,
-        actions: const [RantCartWidget(), SizedBox(width: Dimensions.paddingSizeSmall)],
+        actions: const [
+          RantCartWidget(),
+          SizedBox(width: Dimensions.paddingSizeSmall)
+        ],
       ),
-      body: GetBuilder<TaxiHomeController>(
-          builder: (taxiHomeController) {
-          return taxiHomeController.topRatedCarsModel != null && taxiHomeController.topRatedCarsModel!.vehicles != null ? taxiHomeController.topRatedCarsModel!.vehicles!.isNotEmpty
-              ? SingleChildScrollView(
-                controller: _scrollController,
-                child: PaginatedListView(
-                scrollController: _scrollController,
-                totalSize: taxiHomeController.topRatedCarsModel!.totalSize,
-                offset: taxiHomeController.topRatedCarsModel!.offset,
-                onPaginate: (int? offset) async => await taxiHomeController.getTopRatedCarList(offset!, false),
-                itemView: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: taxiHomeController.topRatedCarsModel!.vehicles!.length,
-                  padding: const EdgeInsets.only(left: Dimensions.paddingSizeDefault, right: Dimensions.paddingSizeDefault, bottom: 50),
-                  itemBuilder: (context, index) {
-                    return VehicleCard(vehicle: taxiHomeController.topRatedCarsModel!.vehicles![index], index: index, fromFavourite: true);
-                    },
-                )),
-              ) : const SizedBox() : const Center(child: CircularProgressIndicator());
-        }
-      ),
+      body: GetBuilder<TaxiHomeController>(builder: (taxiHomeController) {
+        return taxiHomeController.topRatedCarsModel != null &&
+                taxiHomeController.topRatedCarsModel!.vehicles != null
+            ? taxiHomeController.topRatedCarsModel!.vehicles!.isNotEmpty
+                ? SingleChildScrollView(
+                    controller: _scrollController,
+                    child: PaginatedListView(
+                        scrollController: _scrollController,
+                        totalSize:
+                            taxiHomeController.topRatedCarsModel!.totalSize,
+                        offset: taxiHomeController.topRatedCarsModel!.offset,
+                        onPaginate: (int? offset) async =>
+                            await taxiHomeController.getTopRatedCarList(
+                                offset!, false),
+                        itemView: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: taxiHomeController
+                              .topRatedCarsModel!.vehicles!.length,
+                          padding: const EdgeInsets.only(
+                              left: Dimensions.paddingSizeDefault,
+                              right: Dimensions.paddingSizeDefault,
+                              bottom: 50),
+                          itemBuilder: (context, index) {
+                            return VehicleCard(
+                                vehicle: taxiHomeController
+                                    .topRatedCarsModel!.vehicles![index],
+                                index: index,
+                                fromFavourite: true);
+                          },
+                        )),
+                  )
+                : const SizedBox()
+            : const Center(child: CircularProgressIndicator());
+      }),
     );
   }
 }

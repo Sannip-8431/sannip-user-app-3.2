@@ -16,22 +16,25 @@ class OrderRepository implements OrderRepositoryInterface {
   OrderRepository({required this.apiClient});
 
   @override
-  Future<Response> submitRefundRequest(Map<String, String> body, XFile? data) async {
-    return apiClient.postMultipartData(AppConstants.refundRequestUri, body,  [MultipartBody('image[]', data)]);
+  Future<Response> submitRefundRequest(
+      Map<String, String> body, XFile? data) async {
+    return apiClient.postMultipartData(
+        AppConstants.refundRequestUri, body, [MultipartBody('image[]', data)]);
   }
 
   @override
-  Future<Response> trackOrder(String? orderID, String? guestId, {String? contactNumber}) async {
+  Future<Response> trackOrder(String? orderID, String? guestId,
+      {String? contactNumber}) async {
     return await apiClient.getData(
       '${AppConstants.trackUri}$orderID${guestId != null ? '&guest_id=$guestId' : ''}'
-          '${contactNumber != null ? '&contact_number=$contactNumber' : ''}',
+      '${contactNumber != null ? '&contact_number=$contactNumber' : ''}',
     );
   }
 
   @override
   Future<Response> switchToCOD(String? orderID, {String? guestId}) async {
     Map<String, String> data = {'_method': 'put', 'order_id': orderID!};
-    if(AuthHelper.isGuestLoggedIn() || guestId != null) {
+    if (AuthHelper.isGuestLoggedIn() || guestId != null) {
       data.addAll({'guest_id': guestId ?? AuthHelper.getGuestId()});
     }
     return await apiClient.postData(AppConstants.codSwitchUri, data);
@@ -48,13 +51,19 @@ class OrderRepository implements OrderRepositoryInterface {
   }
 
   @override
-  Future<bool> cancelOrder(String orderID, String? reason, {String? guestId}) async {
+  Future<bool> cancelOrder(String orderID, String? reason,
+      {String? guestId}) async {
     bool success = false;
-    Map<String, String> data = {'_method': 'put', 'order_id': orderID, 'reason': reason!};
-    if(AuthHelper.isGuestLoggedIn() || guestId != null){
+    Map<String, String> data = {
+      '_method': 'put',
+      'order_id': orderID,
+      'reason': reason!
+    };
+    if (AuthHelper.isGuestLoggedIn() || guestId != null) {
       data.addAll({'guest_id': guestId ?? AuthHelper.getGuestId()});
     }
-    Response response = await apiClient.postData(AppConstants.orderCancelUri, data);
+    Response response =
+        await apiClient.postData(AppConstants.orderCancelUri, data);
     if (response.statusCode == 200) {
       success = true;
       showCustomSnackBar(response.body['message'], isError: false);
@@ -67,34 +76,46 @@ class OrderRepository implements OrderRepositoryInterface {
     return await _getOrderDetails(id!, guestId);
   }
 
-  Future<List<OrderDetailsModel>?> _getOrderDetails(String orderID, String? guestId) async {
+  Future<List<OrderDetailsModel>?> _getOrderDetails(
+      String orderID, String? guestId) async {
     List<OrderDetailsModel>? orderDetails;
-    Response response = await apiClient.getData('${AppConstants.orderDetailsUri}$orderID${guestId != null ? '&guest_id=$guestId' : ''}');
+    Response response = await apiClient.getData(
+        '${AppConstants.orderDetailsUri}$orderID${guestId != null ? '&guest_id=$guestId' : ''}');
     if (response.statusCode == 200) {
       orderDetails = [];
-      response.body.forEach((orderDetail) => orderDetails!.add(OrderDetailsModel.fromJson(orderDetail)));
+      response.body.forEach((orderDetail) =>
+          orderDetails!.add(OrderDetailsModel.fromJson(orderDetail)));
     }
     return orderDetails;
   }
 
   @override
-  Future getList({int? offset, bool isRunningOrder = false, bool isHistoryOrder = false, bool isCancelReasons = false, bool isRefundReasons = false, bool fromDashboard = false, bool isSupportReasons = false}) async {
-    if(isRunningOrder) {
+  Future getList(
+      {int? offset,
+      bool isRunningOrder = false,
+      bool isHistoryOrder = false,
+      bool isCancelReasons = false,
+      bool isRefundReasons = false,
+      bool fromDashboard = false,
+      bool isSupportReasons = false}) async {
+    if (isRunningOrder) {
       return await _getRunningOrderList(offset!, fromDashboard);
-    } else if(isHistoryOrder) {
+    } else if (isHistoryOrder) {
       return await _getHistoryOrderList(offset!);
-    } else if(isCancelReasons) {
+    } else if (isCancelReasons) {
       return await _getCancelReasons();
-    } else if(isRefundReasons) {
+    } else if (isRefundReasons) {
       return await _getRefundReasons();
-    } else if(isSupportReasons) {
+    } else if (isSupportReasons) {
       return await _getSupportReasons();
     }
   }
 
-  Future<PaginatedOrderModel?> _getRunningOrderList(int offset, bool fromDashboard) async {
+  Future<PaginatedOrderModel?> _getRunningOrderList(
+      int offset, bool fromDashboard) async {
     PaginatedOrderModel? runningOrderModel;
-    Response response = await apiClient.getData('${AppConstants.runningOrderListUri}?offset=$offset&limit=${fromDashboard ? 50 : 10}');
+    Response response = await apiClient.getData(
+        '${AppConstants.runningOrderListUri}?offset=$offset&limit=${fromDashboard ? 50 : 10}');
     if (response.statusCode == 200) {
       runningOrderModel = PaginatedOrderModel.fromJson(response.body);
     }
@@ -103,7 +124,8 @@ class OrderRepository implements OrderRepositoryInterface {
 
   Future<PaginatedOrderModel?> _getHistoryOrderList(int offset) async {
     PaginatedOrderModel? historyOrderModel;
-    Response response = await apiClient.getData('${AppConstants.historyOrderListUri}?offset=$offset&limit=10');
+    Response response = await apiClient
+        .getData('${AppConstants.historyOrderListUri}?offset=$offset&limit=10');
     if (response.statusCode == 200) {
       historyOrderModel = PaginatedOrderModel.fromJson(response.body);
     }
@@ -112,9 +134,11 @@ class OrderRepository implements OrderRepositoryInterface {
 
   Future<List<CancellationData>?> _getCancelReasons() async {
     List<CancellationData>? orderCancelReasons;
-    Response response = await apiClient.getData('${AppConstants.orderCancellationUri}?offset=1&limit=30&type=customer');
+    Response response = await apiClient.getData(
+        '${AppConstants.orderCancellationUri}?offset=1&limit=30&type=customer');
     if (response.statusCode == 200) {
-      OrderCancellationBody orderCancellationBody = OrderCancellationBody.fromJson(response.body);
+      OrderCancellationBody orderCancellationBody =
+          OrderCancellationBody.fromJson(response.body);
       orderCancelReasons = [];
       for (var element in orderCancellationBody.reasons!) {
         orderCancelReasons.add(element);
@@ -154,5 +178,4 @@ class OrderRepository implements OrderRepositoryInterface {
   Future update(Map<String, dynamic> body, int? id) {
     throw UnimplementedError();
   }
-  
 }

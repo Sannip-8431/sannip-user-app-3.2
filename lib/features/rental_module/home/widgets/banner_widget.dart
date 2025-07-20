@@ -23,77 +23,100 @@ class _BannerWidgetState extends State<BannerWidget> {
 
   @override
   Widget build(BuildContext context) {
-
-    return GetBuilder<TaxiHomeController>(
-      builder: (taxiHomeController) {
-        return taxiHomeController.taxiBannerModel != null ? taxiHomeController.taxiBannerModel!.banners!.isNotEmpty ? Padding(
-          padding: const EdgeInsets.only(top: Dimensions.paddingSizeLarge),
-          child: Column(children: [
-            CarouselSlider.builder(
-              options: CarouselOptions(
-                autoPlay: true,
-                enlargeCenterPage: true,
-                disableCenter: true,
-                viewportFraction: 0.95,
-                aspectRatio: 16/6,
-                autoPlayInterval: const Duration(seconds: 7),
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    _currentCarouselIndex = index;
-                  });
-                },
-              ),
-              itemCount: taxiHomeController.taxiBannerModel!.banners!.length,
-              itemBuilder: (context, index, _) {
-                return Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(Dimensions.radiusLarge)),
-                  child: CustomInkWell(
-                    onTap: () async {
-                      if(taxiHomeController.taxiBannerModel!.banners![index].type == 'default') {
-                        String url = taxiHomeController.taxiBannerModel!.banners![index].link ?? '';
-                        if (await canLaunchUrlString(url)) {
-                          await launchUrlString(url, mode: LaunchMode.externalApplication);
-                        } else {
-                          showCustomSnackBar('unable_to_found_url'.tr);
-                        }
-                      } else {
-                        Get.to(()=> VendorDetailScreen(vendorId: taxiHomeController.taxiBannerModel!.banners![index].providerId));
-                      }
-                    },
-                    radius: Dimensions.radiusLarge,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(Dimensions.radiusLarge),
-                      child: CustomImage(image: taxiHomeController.taxiBannerModel!.banners![index].imageFullUrl??'', fit: BoxFit.cover, width: double.infinity),
+    return GetBuilder<TaxiHomeController>(builder: (taxiHomeController) {
+      return taxiHomeController.taxiBannerModel != null
+          ? taxiHomeController.taxiBannerModel!.banners!.isNotEmpty
+              ? Padding(
+                  padding:
+                      const EdgeInsets.only(top: Dimensions.paddingSizeLarge),
+                  child: Column(children: [
+                    CarouselSlider.builder(
+                      options: CarouselOptions(
+                        autoPlay: true,
+                        enlargeCenterPage: true,
+                        disableCenter: true,
+                        viewportFraction: 0.95,
+                        aspectRatio: 16 / 6,
+                        autoPlayInterval: const Duration(seconds: 7),
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            _currentCarouselIndex = index;
+                          });
+                        },
+                      ),
+                      itemCount:
+                          taxiHomeController.taxiBannerModel!.banners!.length,
+                      itemBuilder: (context, index, _) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                  Dimensions.radiusLarge)),
+                          child: CustomInkWell(
+                            onTap: () async {
+                              if (taxiHomeController
+                                      .taxiBannerModel!.banners![index].type ==
+                                  'default') {
+                                String url = taxiHomeController.taxiBannerModel!
+                                        .banners![index].link ??
+                                    '';
+                                if (await canLaunchUrlString(url)) {
+                                  await launchUrlString(url,
+                                      mode: LaunchMode.externalApplication);
+                                } else {
+                                  showCustomSnackBar('unable_to_found_url'.tr);
+                                }
+                              } else {
+                                Get.to(() => VendorDetailScreen(
+                                    vendorId: taxiHomeController
+                                        .taxiBannerModel!
+                                        .banners![index]
+                                        .providerId));
+                              }
+                            },
+                            radius: Dimensions.radiusLarge,
+                            child: ClipRRect(
+                              borderRadius:
+                                  BorderRadius.circular(Dimensions.radiusLarge),
+                              child: CustomImage(
+                                  image: taxiHomeController.taxiBannerModel!
+                                          .banners![index].imageFullUrl ??
+                                      '',
+                                  fit: BoxFit.cover,
+                                  width: double.infinity),
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: Dimensions.paddingSizeSmall),
-
-            Center(
-              child: AnimatedSmoothIndicator(
-                activeIndex: _currentCarouselIndex,
-                count: taxiHomeController.taxiBannerModel!.banners!.length,
-                effect: ExpandingDotsEffect(
-                  dotHeight: 6, dotWidth: 6, activeDotColor: Theme.of(context).primaryColor,
-                  dotColor: Theme.of(context).disabledColor, spacing: 5,
-                ),
-              ),
-            ),
-
-          ]),
-        ) : const SizedBox() : Shimmer(
-          duration: const Duration(seconds: 2),
-          enabled: taxiHomeController.taxiBannerModel?.banners == null,
-          child: Container(margin: const EdgeInsets.symmetric(horizontal: 10), decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(Dimensions.radiusLarge),
-            color: Colors.grey[300],
-          )),
-        );
-      }
-    );
+                    const SizedBox(height: Dimensions.paddingSizeSmall),
+                    Center(
+                      child: AnimatedSmoothIndicator(
+                        activeIndex: _currentCarouselIndex,
+                        count:
+                            taxiHomeController.taxiBannerModel!.banners!.length,
+                        effect: ExpandingDotsEffect(
+                          dotHeight: 6,
+                          dotWidth: 6,
+                          activeDotColor: Theme.of(context).primaryColor,
+                          dotColor: Theme.of(context).disabledColor,
+                          spacing: 5,
+                        ),
+                      ),
+                    ),
+                  ]),
+                )
+              : const SizedBox()
+          : Shimmer(
+              duration: const Duration(seconds: 2),
+              enabled: taxiHomeController.taxiBannerModel?.banners == null,
+              child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(Dimensions.radiusLarge),
+                    color: Colors.grey[300],
+                  )),
+            );
+    });
   }
 }
-

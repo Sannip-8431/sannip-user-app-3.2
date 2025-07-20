@@ -4,7 +4,11 @@ class TaxiRatingBar extends StatelessWidget {
   final double? rating;
   final double size;
   final int? ratingCount;
-  const TaxiRatingBar({super.key, required this.rating, required this.ratingCount, this.size = 18});
+  const TaxiRatingBar(
+      {super.key,
+      required this.rating,
+      required this.ratingCount,
+      this.size = 18});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +19,8 @@ class TaxiRatingBar extends StatelessWidget {
 
     for (int i = 0; i < 5; i++) {
       if (i < realNumber) {
-        starList.add(Icon(Icons.star, color: Theme.of(context).primaryColor, size: size));
+        starList.add(Icon(Icons.star,
+            color: Theme.of(context).primaryColor, size: size));
       } else if (i == realNumber) {
         starList.add(SizedBox(
           height: size,
@@ -23,7 +28,8 @@ class TaxiRatingBar extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              Icon(Icons.star, color: Theme.of(context).primaryColor, size: size),
+              Icon(Icons.star,
+                  color: Theme.of(context).primaryColor, size: size),
               ClipRect(
                 clipper: _Clipper(part: partNumber),
                 child: Icon(Icons.star, color: Colors.grey[300], size: size),

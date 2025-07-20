@@ -25,8 +25,18 @@ class PaymentScreen extends StatefulWidget {
   final int? storeId;
   final bool createAccount;
   final int? createUserId;
-  const PaymentScreen({super.key, required this.orderModel, required this.isCashOnDelivery, this.addFundUrl, required this.paymentMethod,
-    required this.guestId, required this.contactNumber, this.storeId, this.subscriptionUrl, this.createAccount = false, this.createUserId});
+  const PaymentScreen(
+      {super.key,
+      required this.orderModel,
+      required this.isCashOnDelivery,
+      this.addFundUrl,
+      required this.paymentMethod,
+      required this.guestId,
+      required this.contactNumber,
+      this.storeId,
+      this.subscriptionUrl,
+      this.createAccount = false,
+      this.createUserId});
 
   @override
   PaymentScreenState createState() => PaymentScreenState();
@@ -44,11 +54,16 @@ class PaymentScreenState extends State<PaymentScreen> {
   void initState() {
     super.initState();
 
-    if(widget.addFundUrl == '' && widget.addFundUrl!.isEmpty && widget.subscriptionUrl == '' && widget.subscriptionUrl!.isEmpty){
-      selectedUrl = '${AppConstants.baseUrl}/payment-mobile?customer_id=${widget.createAccount ? widget.createUserId : widget.orderModel.userId == 0 ? widget.guestId : widget.orderModel.userId}&order_id=${widget.orderModel.id}&payment_method=${widget.paymentMethod}';
-    } else if(widget.subscriptionUrl != '' && widget.subscriptionUrl!.isNotEmpty){
+    if (widget.addFundUrl == '' &&
+        widget.addFundUrl!.isEmpty &&
+        widget.subscriptionUrl == '' &&
+        widget.subscriptionUrl!.isEmpty) {
+      selectedUrl =
+          '${AppConstants.baseUrl}/payment-mobile?customer_id=${widget.createAccount ? widget.createUserId : widget.orderModel.userId == 0 ? widget.guestId : widget.orderModel.userId}&order_id=${widget.orderModel.id}&payment_method=${widget.paymentMethod}';
+    } else if (widget.subscriptionUrl != '' &&
+        widget.subscriptionUrl!.isNotEmpty) {
       selectedUrl = widget.subscriptionUrl!;
-    } else{
+    } else {
       selectedUrl = widget.addFundUrl!;
     }
 
@@ -60,11 +75,14 @@ class PaymentScreenState extends State<PaymentScreen> {
   }
 
   void _initData() async {
-
-    if(widget.addFundUrl == '' && widget.addFundUrl!.isEmpty && widget.subscriptionUrl == '' && widget.subscriptionUrl!.isEmpty){
-      for(ZoneData zData in AddressHelper.getUserAddressFromSharedPref()!.zoneData!) {
-        for(Modules m in zData.modules!) {
-          if(m.id == Get.find<SplashController>().module!.id) {
+    if (widget.addFundUrl == '' &&
+        widget.addFundUrl!.isEmpty &&
+        widget.subscriptionUrl == '' &&
+        widget.subscriptionUrl!.isEmpty) {
+      for (ZoneData zData
+          in AddressHelper.getUserAddressFromSharedPref()!.zoneData!) {
+        for (Modules m in zData.modules!) {
+          if (m.id == Get.find<SplashController>().module!.id) {
             _maximumCodOrderAmount = m.pivot!.maximumCodOrderAmount;
             break;
           }
@@ -73,23 +91,32 @@ class PaymentScreenState extends State<PaymentScreen> {
     }
 
     browser = MyInAppBrowser(
-      orderID: widget.orderModel.id.toString(), orderType: widget.orderModel.orderType,
-      orderAmount: widget.orderModel.orderAmount, maxCodOrderAmount: _maximumCodOrderAmount,
-      isCashOnDelivery: widget.isCashOnDelivery, addFundUrl: widget.addFundUrl,
-      contactNumber: widget.contactNumber, storeId: widget.storeId,
-      subscriptionUrl: widget.subscriptionUrl, createAccount: widget.createAccount,
+      orderID: widget.orderModel.id.toString(),
+      orderType: widget.orderModel.orderType,
+      orderAmount: widget.orderModel.orderAmount,
+      maxCodOrderAmount: _maximumCodOrderAmount,
+      isCashOnDelivery: widget.isCashOnDelivery,
+      addFundUrl: widget.addFundUrl,
+      contactNumber: widget.contactNumber,
+      storeId: widget.storeId,
+      subscriptionUrl: widget.subscriptionUrl,
+      createAccount: widget.createAccount,
       guestId: widget.guestId,
     );
 
-    if(GetPlatform.isAndroid){
+    if (GetPlatform.isAndroid) {
       await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
 
-      bool swAvailable = await WebViewFeature.isFeatureSupported(WebViewFeature.SERVICE_WORKER_BASIC_USAGE);
-      bool swInterceptAvailable = await WebViewFeature.isFeatureSupported(WebViewFeature.SERVICE_WORKER_SHOULD_INTERCEPT_REQUEST);
+      bool swAvailable = await WebViewFeature.isFeatureSupported(
+          WebViewFeature.SERVICE_WORKER_BASIC_USAGE);
+      bool swInterceptAvailable = await WebViewFeature.isFeatureSupported(
+          WebViewFeature.SERVICE_WORKER_SHOULD_INTERCEPT_REQUEST);
 
       if (swAvailable && swInterceptAvailable) {
-        ServiceWorkerController serviceWorkerController = ServiceWorkerController.instance();
-        await serviceWorkerController.setServiceWorkerClient(ServiceWorkerClient(
+        ServiceWorkerController serviceWorkerController =
+            ServiceWorkerController.instance();
+        await serviceWorkerController
+            .setServiceWorkerClient(ServiceWorkerClient(
           shouldInterceptRequest: (request) async {
             if (kDebugMode) {
               print(request);
@@ -103,11 +130,12 @@ class PaymentScreenState extends State<PaymentScreen> {
     await browser.openUrlRequest(
       urlRequest: URLRequest(url: WebUri(selectedUrl)),
       settings: InAppBrowserClassSettings(
-        webViewSettings: InAppWebViewSettings(useShouldOverrideUrlLoading: true, useOnLoadResource: true),
-        browserSettings: InAppBrowserSettings(hideUrlBar: true, hideToolbarTop: GetPlatform.isAndroid),
+        webViewSettings: InAppWebViewSettings(
+            useShouldOverrideUrlLoading: true, useOnLoadResource: true),
+        browserSettings: InAppBrowserSettings(
+            hideUrlBar: true, hideToolbarTop: GetPlatform.isAndroid),
       ),
     );
-
   }
 
   @override
@@ -119,15 +147,20 @@ class PaymentScreenState extends State<PaymentScreen> {
       },
       child: Scaffold(
         backgroundColor: Theme.of(context).primaryColor,
-        appBar: CustomAppBar(title: 'payment'.tr, onBackPressed: () => _exitApp()),
+        appBar:
+            CustomAppBar(title: 'payment'.tr, onBackPressed: () => _exitApp()),
         body: Center(
           child: SizedBox(
             width: Dimensions.webMaxWidth,
             child: Stack(
               children: [
-                _isLoading ? Center(
-                  child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)),
-                ) : const SizedBox.shrink(),
+                _isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Theme.of(context).primaryColor)),
+                      )
+                    : const SizedBox.shrink(),
               ],
             ),
           ),
@@ -137,17 +170,24 @@ class PaymentScreenState extends State<PaymentScreen> {
   }
 
   Future<bool?> _exitApp() async {
-    if((widget.addFundUrl == null || widget.addFundUrl!.isEmpty) && (widget.subscriptionUrl == '' && widget.subscriptionUrl!.isEmpty)){
+    if ((widget.addFundUrl == null || widget.addFundUrl!.isEmpty) &&
+        (widget.subscriptionUrl == '' && widget.subscriptionUrl!.isEmpty)) {
       return Get.dialog(PaymentFailedDialog(
-        orderID: widget.orderModel.id.toString(), orderAmount: widget.orderModel.orderAmount,
-        maxCodOrderAmount: _maximumCodOrderAmount, orderType: widget.orderModel.orderType,
-        isCashOnDelivery: widget.isCashOnDelivery, guestId: widget.createAccount ? widget.createUserId.toString() : widget.guestId,
+        orderID: widget.orderModel.id.toString(),
+        orderAmount: widget.orderModel.orderAmount,
+        maxCodOrderAmount: _maximumCodOrderAmount,
+        orderType: widget.orderModel.orderType,
+        isCashOnDelivery: widget.isCashOnDelivery,
+        guestId: widget.createAccount
+            ? widget.createUserId.toString()
+            : widget.guestId,
       ));
-    } else{
-      return Get.dialog(FundPaymentDialogWidget(isSubscription: widget.subscriptionUrl != null && widget.subscriptionUrl!.isNotEmpty));
+    } else {
+      return Get.dialog(FundPaymentDialogWidget(
+          isSubscription: widget.subscriptionUrl != null &&
+              widget.subscriptionUrl!.isNotEmpty));
     }
   }
-
 }
 
 class MyInAppBrowser extends InAppBrowser {
@@ -163,12 +203,20 @@ class MyInAppBrowser extends InAppBrowser {
   final bool createAccount;
   final String guestId;
 
-  MyInAppBrowser({
-    super.windowId, super.initialUserScripts,
-    required this.orderID, required this.orderType, required this.orderAmount,
-    required this.maxCodOrderAmount, required this.isCashOnDelivery,
-    this.addFundUrl, this.subscriptionUrl, this.contactNumber, this.storeId,
-    required this.createAccount, required this.guestId});
+  MyInAppBrowser(
+      {super.windowId,
+      super.initialUserScripts,
+      required this.orderID,
+      required this.orderType,
+      required this.orderAmount,
+      required this.maxCodOrderAmount,
+      required this.isCashOnDelivery,
+      this.addFundUrl,
+      this.subscriptionUrl,
+      this.contactNumber,
+      this.storeId,
+      required this.createAccount,
+      required this.guestId});
 
   final bool _canRedirect = true;
 
@@ -185,13 +233,18 @@ class MyInAppBrowser extends InAppBrowser {
       print("\n\nStarted: $url\n\n");
     }
     Get.find<OrderController>().paymentRedirect(
-      url: url.toString(), canRedirect: _canRedirect, onClose: () => close(),
-      addFundUrl: addFundUrl, orderID: orderID, contactNumber: contactNumber, storeId: storeId,
-      subscriptionUrl: subscriptionUrl, createAccount: createAccount, guestId: guestId,
+      url: url.toString(),
+      canRedirect: _canRedirect,
+      onClose: () => close(),
+      addFundUrl: addFundUrl,
+      orderID: orderID,
+      contactNumber: contactNumber,
+      storeId: storeId,
+      subscriptionUrl: subscriptionUrl,
+      createAccount: createAccount,
+      guestId: guestId,
     );
-
   }
-
 
   @override
   Future onLoadStop(url) async {
@@ -200,9 +253,16 @@ class MyInAppBrowser extends InAppBrowser {
       print("\n\nStopped: $url\n\n");
     }
     Get.find<OrderController>().paymentRedirect(
-      url: url.toString(), canRedirect: _canRedirect, onClose: () => close(),
-      addFundUrl: addFundUrl, orderID: orderID, contactNumber: contactNumber, storeId: storeId,
-      subscriptionUrl: subscriptionUrl, createAccount: createAccount, guestId: guestId,
+      url: url.toString(),
+      canRedirect: _canRedirect,
+      onClose: () => close(),
+      addFundUrl: addFundUrl,
+      orderID: orderID,
+      contactNumber: contactNumber,
+      storeId: storeId,
+      subscriptionUrl: subscriptionUrl,
+      createAccount: createAccount,
+      guestId: guestId,
     );
   }
 
@@ -248,7 +308,8 @@ class MyInAppBrowser extends InAppBrowser {
   }
 
   @override
-  Future<NavigationActionPolicy> shouldOverrideUrlLoading(navigationAction) async {
+  Future<NavigationActionPolicy> shouldOverrideUrlLoading(
+      navigationAction) async {
     if (kDebugMode) {
       print("\n\nOverride ${navigationAction.request.url}\n\n");
     }
@@ -258,7 +319,8 @@ class MyInAppBrowser extends InAppBrowser {
   @override
   void onLoadResource(resource) {
     if (kDebugMode) {
-      print("Started at: ${resource.startTime}ms ---> duration: ${resource.duration}ms ${resource.url ?? ''}");
+      print(
+          "Started at: ${resource.startTime}ms ---> duration: ${resource.duration}ms ${resource.url ?? ''}");
     }
   }
 
@@ -272,6 +334,4 @@ class MyInAppBrowser extends InAppBrowser {
    """);
     }
   }
-
-
 }

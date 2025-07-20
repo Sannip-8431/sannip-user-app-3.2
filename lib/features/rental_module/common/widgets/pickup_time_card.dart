@@ -15,49 +15,63 @@ class PickupTimeCard extends StatelessWidget {
   final TaxiLocationController taxiLocationController;
   final UserData? userData;
   final bool fromCart;
-  const PickupTimeCard({super.key, required this.taxiLocationController, this.userData, this.fromCart = false});
+  const PickupTimeCard(
+      {super.key,
+      required this.taxiLocationController,
+      this.userData,
+      this.fromCart = false});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: Dimensions.paddingSizeSmall),
+      padding: const EdgeInsets.symmetric(
+          horizontal: Dimensions.paddingSizeSmall,
+          vertical: Dimensions.paddingSizeSmall),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Theme.of(context).disabledColor.withValues(alpha: 0.5), width: 0.5),
+        border: Border.all(
+            color: Theme.of(context).disabledColor.withValues(alpha: 0.5),
+            width: 0.5),
       ),
       child: Row(children: [
-
-        const CustomIconLayout(height: 32, width: 32, icon: Icons.date_range_outlined),
+        const CustomIconLayout(
+            height: 32, width: 32, icon: Icons.date_range_outlined),
         const SizedBox(width: Dimensions.paddingSizeDefault),
-
         Expanded(
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(
-              taxiLocationController.finalTripDateTime != null ?
-              DateConverter.isSameDate(taxiLocationController.finalTripDateTime!) || taxiLocationController.pickCurrentTime ? 'pickup_now'.tr : 'custom'.tr
+              taxiLocationController.finalTripDateTime != null
+                  ? DateConverter.isSameDate(
+                              taxiLocationController.finalTripDateTime!) ||
+                          taxiLocationController.pickCurrentTime
+                      ? 'pickup_now'.tr
+                      : 'custom'.tr
                   : 'pick_time'.tr,
-                style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
+              style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
             ),
             const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
             Text(
-              userData != null ? DateConverter.dateTimeStringToDateTime(userData!.pickupTime!)
+              userData != null
+                  ? DateConverter.dateTimeStringToDateTime(
+                      userData!.pickupTime!)
                   : taxiLocationController.finalTripDateTime != null
-                  ? DateConverter.taxiDateTimeToString(taxiLocationController.finalTripDateTime!) : 'not_set_yet'.tr,
+                      ? DateConverter.taxiDateTimeToString(
+                          taxiLocationController.finalTripDateTime!)
+                      : 'not_set_yet'.tr,
               style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall),
             ),
           ]),
         ),
-
         CustomInkWell(
           onTap: () {
             Get.bottomSheet(
               DateTimePickerSheet(fromCart: fromCart, userData: userData),
-              backgroundColor: Colors.transparent, isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              isScrollControlled: true,
             ).then((date) {
-              if(fromCart) {
+              if (fromCart) {
                 if (kDebugMode) {
                   print('======Deleted date is: $date');
                 }
@@ -70,7 +84,6 @@ class PickupTimeCard extends StatelessWidget {
             child: Image.asset(Images.taxiEditIcon, height: 20, width: 20),
           ),
         ),
-
       ]),
     );
   }

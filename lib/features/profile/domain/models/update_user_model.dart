@@ -8,7 +8,15 @@ class UpdateUserModel {
   String? verificationOn;
   String? verificationMedium;
 
-  UpdateUserModel({this.name, this.email, this.phone, this.otp, this.buttonType, this.sessionInfo, this.verificationOn, this.verificationMedium});
+  UpdateUserModel(
+      {this.name,
+      this.email,
+      this.phone,
+      this.otp,
+      this.buttonType,
+      this.sessionInfo,
+      this.verificationOn,
+      this.verificationMedium});
 
   UpdateUserModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -23,19 +31,19 @@ class UpdateUserModel {
 
   Map<String, String> toJson() {
     final Map<String, String> data = <String, String>{};
-    data['name'] = name??'';
-    data['email'] = email??'';
-    data['phone'] = phone??'';
-    data['otp'] = otp??'';
-    data['button_type'] = buttonType??'';
+    data['name'] = name ?? '';
+    data['email'] = email ?? '';
+    data['phone'] = phone ?? '';
+    data['otp'] = otp ?? '';
+    data['button_type'] = buttonType ?? '';
     if (sessionInfo != null) {
-      data['session_info'] = sessionInfo??'';
+      data['session_info'] = sessionInfo ?? '';
     }
     if (verificationOn != null) {
-      data['verification_on'] = verificationOn??'';
+      data['verification_on'] = verificationOn ?? '';
     }
     if (verificationMedium != null) {
-      data['verification_medium'] = verificationMedium??'';
+      data['verification_medium'] = verificationMedium ?? '';
     }
     return data;
   }

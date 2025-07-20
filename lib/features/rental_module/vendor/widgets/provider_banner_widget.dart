@@ -13,39 +13,51 @@ class ProviderBannerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return (taxiVendorController.vendorBannerList != null && taxiVendorController.vendorBannerList!.isNotEmpty) ? Container(
-      height: context.width * 0.3, width: double.infinity,
-      margin: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall, horizontal: Dimensions.paddingSizeDefault),
-      child: CarouselSlider.builder(
-        options: CarouselOptions(
-          autoPlay: true,
-          enlargeCenterPage: true,
-          disableCenter: true,
-          viewportFraction: 1,
-          autoPlayInterval: const Duration(seconds: 4),
-        ),
-        itemCount: taxiVendorController.vendorBannerList!.length,
-        itemBuilder: (context, index, _) {
-          return InkWell(
-            onTap: () async {
-              if(taxiVendorController.vendorBannerList![index].type == 'default') {
-                String url = taxiVendorController.vendorBannerList![index].link ?? '';
-                if (await canLaunchUrlString(url)) {
-                  await launchUrlString(url, mode: LaunchMode.externalApplication);
-                } else {
-                  showCustomSnackBar('unable_to_found_url'.tr);
-                }
-              }
-            },
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-              child: CustomImage(
-                image: '${taxiVendorController.vendorBannerList![index].imageFullUrl}',
+    return (taxiVendorController.vendorBannerList != null &&
+            taxiVendorController.vendorBannerList!.isNotEmpty)
+        ? Container(
+            height: context.width * 0.3,
+            width: double.infinity,
+            margin: const EdgeInsets.symmetric(
+                vertical: Dimensions.paddingSizeSmall,
+                horizontal: Dimensions.paddingSizeDefault),
+            child: CarouselSlider.builder(
+              options: CarouselOptions(
+                autoPlay: true,
+                enlargeCenterPage: true,
+                disableCenter: true,
+                viewportFraction: 1,
+                autoPlayInterval: const Duration(seconds: 4),
               ),
+              itemCount: taxiVendorController.vendorBannerList!.length,
+              itemBuilder: (context, index, _) {
+                return InkWell(
+                  onTap: () async {
+                    if (taxiVendorController.vendorBannerList![index].type ==
+                        'default') {
+                      String url =
+                          taxiVendorController.vendorBannerList![index].link ??
+                              '';
+                      if (await canLaunchUrlString(url)) {
+                        await launchUrlString(url,
+                            mode: LaunchMode.externalApplication);
+                      } else {
+                        showCustomSnackBar('unable_to_found_url'.tr);
+                      }
+                    }
+                  },
+                  child: ClipRRect(
+                    borderRadius:
+                        BorderRadius.circular(Dimensions.radiusDefault),
+                    child: CustomImage(
+                      image:
+                          '${taxiVendorController.vendorBannerList![index].imageFullUrl}',
+                    ),
+                  ),
+                );
+              },
             ),
-          );
-        },
-      ),
-    ) : const SizedBox();
+          )
+        : const SizedBox();
   }
 }

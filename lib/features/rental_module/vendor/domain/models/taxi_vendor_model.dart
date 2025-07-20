@@ -73,76 +73,76 @@ class TaxiVendorModel {
 
   TaxiVendorModel(
       {this.id,
-        this.name,
-        this.phone,
-        this.email,
-        this.logo,
-        this.latitude,
-        this.longitude,
-        this.address,
-        this.minimumOrder,
-        this.scheduleOrder,
-        this.status,
-        this.vendorId,
-        this.createdAt,
-        this.updatedAt,
-        this.freeDelivery,
-        this.coverPhoto,
-        this.delivery,
-        this.takeAway,
-        this.itemSection,
-        this.tax,
-        this.zoneId,
-        this.reviewsSection,
-        this.active,
-        this.offDay,
-        this.selfDeliverySystem,
-        this.posSystem,
-        this.minimumShippingCharge,
-        this.deliveryTime,
-        this.veg,
-        this.nonVeg,
-        this.orderCount,
-        this.totalOrder,
-        this.moduleId,
-        this.orderPlaceToScheduleInterval,
-        this.featured,
-        this.perKmShippingCharge,
-        this.prescriptionOrder,
-        this.slug,
-        // this.maximumShippingCharge,
-        // this.cutlery,
-        // this.metaTitle,
-        // this.metaDescription,
-        // this.metaImage,
-        this.announcement,
-        this.announcementMessage,
-        this.storeBusinessModel,
-        // this.packageId,
-        // this.pickupZoneId,
-        // this.comment,
-        this.isRecommended,
-        this.minimumStockForWarning,
-        this.halalTagStatus,
-        // this.extraPackagingStatus,
-        this.extraPackagingAmount,
-        this.ratings,
-        this.avgRating,
-        this.ratingCount,
-        this.positiveRating,
-        // this.totalItems,
-        // this.totalCampaigns,
-        this.currentOpeningTime,
-        this.gstStatus,
-        this.gstCode,
-        this.logoFullUrl,
-        this.coverPhotoFullUrl,
-        // this.metaImageFullUrl,
-        this.discount,
-        this.translations,
-        this.storage,
-        this.module,
-        this.schedules});
+      this.name,
+      this.phone,
+      this.email,
+      this.logo,
+      this.latitude,
+      this.longitude,
+      this.address,
+      this.minimumOrder,
+      this.scheduleOrder,
+      this.status,
+      this.vendorId,
+      this.createdAt,
+      this.updatedAt,
+      this.freeDelivery,
+      this.coverPhoto,
+      this.delivery,
+      this.takeAway,
+      this.itemSection,
+      this.tax,
+      this.zoneId,
+      this.reviewsSection,
+      this.active,
+      this.offDay,
+      this.selfDeliverySystem,
+      this.posSystem,
+      this.minimumShippingCharge,
+      this.deliveryTime,
+      this.veg,
+      this.nonVeg,
+      this.orderCount,
+      this.totalOrder,
+      this.moduleId,
+      this.orderPlaceToScheduleInterval,
+      this.featured,
+      this.perKmShippingCharge,
+      this.prescriptionOrder,
+      this.slug,
+      // this.maximumShippingCharge,
+      // this.cutlery,
+      // this.metaTitle,
+      // this.metaDescription,
+      // this.metaImage,
+      this.announcement,
+      this.announcementMessage,
+      this.storeBusinessModel,
+      // this.packageId,
+      // this.pickupZoneId,
+      // this.comment,
+      this.isRecommended,
+      this.minimumStockForWarning,
+      this.halalTagStatus,
+      // this.extraPackagingStatus,
+      this.extraPackagingAmount,
+      this.ratings,
+      this.avgRating,
+      this.ratingCount,
+      this.positiveRating,
+      // this.totalItems,
+      // this.totalCampaigns,
+      this.currentOpeningTime,
+      this.gstStatus,
+      this.gstCode,
+      this.logoFullUrl,
+      this.coverPhotoFullUrl,
+      // this.metaImageFullUrl,
+      this.discount,
+      this.translations,
+      this.storage,
+      this.module,
+      this.schedules});
 
   TaxiVendorModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -213,9 +213,8 @@ class TaxiVendorModel {
     logoFullUrl = json['logo_full_url'];
     coverPhotoFullUrl = json['cover_photo_full_url'];
     // metaImageFullUrl = json['meta_image_full_url'];
-    discount = json['discount'] != null
-        ? Discount.fromJson(json['discount'])
-        : null;
+    discount =
+        json['discount'] != null ? Discount.fromJson(json['discount']) : null;
     if (json['translations'] != null) {
       translations = <Translations>[];
       json['translations'].forEach((v) {
@@ -274,8 +273,7 @@ class TaxiVendorModel {
     data['order_count'] = orderCount;
     data['total_order'] = totalOrder;
     data['module_id'] = moduleId;
-    data['order_place_to_schedule_interval'] =
-        orderPlaceToScheduleInterval;
+    data['order_place_to_schedule_interval'] = orderPlaceToScheduleInterval;
     data['featured'] = featured;
     data['per_km_shipping_charge'] = perKmShippingCharge;
     data['prescription_order'] = prescriptionOrder;
@@ -343,17 +341,17 @@ class Discount {
 
   Discount(
       {this.id,
-        this.startDate,
-        this.endDate,
-        this.startTime,
-        this.endTime,
-        this.minPurchase,
-        this.maxDiscount,
-        this.discount,
-        this.discountType,
-        this.storeId,
-        this.createdAt,
-        this.updatedAt});
+      this.startDate,
+      this.endDate,
+      this.startTime,
+      this.endTime,
+      this.minPurchase,
+      this.maxDiscount,
+      this.discount,
+      this.discountType,
+      this.storeId,
+      this.createdAt,
+      this.updatedAt});
 
   Discount.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -399,12 +397,12 @@ class Schedules {
 
   Schedules(
       {this.id,
-        this.storeId,
-        this.day,
-        this.openingTime,
-        this.closingTime,
-        this.createdAt,
-        this.updatedAt});
+      this.storeId,
+      this.day,
+      this.openingTime,
+      this.closingTime,
+      this.createdAt,
+      this.updatedAt});
 
   Schedules.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -439,16 +437,16 @@ class Translations {
   // Null? createdAt;
   // Null? updatedAt;
 
-  Translations(
-      {this.id,
-        this.translationableType,
-        this.translationableId,
-        this.locale,
-        this.key,
-        this.value,
-        // this.createdAt,
-        // this.updatedAt
-      });
+  Translations({
+    this.id,
+    this.translationableType,
+    this.translationableId,
+    this.locale,
+    this.key,
+    this.value,
+    // this.createdAt,
+    // this.updatedAt
+  });
 
   Translations.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -486,12 +484,12 @@ class Storage {
 
   Storage(
       {this.id,
-        this.dataType,
-        this.dataId,
-        this.key,
-        this.value,
-        this.createdAt,
-        this.updatedAt});
+      this.dataType,
+      this.dataId,
+      this.key,
+      this.value,
+      this.createdAt,
+      this.updatedAt});
 
   Storage.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -536,21 +534,21 @@ class Module {
 
   Module(
       {this.id,
-        this.moduleName,
-        this.moduleType,
-        this.thumbnail,
-        this.status,
-        this.storesCount,
-        this.createdAt,
-        this.updatedAt,
-        this.icon,
-        this.themeId,
-        this.description,
-        this.allZoneService,
-        this.iconFullUrl,
-        this.thumbnailFullUrl,
-        this.storage,
-        this.translations});
+      this.moduleName,
+      this.moduleType,
+      this.thumbnail,
+      this.status,
+      this.storesCount,
+      this.createdAt,
+      this.updatedAt,
+      this.icon,
+      this.themeId,
+      this.description,
+      this.allZoneService,
+      this.iconFullUrl,
+      this.thumbnailFullUrl,
+      this.storage,
+      this.translations});
 
   Module.fromJson(Map<String, dynamic> json) {
     id = json['id'];

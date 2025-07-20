@@ -4,7 +4,8 @@ class VendorVehicleCategoryModel {
   int? offset;
   List<VehiclesCategory>? vehicles;
 
-  VendorVehicleCategoryModel({this.totalSize, this.limit, this.offset, this.vehicles});
+  VendorVehicleCategoryModel(
+      {this.totalSize, this.limit, this.offset, this.vehicles});
 
   VendorVehicleCategoryModel.fromJson(Map<String, dynamic> json) {
     totalSize = json['total_size'];

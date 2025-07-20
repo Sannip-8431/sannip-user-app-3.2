@@ -24,72 +24,168 @@ class TripTypeCard extends StatelessWidget {
   final String? discountType;
 
   const TripTypeCard({
-    super.key, required this.tripType, required this.amount, required this.discountAmount, required this.fareType, required this.indicatorIcon,
-    required this.isVehicleDetailScene, required this.isClockIcon, this.fromVehicleDetails = false, this.haveVehicle = false, this.distanceMinPrice, this.hourMinPrice,
-    this.fromCart = false, this.dailyMinPrice, this.discountType,
+    super.key,
+    required this.tripType,
+    required this.amount,
+    required this.discountAmount,
+    required this.fareType,
+    required this.indicatorIcon,
+    required this.isVehicleDetailScene,
+    required this.isClockIcon,
+    this.fromVehicleDetails = false,
+    this.haveVehicle = false,
+    this.distanceMinPrice,
+    this.hourMinPrice,
+    this.fromCart = false,
+    this.dailyMinPrice,
+    this.discountType,
   });
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<TaxiCartController>(builder: (taxiCartController) {
       return GetBuilder<TaxiLocationController>(builder: (taxiController) {
-        
-        bool isSelected = fromCart! ? taxiCartController.tripType == tripType : taxiController.tripType == tripType;
+        bool isSelected = fromCart!
+            ? taxiCartController.tripType == tripType
+            : taxiController.tripType == tripType;
 
         return Container(
           width: 180,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
             color: Theme.of(context).cardColor,
-            border: Border.all(color: Theme.of(context).disabledColor.withValues(alpha: 0.3), width: 1),
-            boxShadow: isSelected ? [BoxShadow(color: Theme.of(context).disabledColor.withValues(alpha: 0.3), blurRadius: 10)] : null,
+            border: Border.all(
+                color: Theme.of(context).disabledColor.withValues(alpha: 0.3),
+                width: 1),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                        color: Theme.of(context)
+                            .disabledColor
+                            .withValues(alpha: 0.3),
+                        blurRadius: 10)
+                  ]
+                : null,
           ),
           child: CustomInkWell(
             radius: Dimensions.radiusDefault,
-            onTap: fromVehicleDetails ? null : () => fromCart! ? taxiCartController.selectTripType(tripType) : taxiController.selectTripType(tripType),
+            onTap: fromVehicleDetails
+                ? null
+                : () => fromCart!
+                    ? taxiCartController.selectTripType(tripType)
+                    : taxiController.selectTripType(tripType),
             child: Column(children: [
-
               Container(
                 padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                  border: Border.all(color: Theme.of(context).disabledColor.withValues(alpha: 0.2), width: 1),
+                  border: Border.all(
+                      color: Theme.of(context)
+                          .disabledColor
+                          .withValues(alpha: 0.2),
+                      width: 1),
                 ),
-                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-
-                  Text(tripType.tr, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault)),
-
-                  fromVehicleDetails ? const SizedBox() : Icon(isSelected ? Icons.radio_button_on : Icons.radio_button_off_outlined,
-                    size: 22, color: isSelected ? Theme.of(context).primaryColor: Theme.of(context).disabledColor,
-                  ),
-
-                ]),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(tripType.tr,
+                          style: robotoMedium.copyWith(
+                              fontSize: Dimensions.fontSizeDefault)),
+                      fromVehicleDetails
+                          ? const SizedBox()
+                          : Icon(
+                              isSelected
+                                  ? Icons.radio_button_on
+                                  : Icons.radio_button_off_outlined,
+                              size: 22,
+                              color: isSelected
+                                  ? Theme.of(context).primaryColor
+                                  : Theme.of(context).disabledColor,
+                            ),
+                    ]),
               ),
-
               Container(
-                padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall, horizontal: Dimensions.paddingSizeDefault),
+                padding: const EdgeInsets.symmetric(
+                    vertical: Dimensions.paddingSizeSmall,
+                    horizontal: Dimensions.paddingSizeDefault),
                 alignment: Alignment.centerLeft,
-                child: haveVehicle! ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-
-                  RichText(text: TextSpan(children: <TextSpan>[
-                    TextSpan(text: '${'start_from'.tr} ', style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).textTheme.bodyLarge!.color)),
-
-                    discountType == 'amount' ? const TextSpan() :
-                    TextSpan(text: discountAmount == amount ? '' : amount, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).disabledColor, decoration: TextDecoration.lineThrough)),
-                  ])),
-
-                  RichText(text: TextSpan(children: <TextSpan>[
-                    TextSpan(text: ' ${discountType == 'amount' ? amount : discountAmount}', style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).textTheme.bodyLarge!.color)),
-
-                    TextSpan(text: ' /${fareType.tr}', style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).textTheme.bodyLarge!.color)),
-                  ])),
-                ]) : RichText(text: TextSpan(children: <TextSpan>[
-                  TextSpan(text: '${'start_from'.tr} \n', style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).textTheme.bodyLarge!.color)),
-
-                  TextSpan(text: PriceConverter.convertPrice(dailyMinPrice ?? distanceMinPrice ?? hourMinPrice), style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).textTheme.bodyLarge!.color)),
-
-                  TextSpan(text: ' /${fareType.tr}', style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).textTheme.bodyLarge!.color)),
-                ])),
+                child: haveVehicle!
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                            RichText(
+                                text: TextSpan(children: <TextSpan>[
+                              TextSpan(
+                                  text: '${'start_from'.tr} ',
+                                  style: robotoRegular.copyWith(
+                                      fontSize: Dimensions.fontSizeSmall,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .color)),
+                              discountType == 'amount'
+                                  ? const TextSpan()
+                                  : TextSpan(
+                                      text: discountAmount == amount
+                                          ? ''
+                                          : amount,
+                                      style: robotoMedium.copyWith(
+                                          fontSize: Dimensions.fontSizeSmall,
+                                          color:
+                                              Theme.of(context).disabledColor,
+                                          decoration:
+                                              TextDecoration.lineThrough)),
+                            ])),
+                            RichText(
+                                text: TextSpan(children: <TextSpan>[
+                              TextSpan(
+                                  text:
+                                      ' ${discountType == 'amount' ? amount : discountAmount}',
+                                  style: robotoBold.copyWith(
+                                      fontSize: Dimensions.fontSizeLarge,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .color)),
+                              TextSpan(
+                                  text: ' /${fareType.tr}',
+                                  style: robotoRegular.copyWith(
+                                      fontSize: Dimensions.fontSizeSmall,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .color)),
+                            ])),
+                          ])
+                    : RichText(
+                        text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                            text: '${'start_from'.tr} \n',
+                            style: robotoRegular.copyWith(
+                                fontSize: Dimensions.fontSizeSmall,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .color)),
+                        TextSpan(
+                            text: PriceConverter.convertPrice(dailyMinPrice ??
+                                distanceMinPrice ??
+                                hourMinPrice),
+                            style: robotoBold.copyWith(
+                                fontSize: Dimensions.fontSizeLarge,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .color)),
+                        TextSpan(
+                            text: ' /${fareType.tr}',
+                            style: robotoRegular.copyWith(
+                                fontSize: Dimensions.fontSizeSmall,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .color)),
+                      ])),
               )
             ]),
           ),

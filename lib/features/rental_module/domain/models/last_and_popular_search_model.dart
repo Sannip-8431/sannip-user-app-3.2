@@ -9,5 +9,3 @@ class PopularSearchModel {
 
   PopularSearchModel({required this.carName});
 }
-
-

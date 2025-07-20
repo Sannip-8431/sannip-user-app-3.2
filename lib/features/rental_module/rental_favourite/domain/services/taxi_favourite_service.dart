@@ -10,13 +10,16 @@ class TaxiFavouriteService implements TaxiFavouriteServiceInterface {
   TaxiFavouriteService({required this.taxiFavouriteRepositoryInterface});
 
   @override
-  Future<ResponseModel> addVehicleFavouriteList(int id, bool isProvider) async{
-    return await taxiFavouriteRepositoryInterface.addVehicleFavouriteList(id, isProvider);
+  Future<ResponseModel> addVehicleFavouriteList(int id, bool isProvider) async {
+    return await taxiFavouriteRepositoryInterface.addVehicleFavouriteList(
+        id, isProvider);
   }
 
   @override
-  Future<ResponseModel> removeVehicleFavouriteList(int? id, bool isProvider) async{
-    return await taxiFavouriteRepositoryInterface.delete(id, isProvider: isProvider);
+  Future<ResponseModel> removeVehicleFavouriteList(
+      int? id, bool isProvider) async {
+    return await taxiFavouriteRepositoryInterface.delete(id,
+        isProvider: isProvider);
   }
 
   @override

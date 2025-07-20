@@ -34,48 +34,52 @@ class TaxiOrderController extends GetxController implements GetxService {
 
   void setPaymentMethod(int index, {bool isUpdate = true}) {
     _paymentMethodIndex = index;
-    if(isUpdate){
+    if (isUpdate) {
       update();
     }
   }
 
-  void changeDigitalPaymentName(String name, {bool willUpdate = true}){
+  void changeDigitalPaymentName(String name, {bool willUpdate = true}) {
     _digitalPaymentName = name;
-    if(willUpdate) {
+    if (willUpdate) {
       update();
     }
   }
 
-  void changePartialPayment({bool isUpdate = true}){
+  void changePartialPayment({bool isUpdate = true}) {
     _isPartialPay = !_isPartialPay;
-    if(isUpdate) {
+    if (isUpdate) {
       update();
     }
   }
 
-  Future<void> getTripList(int offset, {bool isUpdate = false, bool isRunning = true, bool fromHome = false}) async {
-    if(offset == 1) {
-      if(isRunning) {
+  Future<void> getTripList(int offset,
+      {bool isUpdate = false,
+      bool isRunning = true,
+      bool fromHome = false}) async {
+    if (offset == 1) {
+      if (isRunning) {
         _tripModel = null;
       } else {
-        if(!fromHome) {
+        if (!fromHome) {
           _tripHistoryModel = null;
         }
       }
-      if(isUpdate) {
+      if (isUpdate) {
         update();
       }
     }
-    TripModel? tripModel = await taxiOrderServiceInterface.getTripList(offset: offset, type: isRunning ? 'running' : 'completed');
+    TripModel? tripModel = await taxiOrderServiceInterface.getTripList(
+        offset: offset, type: isRunning ? 'running' : 'completed');
     if (tripModel != null) {
       if (offset == 1) {
-        if(isRunning) {
+        if (isRunning) {
           _tripModel = tripModel;
         } else {
           _tripHistoryModel = tripModel;
         }
-      }else {
-        if(isRunning) {
+      } else {
+        if (isRunning) {
           _tripModel!.totalSize = tripModel.totalSize;
           _tripModel!.offset = tripModel.offset;
           _tripModel!.trips!.addAll(tripModel.trips!);
@@ -89,13 +93,15 @@ class TaxiOrderController extends GetxController implements GetxService {
     update();
   }
 
-  Future<bool> getTripDetails(int id, {bool willUpdate = true, String? phone}) async {
+  Future<bool> getTripDetails(int id,
+      {bool willUpdate = true, String? phone}) async {
     _isLoading = true;
     _tripDetailsModel = null;
-    if(willUpdate) {
+    if (willUpdate) {
       update();
     }
-    _tripDetailsModel = await taxiOrderServiceInterface.getTripDetails(id: id, phone: phone);
+    _tripDetailsModel =
+        await taxiOrderServiceInterface.getTripDetails(id: id, phone: phone);
 
     _isLoading = false;
     update();
@@ -111,21 +117,25 @@ class TaxiOrderController extends GetxController implements GetxService {
     return success;
   }
 
-  Future<bool> makePayment({required int id, required String paymentMethod}) async {
+  Future<bool> makePayment(
+      {required int id, required String paymentMethod}) async {
     _isLoading = true;
     update();
 
-    if(isPartialPay) {
-      if(_paymentMethodIndex == 1) {
+    if (isPartialPay) {
+      if (_paymentMethodIndex == 1) {
         _digitalPaymentName = 'cash_payment';
       }
     }
-    Response response = await taxiOrderServiceInterface.makeTripPayment(id: id, paymentMethod: paymentMethod, paymentGateWayName: _digitalPaymentName);
-    if(response.statusCode == 200 && _paymentMethodIndex == 2) {
+    Response response = await taxiOrderServiceInterface.makeTripPayment(
+        id: id,
+        paymentMethod: paymentMethod,
+        paymentGateWayName: _digitalPaymentName);
+    if (response.statusCode == 200 && _paymentMethodIndex == 2) {
       Get.back();
-      Get.to(()=> TaxiPaymentScreen(paymentUrl: response.body, orderId: id));
+      Get.to(() => TaxiPaymentScreen(paymentUrl: response.body, orderId: id));
     }
-    if(AuthHelper.isLoggedIn()) {
+    if (AuthHelper.isLoggedIn()) {
       Get.find<ProfileController>().getUserInfo();
     }
     _isLoading = false;
@@ -133,13 +143,22 @@ class TaxiOrderController extends GetxController implements GetxService {
     return response.statusCode == 200 && _paymentMethodIndex != 2;
   }
 
-  Future<bool> addVehicleReview({required int tripId, required int vehicleId, required int vehicleIdentityId, required int rating, required String comment}) async {
+  Future<bool> addVehicleReview(
+      {required int tripId,
+      required int vehicleId,
+      required int vehicleIdentityId,
+      required int rating,
+      required String comment}) async {
     _isLoading = true;
     update();
-    bool success = await taxiOrderServiceInterface.addVehicleReview(tripId: tripId, vehicleId: vehicleId, vehicleIdentityId: vehicleIdentityId, rating: rating, comment: comment);
+    bool success = await taxiOrderServiceInterface.addVehicleReview(
+        tripId: tripId,
+        vehicleId: vehicleId,
+        vehicleIdentityId: vehicleIdentityId,
+        rating: rating,
+        comment: comment);
     _isLoading = false;
     update();
     return success;
   }
-
 }

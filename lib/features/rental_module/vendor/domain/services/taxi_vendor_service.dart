@@ -12,37 +12,52 @@ class TaxiVendorService implements TaxiVendorServiceInterface {
   TaxiVendorService({required this.taxiVendorRepositoryInterface});
 
   @override
-  Future<TaxiVendorModel?> getTaxiVendorDetails({required int id}) async{
+  Future<TaxiVendorModel?> getTaxiVendorDetails({required int id}) async {
     return await taxiVendorRepositoryInterface.getTaxiVendorDetails(id: id);
-
   }
 
   @override
-  Future<List<VendorBannerModel>?> getVendorBannerList({required int id}) async{
+  Future<List<VendorBannerModel>?> getVendorBannerList(
+      {required int id}) async {
     return await taxiVendorRepositoryInterface.getVendorBannerList(id: id);
-
   }
 
   @override
-  Future<VendorVehiclesModel?> getVendorVehicleList({
-    required int offset, required int providerId, int? categoryId, String? searchName,
-    double? minPrice, double? maxPrice, List<int>? brandIds, List<String>? seatingCapacity,
-    bool? airCondition, bool? nonAirCondition}) async{
+  Future<VendorVehiclesModel?> getVendorVehicleList(
+      {required int offset,
+      required int providerId,
+      int? categoryId,
+      String? searchName,
+      double? minPrice,
+      double? maxPrice,
+      List<int>? brandIds,
+      List<String>? seatingCapacity,
+      bool? airCondition,
+      bool? nonAirCondition}) async {
     return await taxiVendorRepositoryInterface.getVendorVehicleList(
-        offset: offset, providerId: providerId, categoryId: categoryId, searchName: searchName,
-      minPrice: minPrice, maxPrice: maxPrice, brandIds: brandIds, seatingCapacity: seatingCapacity,
-      airCondition: airCondition, nonAirCondition: nonAirCondition,
+      offset: offset,
+      providerId: providerId,
+      categoryId: categoryId,
+      searchName: searchName,
+      minPrice: minPrice,
+      maxPrice: maxPrice,
+      brandIds: brandIds,
+      seatingCapacity: seatingCapacity,
+      airCondition: airCondition,
+      nonAirCondition: nonAirCondition,
     );
   }
 
   @override
-  Future<VendorVehicleCategoryModel?> getVendorVehicleCategoryList() async{
+  Future<VendorVehicleCategoryModel?> getVendorVehicleCategoryList() async {
     return await taxiVendorRepositoryInterface.getVendorVehicleCategoryList();
   }
 
   @override
-  Future<TaxiProviderReviewModel?> getTaxiProviderReviewDetails({int? offset, required int id}) async{
-    return await taxiVendorRepositoryInterface.getTaxiProviderReviewDetails(id: id);
+  Future<TaxiProviderReviewModel?> getTaxiProviderReviewDetails(
+      {int? offset, required int id}) async {
+    return await taxiVendorRepositoryInterface.getTaxiProviderReviewDetails(
+        id: id);
   }
 
   // @override

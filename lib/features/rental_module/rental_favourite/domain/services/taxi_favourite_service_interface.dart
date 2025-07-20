@@ -8,7 +8,7 @@ abstract class TaxiFavouriteServiceInterface {
   Future<ResponseModel> removeVehicleFavouriteList(int? id, bool isProvider);
   Future<Response> getFavouriteTaxiList();
   List<VehicleModel?> wishVehicleList(VehicleModel item);
-  List<int?> wishVehicleIdList (VehicleModel item);
+  List<int?> wishVehicleIdList(VehicleModel item);
   List<TaxiVendorModel?> wishProviderList(dynamic provider);
   List<int?> wishProviderIdList(dynamic store);
 }

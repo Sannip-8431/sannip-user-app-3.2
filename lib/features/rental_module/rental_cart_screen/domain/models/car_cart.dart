@@ -26,8 +26,12 @@ class CarCart {
   CarCart.fromJson(Map<String, dynamic> json) {
     vehicleId = json['vehicle_id'];
     quantity = json['quantity'];
-    pickupLocation = json['pickup_location'] != null ? CartLocation.fromJson(json['pickup_location']) : null;
-    destinationLocation = json['destination_location'] != null ? CartLocation.fromJson(json['destination_location']) : null;
+    pickupLocation = json['pickup_location'] != null
+        ? CartLocation.fromJson(json['pickup_location'])
+        : null;
+    destinationLocation = json['destination_location'] != null
+        ? CartLocation.fromJson(json['destination_location'])
+        : null;
     pickupTime = json['pickup_time'];
     rentalType = json['rental_type'];
     estimatedHour = json['estimated_hours'];
@@ -38,34 +42,34 @@ class CarCart {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    if(applyMethod!) {
+    if (applyMethod!) {
       data['_method'] = 'PUT';
     }
-    if(vehicleId != null) {
+    if (vehicleId != null) {
       data['vehicle_id'] = vehicleId;
     }
-    if(quantity != null) {
-    data['quantity'] = quantity;
+    if (quantity != null) {
+      data['quantity'] = quantity;
     }
-    if(pickupLocation != null) {
+    if (pickupLocation != null) {
       data['pickup_location'] = pickupLocation!.toJson();
     }
-    if(destinationLocation != null) {
+    if (destinationLocation != null) {
       data['destination_location'] = destinationLocation!.toJson();
     }
-    if(pickupTime != null) {
+    if (pickupTime != null) {
       data['pickup_time'] = pickupTime;
     }
-    if(rentalType != null) {
+    if (rentalType != null) {
       data['rental_type'] = rentalType;
     }
-    if(estimatedHour != null) {
+    if (estimatedHour != null) {
       data['estimated_hours'] = estimatedHour;
     }
-    if(destinationTime != null) {
+    if (destinationTime != null) {
       data['destination_time'] = destinationTime;
     }
-    if(distance != null) {
+    if (distance != null) {
       data['distance'] = distance;
     }
     return data;

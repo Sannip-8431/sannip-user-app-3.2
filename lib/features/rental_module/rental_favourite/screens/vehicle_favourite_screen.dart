@@ -17,7 +17,8 @@ class VehicleFavouriteScreen extends StatefulWidget {
   VehicleFavouriteScreenState createState() => VehicleFavouriteScreenState();
 }
 
-class VehicleFavouriteScreenState extends State<VehicleFavouriteScreen> with SingleTickerProviderStateMixin {
+class VehicleFavouriteScreenState extends State<VehicleFavouriteScreen>
+    with SingleTickerProviderStateMixin {
   TabController? _tabController;
 
   @override
@@ -29,8 +30,8 @@ class VehicleFavouriteScreenState extends State<VehicleFavouriteScreen> with Sin
     initCall();
   }
 
-  void initCall(){
-    if(AuthHelper.isLoggedIn()) {
+  void initCall() {
+    if (AuthHelper.isLoggedIn()) {
       // Get.find<FavouriteController>().getFavouriteList();
       Get.find<TaxiFavouriteController>().getFavouriteTaxiList();
     }
@@ -40,46 +41,55 @@ class VehicleFavouriteScreenState extends State<VehicleFavouriteScreen> with Sin
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: 'favourite'.tr, backButton: false),
-      endDrawer: const MenuDrawer(),endDrawerEnableOpenDragGesture: false,
-      body: AuthHelper.isLoggedIn() ? SafeArea(child: Column(children: [
-
-        SizedBox(
-          width: Dimensions.webMaxWidth,
-          child: Container(
-            width: Dimensions.webMaxWidth,
-            color: Theme.of(context).cardColor,
-            alignment: Alignment.bottomLeft,
-            child: TabBar(
-              tabAlignment: ResponsiveHelper.isDesktop(context) ? TabAlignment.start : null,
-              isScrollable: ResponsiveHelper.isDesktop(context) ? true : false,
-              controller: _tabController,
-              indicatorColor: Theme.of(context).primaryColor,
-              indicatorWeight: 3,
-              labelColor: Theme.of(context).primaryColor,
-              unselectedLabelColor: Theme.of(context).disabledColor,
-              unselectedLabelStyle: robotoRegular.copyWith(color: Theme.of(context).disabledColor, fontSize: Dimensions.fontSizeSmall),
-              labelStyle: robotoBold.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor),
-              tabs: [
-                Tab(text: 'vehicles'.tr),
-                Tab(text: 'providers'.tr),
-              ],
-            ),
-          ),
-        ),
-
-        Expanded(child: TabBarView(
-          controller: _tabController,
-          physics: const NeverScrollableScrollPhysics(),
-          children: const [
-            FavouriteVehicleViewWidget(isProvider: false),
-            FavouriteVehicleViewWidget(isProvider: true),
-          ],
-        )),
-
-      ])) : NotLoggedInScreen(callBack: (value){
-        initCall();
-        setState(() {});
-      }),
+      endDrawer: const MenuDrawer(),
+      endDrawerEnableOpenDragGesture: false,
+      body: AuthHelper.isLoggedIn()
+          ? SafeArea(
+              child: Column(children: [
+              SizedBox(
+                width: Dimensions.webMaxWidth,
+                child: Container(
+                  width: Dimensions.webMaxWidth,
+                  color: Theme.of(context).cardColor,
+                  alignment: Alignment.bottomLeft,
+                  child: TabBar(
+                    tabAlignment: ResponsiveHelper.isDesktop(context)
+                        ? TabAlignment.start
+                        : null,
+                    isScrollable:
+                        ResponsiveHelper.isDesktop(context) ? true : false,
+                    controller: _tabController,
+                    indicatorColor: Theme.of(context).primaryColor,
+                    indicatorWeight: 3,
+                    labelColor: Theme.of(context).primaryColor,
+                    unselectedLabelColor: Theme.of(context).disabledColor,
+                    unselectedLabelStyle: robotoRegular.copyWith(
+                        color: Theme.of(context).disabledColor,
+                        fontSize: Dimensions.fontSizeSmall),
+                    labelStyle: robotoBold.copyWith(
+                        fontSize: Dimensions.fontSizeSmall,
+                        color: Theme.of(context).primaryColor),
+                    tabs: [
+                      Tab(text: 'vehicles'.tr),
+                      Tab(text: 'providers'.tr),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                  child: TabBarView(
+                controller: _tabController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: const [
+                  FavouriteVehicleViewWidget(isProvider: false),
+                  FavouriteVehicleViewWidget(isProvider: true),
+                ],
+              )),
+            ]))
+          : NotLoggedInScreen(callBack: (value) {
+              initCall();
+              setState(() {});
+            }),
     );
   }
 }

@@ -7,16 +7,29 @@ class CustomFloatingActionButton extends StatelessWidget {
   final String heroTag;
   final Function() onTap;
 
-  const CustomFloatingActionButton({super.key, required this.icon, required this.heroTag, required this.onTap});
+  const CustomFloatingActionButton(
+      {super.key,
+      required this.icon,
+      required this.heroTag,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
-      child: Container(width: 40, height: 40,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeSmall),
+      child: Container(
+        width: 40,
+        height: 40,
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(8),
-          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.2), blurRadius: 6, spreadRadius: 0.5, offset: const Offset(0, 4))],
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black.withValues(alpha: 0.2),
+                blurRadius: 6,
+                spreadRadius: 0.5,
+                offset: const Offset(0, 4))
+          ],
         ),
         child: FloatingActionButton(
           heroTag: heroTag,

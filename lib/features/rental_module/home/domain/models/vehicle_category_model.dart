@@ -4,12 +4,14 @@ class VehicleCategoryModel {
   int? offset;
   List<Vehicles>? vehicles;
 
-  VehicleCategoryModel({this.totalSize, this.limit, this.offset, this.vehicles});
+  VehicleCategoryModel(
+      {this.totalSize, this.limit, this.offset, this.vehicles});
 
   VehicleCategoryModel.fromJson(Map<String, dynamic> json) {
     totalSize = json['total_size'];
     limit = json['limit'] != null ? int.parse(json['limit'].toString()) : null;
-    offset = json['offset'] != null ? int.parse(json['offset'].toString()) : null;
+    offset =
+        json['offset'] != null ? int.parse(json['offset'].toString()) : null;
     if (json['vehicles'] != null) {
       vehicles = <Vehicles>[];
       json['vehicles'].forEach((v) {

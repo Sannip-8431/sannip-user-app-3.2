@@ -15,11 +15,11 @@ class WebJustForYouViewWidget extends StatefulWidget {
   const WebJustForYouViewWidget({super.key});
 
   @override
-  State<WebJustForYouViewWidget> createState() => _WebJustForYouViewWidgetState();
+  State<WebJustForYouViewWidget> createState() =>
+      _WebJustForYouViewWidgetState();
 }
 
 class _WebJustForYouViewWidgetState extends State<WebJustForYouViewWidget> {
-
   ScrollController scrollController = ScrollController();
   bool showBackButton = false;
   bool showForwardButton = false;
@@ -45,7 +45,8 @@ class _WebJustForYouViewWidgetState extends State<WebJustForYouViewWidget> {
         showBackButton = true;
       }
 
-      if (scrollController.position.pixels >= scrollController.position.maxScrollExtent) {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent) {
         showForwardButton = false;
       } else {
         showForwardButton = true;
@@ -56,85 +57,116 @@ class _WebJustForYouViewWidgetState extends State<WebJustForYouViewWidget> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<CampaignController>(builder: (campaignController) {
-
-      if(campaignController.itemCampaignList != null && campaignController.itemCampaignList!.length > 5 && isFirstTime){
+      if (campaignController.itemCampaignList != null &&
+          campaignController.itemCampaignList!.length > 5 &&
+          isFirstTime) {
         showForwardButton = true;
         isFirstTime = false;
       }
 
-      return campaignController.itemCampaignList != null ? campaignController.itemCampaignList!.isNotEmpty ? Stack(children: [
-        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),
-            child: Text('just_for_you'.tr, style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge)),
-          ),
-
-          SizedBox(
-            height: 185, width: Get.width,
-            child: ListView.builder(
-              controller: scrollController,
-              scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
-              itemCount: campaignController.itemCampaignList!.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.only(
-                    bottom: Dimensions.paddingSizeDefault, top: Dimensions.paddingSizeDefault,
-                    left: Get.find<LocalizationController>().isLtr ? 0 : Dimensions.paddingSizeDefault,
-                    right: Get.find<LocalizationController>().isLtr ? Dimensions.paddingSizeDefault : 0,
-                  ),
-                  child: TextHover(
-                    builder: (hovered) {
-                      return OnHover(
-                        isItem: true,
-                        child: InkWell(
-                          hoverColor: Colors.transparent,
-                          onTap: () => Get.find<ItemController>().navigateToItemPage(campaignController.itemCampaignList![index], context, isCampaign: true),
-                          child: Container(
-                            height: 185, width: 185,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).cardColor,
-                              borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                              child: CustomImage(
-                                isHovered: hovered,
-                                image: '${campaignController.itemCampaignList![index].imageFullUrl}',
-                                fit: BoxFit.cover, height: 185, width: 185,
-                              ),
-                            ),
+      return campaignController.itemCampaignList != null
+          ? campaignController.itemCampaignList!.isNotEmpty
+              ? Stack(children: [
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: Dimensions.paddingSizeDefault),
+                          child: Text('just_for_you'.tr,
+                              style: robotoBold.copyWith(
+                                  fontSize: Dimensions.fontSizeLarge)),
+                        ),
+                        SizedBox(
+                          height: 185,
+                          width: Get.width,
+                          child: ListView.builder(
+                            controller: scrollController,
+                            scrollDirection: Axis.horizontal,
+                            physics: const BouncingScrollPhysics(),
+                            itemCount:
+                                campaignController.itemCampaignList!.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                  bottom: Dimensions.paddingSizeDefault,
+                                  top: Dimensions.paddingSizeDefault,
+                                  left: Get.find<LocalizationController>().isLtr
+                                      ? 0
+                                      : Dimensions.paddingSizeDefault,
+                                  right:
+                                      Get.find<LocalizationController>().isLtr
+                                          ? Dimensions.paddingSizeDefault
+                                          : 0,
+                                ),
+                                child: TextHover(builder: (hovered) {
+                                  return OnHover(
+                                    isItem: true,
+                                    child: InkWell(
+                                      hoverColor: Colors.transparent,
+                                      onTap: () => Get.find<ItemController>()
+                                          .navigateToItemPage(
+                                              campaignController
+                                                  .itemCampaignList![index],
+                                              context,
+                                              isCampaign: true),
+                                      child: Container(
+                                        height: 185,
+                                        width: 185,
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context).cardColor,
+                                          borderRadius: BorderRadius.circular(
+                                              Dimensions.radiusDefault),
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                              Dimensions.radiusDefault),
+                                          child: CustomImage(
+                                            isHovered: hovered,
+                                            image:
+                                                '${campaignController.itemCampaignList![index].imageFullUrl}',
+                                            fit: BoxFit.cover,
+                                            height: 185,
+                                            width: 185,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              );
+                            },
                           ),
                         ),
-                      );
-                    }
-                  ),
-                );
-              },
-            ),
-          ),
-        ]),
-
-        if(showBackButton)
-          Positioned(
-            top: 130, left: 0,
-            child: ArrowIconButton(
-              isRight: false,
-              onTap: () => scrollController.animateTo(scrollController.offset - (Dimensions.webMaxWidth / 3),
-                  duration: const Duration(milliseconds: 500), curve: Curves.easeInOut),
-            ),
-          ),
-
-        if(showForwardButton)
-          Positioned(
-            top: 130, right: 0,
-            child: ArrowIconButton(
-              onTap: () => scrollController.animateTo(scrollController.offset + (Dimensions.webMaxWidth / 3),
-                  duration: const Duration(milliseconds: 500), curve: Curves.easeInOut),
-            ),
-          ),
-
-      ]) : const SizedBox() : WebJustForYouShimmerView(campaignController: campaignController);
+                      ]),
+                  if (showBackButton)
+                    Positioned(
+                      top: 130,
+                      left: 0,
+                      child: ArrowIconButton(
+                        isRight: false,
+                        onTap: () => scrollController.animateTo(
+                            scrollController.offset -
+                                (Dimensions.webMaxWidth / 3),
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeInOut),
+                      ),
+                    ),
+                  if (showForwardButton)
+                    Positioned(
+                      top: 130,
+                      right: 0,
+                      child: ArrowIconButton(
+                        onTap: () => scrollController.animateTo(
+                            scrollController.offset +
+                                (Dimensions.webMaxWidth / 3),
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeInOut),
+                      ),
+                    ),
+                ])
+              : const SizedBox()
+          : WebJustForYouShimmerView(campaignController: campaignController);
     });
   }
 }
@@ -148,12 +180,14 @@ class WebJustForYouShimmerView extends StatelessWidget {
     return Stack(children: [
       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeDefault),
-          child: Text('just_for_you'.tr, style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge)),
+          padding: const EdgeInsets.symmetric(
+              vertical: Dimensions.paddingSizeDefault),
+          child: Text('just_for_you'.tr,
+              style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge)),
         ),
-
         SizedBox(
-          height: 185, width: Get.width,
+          height: 185,
+          width: Get.width,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             physics: const NeverScrollableScrollPhysics(),
@@ -161,18 +195,25 @@ class WebJustForYouShimmerView extends StatelessWidget {
             itemBuilder: (context, index) {
               return Padding(
                 padding: EdgeInsets.only(
-                  bottom: Dimensions.paddingSizeDefault, top: Dimensions.paddingSizeDefault,
-                  left: Get.find<LocalizationController>().isLtr ? 0 : Dimensions.paddingSizeDefault,
-                  right: Get.find<LocalizationController>().isLtr ? Dimensions.paddingSizeDefault : 0,
+                  bottom: Dimensions.paddingSizeDefault,
+                  top: Dimensions.paddingSizeDefault,
+                  left: Get.find<LocalizationController>().isLtr
+                      ? 0
+                      : Dimensions.paddingSizeDefault,
+                  right: Get.find<LocalizationController>().isLtr
+                      ? Dimensions.paddingSizeDefault
+                      : 0,
                 ),
                 child: Shimmer(
                   duration: const Duration(seconds: 2),
                   enabled: true,
                   child: Container(
-                    height: 185, width: 185,
+                    height: 185,
+                    width: 185,
                     decoration: BoxDecoration(
                       color: Colors.grey.withValues(alpha: 0.3),
-                      borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                      borderRadius:
+                          BorderRadius.circular(Dimensions.radiusDefault),
                     ),
                   ),
                 ),

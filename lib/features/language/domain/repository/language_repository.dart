@@ -9,14 +9,16 @@ import 'package:sixam_mart/util/app_constants.dart';
 class LanguageRepository implements LanguageRepositoryInterface {
   final ApiClient apiClient;
   final SharedPreferences sharedPreferences;
-  LanguageRepository({required this.apiClient, required this.sharedPreferences});
+  LanguageRepository(
+      {required this.apiClient, required this.sharedPreferences});
 
   @override
   AddressModel? getAddressFormSharedPref() {
     AddressModel? addressModel;
     try {
-      addressModel = AddressModel.fromJson(jsonDecode(sharedPreferences.getString(AppConstants.userAddress)!));
-    }catch(e) {
+      addressModel = AddressModel.fromJson(
+          jsonDecode(sharedPreferences.getString(AppConstants.userAddress)!));
+    } catch (e) {
       debugPrint('Did not get shared Preferences address: $e');
     }
     return addressModel;
@@ -25,16 +27,23 @@ class LanguageRepository implements LanguageRepositoryInterface {
   @override
   void updateHeader(AddressModel? addressModel, Locale locale, int? moduleId) {
     apiClient.updateHeader(
-      sharedPreferences.getString(AppConstants.token), addressModel?.zoneIds,
-      addressModel?.areaIds, locale.languageCode, moduleId,
-      addressModel?.latitude, addressModel?.longitude,
+      sharedPreferences.getString(AppConstants.token),
+      addressModel?.zoneIds,
+      addressModel?.areaIds,
+      locale.languageCode,
+      moduleId,
+      addressModel?.latitude,
+      addressModel?.longitude,
     );
   }
 
   @override
   Locale getLocaleFromSharedPref() {
-    return Locale(sharedPreferences.getString(AppConstants.languageCode) ?? AppConstants.languages[0].languageCode!,
-        sharedPreferences.getString(AppConstants.countryCode) ?? AppConstants.languages[0].countryCode);
+    return Locale(
+        sharedPreferences.getString(AppConstants.languageCode) ??
+            AppConstants.languages[0].languageCode!,
+        sharedPreferences.getString(AppConstants.countryCode) ??
+            AppConstants.languages[0].countryCode);
   }
 
   @override
@@ -45,14 +54,19 @@ class LanguageRepository implements LanguageRepositoryInterface {
 
   @override
   void saveCacheLanguage(Locale locale) {
-    sharedPreferences.setString(AppConstants.cacheLanguageCode, locale.languageCode);
-    sharedPreferences.setString(AppConstants.cacheCountryCode, locale.countryCode!);
+    sharedPreferences.setString(
+        AppConstants.cacheLanguageCode, locale.languageCode);
+    sharedPreferences.setString(
+        AppConstants.cacheCountryCode, locale.countryCode!);
   }
 
   @override
   Locale getCacheLocaleFromSharedPref() {
-    return Locale(sharedPreferences.getString(AppConstants.cacheLanguageCode) ?? AppConstants.languages[0].languageCode!,
-        sharedPreferences.getString(AppConstants.cacheCountryCode) ?? AppConstants.languages[0].countryCode);
+    return Locale(
+        sharedPreferences.getString(AppConstants.cacheLanguageCode) ??
+            AppConstants.languages[0].languageCode!,
+        sharedPreferences.getString(AppConstants.cacheCountryCode) ??
+            AppConstants.languages[0].countryCode);
   }
 
   @override
@@ -79,5 +93,4 @@ class LanguageRepository implements LanguageRepositoryInterface {
   Future update(Map<String, dynamic> body, int? id) {
     throw UnimplementedError();
   }
-
 }

@@ -37,8 +37,10 @@ class TaxiLocationController extends GetxController implements GetxService {
   bool get isButtonClick => _isButtonClick;
 
   LatLng _initialPosition = LatLng(
-    double.parse(Get.find<SplashController>().configModel!.defaultLocation!.lat ?? '0'),
-    double.parse(Get.find<SplashController>().configModel!.defaultLocation!.lng ?? '0'),
+    double.parse(
+        Get.find<SplashController>().configModel!.defaultLocation!.lat ?? '0'),
+    double.parse(
+        Get.find<SplashController>().configModel!.defaultLocation!.lng ?? '0'),
   );
   LatLng get initialPosition => _initialPosition;
 
@@ -63,10 +65,13 @@ class TaxiLocationController extends GetxController implements GetxService {
   final MarkerId fromMarkerId = const MarkerId('from_marker');
   final MarkerId toMarkerId = const MarkerId('to_marker');
 
-  final TextEditingController _formTextEditingController = TextEditingController();
-  TextEditingController get formTextEditingController => _formTextEditingController;
+  final TextEditingController _formTextEditingController =
+      TextEditingController();
+  TextEditingController get formTextEditingController =>
+      _formTextEditingController;
 
-  final TextEditingController _toTextEditingController = TextEditingController();
+  final TextEditingController _toTextEditingController =
+      TextEditingController();
   TextEditingController get toTextEditingController => _toTextEditingController;
 
   TextEditingController estimateTimeController = TextEditingController();
@@ -130,7 +135,7 @@ class TaxiLocationController extends GetxController implements GetxService {
 
   void takeCurrentTime(bool val, {bool willUpdate = true}) {
     _pickCurrentTime = val;
-    if(willUpdate) {
+    if (willUpdate) {
       update();
     }
   }
@@ -142,33 +147,33 @@ class TaxiLocationController extends GetxController implements GetxService {
 
   void selectLocationType({required bool isForm, bool willUpdate = true}) {
     _isFormSelected = isForm;
-    if(willUpdate) {
+    if (willUpdate) {
       update();
     }
   }
 
   void selectTripType(String type, {bool willUpdate = true}) {
     _tripType = type;
-    if(willUpdate) {
+    if (willUpdate) {
       update();
     }
   }
 
-  void updateCameraMovingStatus(bool status){
+  void updateCameraMovingStatus(bool status) {
     _isCameraMoving = status;
     update();
   }
 
   void setTripDate(DateTime? date, {bool willUpdate = true}) {
     _selectedTripDate = date;
-    if(willUpdate) {
+    if (willUpdate) {
       update();
     }
   }
 
   void setTripTime(DateTime? date, {bool willUpdate = true}) {
     _selectedTripTime = date;
-    if(willUpdate) {
+    if (willUpdate) {
       update();
     }
   }
@@ -183,11 +188,11 @@ class TaxiLocationController extends GetxController implements GetxService {
     update();
   }
 
-  Future<void> clearAddress(bool isFrom) async{
-    if(isFrom){
+  Future<void> clearAddress(bool isFrom) async {
+    if (isFrom) {
       _formTextEditingController.text = '';
       _fromAddress = null;
-    }else{
+    } else {
       _toTextEditingController.text = '';
       _toAddress = null;
     }
@@ -218,37 +223,43 @@ class TaxiLocationController extends GetxController implements GetxService {
     _showFromToMarker = (to == null || from == null) ? false : true;
     _fromAddress = from;
     _toAddress = to;
-    _formTextEditingController.text = from?.address??'';
-    _toTextEditingController.text = to?.address??'';
+    _formTextEditingController.text = from?.address ?? '';
+    _toTextEditingController.text = to?.address ?? '';
   }
 
-  Future<Position?> getInitialLocation(AddressModel? address, GoogleMapController? mapController) async {
+  Future<Position?> getInitialLocation(
+      AddressModel? address, GoogleMapController? mapController) async {
     Position? position;
 
     try {
-      if(address == null){
+      if (address == null) {
         await Geolocator.requestPermission();
-        position = await Geolocator.getCurrentPosition(locationSettings: const LocationSettings(accuracy: LocationAccuracy.high));
+        position = await Geolocator.getCurrentPosition(
+            locationSettings:
+                const LocationSettings(accuracy: LocationAccuracy.high));
         _initialPosition = LatLng(position.latitude, position.longitude);
-      }else{
-        _initialPosition = LatLng(double.parse(address.latitude!), double.parse(address.longitude!));
-        _formTextEditingController.text = address.address??'';
+      } else {
+        _initialPosition = LatLng(
+            double.parse(address.latitude!), double.parse(address.longitude!));
+        _formTextEditingController.text = address.address ?? '';
         _fromAddress = address;
       }
-      if(mapController != null) {
-        mapController.animateCamera(CameraUpdate.newLatLngZoom(_initialPosition, 17));
+      if (mapController != null) {
+        mapController
+            .animateCamera(CameraUpdate.newLatLngZoom(_initialPosition, 17));
       }
       update();
-    }catch(_){}
+    } catch (_) {}
     return position;
   }
 
   Future<void> getCurrentLocation(GoogleMapController? mapController) async {
-    AddressModel? address = await Get.find<LocationController>().getCurrentLocation(false, mapController: mapController);
-    if(_isFormSelected) {
+    AddressModel? address = await Get.find<LocationController>()
+        .getCurrentLocation(false, mapController: mapController);
+    if (_isFormSelected) {
       _formTextEditingController.text = address.address!;
       setFromAddress(address, mapController);
-    }else {
+    } else {
       _toTextEditingController.text = address.address!;
       setToAddress(address, mapController);
     }
@@ -256,13 +267,17 @@ class TaxiLocationController extends GetxController implements GetxService {
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
     ByteData data = await rootBundle.load(path);
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
     ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
+        .buffer
+        .asUint8List();
   }
 
   Future<void> getZoneList() async {
-    List<ZoneDataModel>? zones = await taxiLocationServiceInterface.getZoneList();
+    List<ZoneDataModel>? zones =
+        await taxiLocationServiceInterface.getZoneList();
     if (zones != null) {
       _zoneList = [];
       _zoneList!.addAll(zones);
@@ -270,22 +285,31 @@ class TaxiLocationController extends GetxController implements GetxService {
     update();
   }
 
-  Future<void> setLocationFromPlace(String? placeID, String? address, bool isFrom, GoogleMapController? mapController) async {
+  Future<void> setLocationFromPlace(String? placeID, String? address,
+      bool isFrom, GoogleMapController? mapController) async {
     Get.dialog(const CustomLoaderWidget(), barrierDismissible: false);
 
     LatLng latLng = await taxiLocationServiceInterface.getPlaceDetails(placeID);
 
     AddressModel address0 = AddressModel(
-      address: address, addressType: 'others', latitude: latLng.latitude.toString(),
+      address: address,
+      addressType: 'others',
+      latitude: latLng.latitude.toString(),
       longitude: latLng.longitude.toString(),
-      contactPersonName: AddressHelper.getUserAddressFromSharedPref()!.contactPersonName,
-      contactPersonNumber: AddressHelper.getUserAddressFromSharedPref()!.contactPersonNumber,
+      contactPersonName:
+          AddressHelper.getUserAddressFromSharedPref()!.contactPersonName,
+      contactPersonNumber:
+          AddressHelper.getUserAddressFromSharedPref()!.contactPersonNumber,
     );
-    ZoneResponseModel response0 = await Get.find<LocationController>().getZone(address0.latitude, address0.longitude, false);
+    ZoneResponseModel response0 = await Get.find<LocationController>()
+        .getZone(address0.latitude, address0.longitude, false);
 
     bool inZone = false;
-    if(response0.zoneIds.isNotEmpty && isFrom) {
-      inZone = await taxiLocationServiceInterface.checkInZone(address0.latitude.toString(), address0.longitude.toString(), response0.zoneIds[0]);
+    if (response0.zoneIds.isNotEmpty && isFrom) {
+      inZone = await taxiLocationServiceInterface.checkInZone(
+          address0.latitude.toString(),
+          address0.longitude.toString(),
+          response0.zoneIds[0]);
       _inZone = inZone;
     }
 
@@ -294,7 +318,7 @@ class TaxiLocationController extends GetxController implements GetxService {
 
     ///Data setup
     if (response0.isSuccess && inZone && isFrom) {
-      address0.zoneId =  response0.zoneIds[0];
+      address0.zoneId = response0.zoneIds[0];
       address0.zoneIds = [];
       address0.zoneIds!.addAll(response0.zoneIds);
       address0.zoneData = [];
@@ -302,11 +326,9 @@ class TaxiLocationController extends GetxController implements GetxService {
       _formTextEditingController.text = address0.address!;
 
       setFromAddress(address0, mapController);
-
-    } else if(!isFrom) {
+    } else if (!isFrom) {
       _toTextEditingController.text = address0.address!;
       setToAddress(address0, mapController);
-
     } else {
       showCustomSnackBar(response0.message);
     }
@@ -315,19 +337,25 @@ class TaxiLocationController extends GetxController implements GetxService {
     update();
   }
 
-  Future<void> setFromAddress(AddressModel addressModel, GoogleMapController? mapController) async {
+  Future<void> setFromAddress(
+      AddressModel addressModel, GoogleMapController? mapController) async {
     _fromAddress = addressModel;
-    LatLng from = LatLng(double.parse(_fromAddress!.latitude!), double.parse(_fromAddress!.longitude!));
+    LatLng from = LatLng(double.parse(_fromAddress!.latitude!),
+        double.parse(_fromAddress!.longitude!));
 
-    mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: from, zoom: 17)));
+    mapController?.animateCamera(
+        CameraUpdate.newCameraPosition(CameraPosition(target: from, zoom: 17)));
 
     update();
   }
 
-  Future<void> setToAddress(AddressModel addressModel, GoogleMapController? mapController) async {
+  Future<void> setToAddress(
+      AddressModel addressModel, GoogleMapController? mapController) async {
     _toAddress = addressModel;
-    LatLng to = LatLng(double.parse(_toAddress!.latitude!), double.parse(_toAddress!.longitude!));
-    mapController?.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: to, zoom: 17)));
+    LatLng to = LatLng(double.parse(_toAddress!.latitude!),
+        double.parse(_toAddress!.longitude!));
+    mapController?.animateCamera(
+        CameraUpdate.newCameraPosition(CameraPosition(target: to, zoom: 17)));
 
     update();
   }
@@ -338,27 +366,39 @@ class TaxiLocationController extends GetxController implements GetxService {
     update();
   }
 
-  Future<void> setSuggestionAddress(AddressModel address, GoogleMapController? mapController) async{
-    if(_isFormSelected) {
+  Future<void> setSuggestionAddress(
+      AddressModel address, GoogleMapController? mapController) async {
+    if (_isFormSelected) {
       _formTextEditingController.text = address.address!;
       setFromAddress(address, mapController);
-    }else {
+    } else {
       _toTextEditingController.text = address.address!;
       setToAddress(address, mapController);
     }
   }
 
-  Future<void> setFromToMarker(GoogleMapController? mapController, {required LatLng from, required LatLng to, bool canUpdateProfile = false, UserData? userData, clickFromButton = true, VehicleModel? vehicle, AddressModel? fromAddress}) async {
+  Future<void> setFromToMarker(GoogleMapController? mapController,
+      {required LatLng from,
+      required LatLng to,
+      bool canUpdateProfile = false,
+      UserData? userData,
+      clickFromButton = true,
+      VehicleModel? vehicle,
+      AddressModel? fromAddress}) async {
     // _markers[_myMarkerId] = Marker(markerId: _myMarkerId, visible: false, position: from);
     _isLoading = true;
-    if(clickFromButton) {
+    if (clickFromButton) {
       update();
     }
     // final Uint8List fromMarkerIcon = await getBytesFromAsset(Images.taxiPickup, 40);
     // final Uint8List toMarkerIcon = await getBytesFromAsset(Images.taxiDestination, 40);
-    final BitmapDescriptor fromMarkerIcon = await MarkerHelper.convertAssetToBitmapDescriptor(imagePath: Images.taxiPickup, height: clickFromButton ? 30 : 40);
-    final BitmapDescriptor toMarkerIcon = await MarkerHelper.convertAssetToBitmapDescriptor(imagePath: Images.taxiDestination, height: clickFromButton ? 30 : 40);
-
+    final BitmapDescriptor fromMarkerIcon =
+        await MarkerHelper.convertAssetToBitmapDescriptor(
+            imagePath: Images.taxiPickup, height: clickFromButton ? 30 : 40);
+    final BitmapDescriptor toMarkerIcon =
+        await MarkerHelper.convertAssetToBitmapDescriptor(
+            imagePath: Images.taxiDestination,
+            height: clickFromButton ? 30 : 40);
 
     _showFromToMarker = true;
 
@@ -392,14 +432,14 @@ class TaxiLocationController extends GetxController implements GetxService {
     );
     _markers.add(toMarker);
 
-
-    if(!clickFromButton) {
-      await mapController?.animateCamera(CameraUpdate.newLatLngBounds(_boundsFromLatLngList([from, to]), 150));
-
+    if (!clickFromButton) {
+      await mapController?.animateCamera(
+          CameraUpdate.newLatLngBounds(_boundsFromLatLngList([from, to]), 150));
     } else {
       try {
-        await _placePositionForScreenshot(from: from, to: to, mapController: mapController);
-      }catch(e) {
+        await _placePositionForScreenshot(
+            from: from, to: to, mapController: mapController);
+      } catch (e) {
         debugPrint('bound: $e');
       }
     }
@@ -408,28 +448,26 @@ class TaxiLocationController extends GetxController implements GetxService {
       mapController?.showMarkerInfoWindow(fromMarkerId);
     });
 
-    try{
+    try {
       await generatePolyLines(from: from, to: to);
-    }catch(e) {
+    } catch (e) {
       await generatePolyLines(from: from, to: to);
     }
 
-
     _distance = -1;
     _duration = -1;
-    if(clickFromButton) {
+    if (clickFromButton) {
       try {
         _duration = await _getDistanceInKM(from, to, isDuration: true);
         _distance = await _getDistanceInKM(from, to);
-      } catch(_) {
+      } catch (_) {
         _duration = await _getDistanceInKM(from, to, isDuration: true);
         _distance = await _getDistanceInKM(from, to);
       }
 
-      if(fromAddress != null) {
+      if (fromAddress != null) {
         _showCartWarning(fromAddress);
       }
-
     }
     if (kDebugMode) {
       print('--------------distance------ : $_distance');
@@ -439,16 +477,16 @@ class TaxiLocationController extends GetxController implements GetxService {
 
     // return;
     /// Normal flow for address select.
-    if(!canUpdateProfile && clickFromButton) {
-
-      if(_distance != null && _distance! > 0) {
-        await Future.delayed(const Duration(milliseconds: 600)).then((value) async{
+    if (!canUpdateProfile && clickFromButton) {
+      if (_distance != null && _distance! > 0) {
+        await Future.delayed(const Duration(milliseconds: 600))
+            .then((value) async {
           Uint8List? mapImage = await mapController!.takeSnapshot();
-          if(mapImage!= null) {
+          if (mapImage != null) {
             _mapScreenshot = mapImage;
             await _setAddressesInSharedPref(_toAddress!);
-            if(Get.previousRoute == '/TaxiLocationSuggestionScreen') {
-              Get.off(()=> TaxiLocationResultScreen(vehicle: vehicle));
+            if (Get.previousRoute == '/TaxiLocationSuggestionScreen') {
+              Get.off(() => TaxiLocationResultScreen(vehicle: vehicle));
             } else {
               Get.to(() => TaxiLocationResultScreen(vehicle: vehicle));
             }
@@ -457,18 +495,31 @@ class TaxiLocationController extends GetxController implements GetxService {
       } else {
         showCustomSnackBar('locations_can_not_be_same'.tr);
       }
-
-
-    } else if(userData != null && clickFromButton) { /// User details update..
-      CartLocation pick = CartLocation(lat: _fromAddress!.latitude, lng: _fromAddress!.longitude, locationName: _fromAddress!.address, locationType: _fromAddress!.addressType);
-      CartLocation destination = CartLocation(lat: _toAddress!.latitude, lng: _toAddress!.longitude, locationName: _toAddress!.address, locationType: _toAddress!.addressType);
+    } else if (userData != null && clickFromButton) {
+      /// User details update..
+      CartLocation pick = CartLocation(
+          lat: _fromAddress!.latitude,
+          lng: _fromAddress!.longitude,
+          locationName: _fromAddress!.address,
+          locationType: _fromAddress!.addressType);
+      CartLocation destination = CartLocation(
+          lat: _toAddress!.latitude,
+          lng: _toAddress!.longitude,
+          locationName: _toAddress!.address,
+          locationType: _toAddress!.addressType);
       CarCart cart = CarCart(
-        applyMethod: true, distance: _distance, destinationTime: userData.destinationTime,
-        rentalType: userData.rentalType, estimatedHour: '${userData.estimatedHours??0}',
-        pickupLocation: pick, destinationLocation: destination,
+        applyMethod: true,
+        distance: _distance,
+        destinationTime: userData.destinationTime,
+        rentalType: userData.rentalType,
+        estimatedHour: '${userData.estimatedHours ?? 0}',
+        pickupLocation: pick,
+        destinationLocation: destination,
       );
-      await Get.find<TaxiCartController>().updateUserData(cart: cart, userId: userData.id!).then((success) {
-        if(success) {
+      await Get.find<TaxiCartController>()
+          .updateUserData(cart: cart, userId: userData.id!)
+          .then((success) {
+        if (success) {
           initialSetup();
           Get.back();
           Get.find<TaxiCartController>().getCarCartList();
@@ -479,12 +530,18 @@ class TaxiLocationController extends GetxController implements GetxService {
     update();
   }
 
-  Future<void> _showCartWarning(AddressModel address) async{
-    if(address.zoneIds != null && Get.find<TaxiCartController>().cartList.isNotEmpty) {
-      List<int>? providerZones = Get.find<TaxiCartController>().cartList[0].provider!.pickupZoneId??[];
+  Future<void> _showCartWarning(AddressModel address) async {
+    if (address.zoneIds != null &&
+        Get.find<TaxiCartController>().cartList.isNotEmpty) {
+      List<int>? providerZones =
+          Get.find<TaxiCartController>().cartList[0].provider!.pickupZoneId ??
+              [];
 
-      if(!_hasIntersection(providerZones, address.zoneIds!)) {
-        showCustomSnackBar('your_cart_has_been_cleared_as_the_selected_zone_does_not_support_the_previous_pickup_point'.tr, showDuration: 10);
+      if (!_hasIntersection(providerZones, address.zoneIds!)) {
+        showCustomSnackBar(
+            'your_cart_has_been_cleared_as_the_selected_zone_does_not_support_the_previous_pickup_point'
+                .tr,
+            showDuration: 10);
       }
     }
   }
@@ -528,7 +585,8 @@ class TaxiLocationController extends GetxController implements GetxService {
     await taxiLocationServiceInterface.saveSearchAddress(_historyAddress!);
   }
 
-  Future<List<LatLng>> generatePolyLines({required LatLng from, required LatLng to}) async {
+  Future<List<LatLng>> generatePolyLines(
+      {required LatLng from, required LatLng to}) async {
     List<LatLng> polylineCoordinates = [];
     List<LatLng> results = await _getRouteBetweenCoordinates(from, to);
     if (results.isNotEmpty) {
@@ -541,27 +599,34 @@ class TaxiLocationController extends GetxController implements GetxService {
       polylineId: polyId,
       points: polylineCoordinates,
       width: 3,
-      color: Get.isDarkMode ? Theme.of(Get.context!).primaryColor : Colors.black,
+      color:
+          Get.isDarkMode ? Theme.of(Get.context!).primaryColor : Colors.black,
     );
     _polyLines[polyId] = polyline;
     update();
     return polylineCoordinates;
   }
 
-  Future<void> _placePositionForScreenshot({required LatLng from, required LatLng to, GoogleMapController? mapController}) async {
+  Future<void> _placePositionForScreenshot(
+      {required LatLng from,
+      required LatLng to,
+      GoogleMapController? mapController}) async {
     LatLngBounds? bounds;
-    if(mapController != null) {
+    if (mapController != null) {
       bounds = _boundWithMaximumLatLngPoint([from, to]);
     }
     LatLng centerBounds = LatLng(
-      (bounds!.northeast.latitude + bounds.southwest.latitude)/2,
-      (bounds.northeast.longitude + bounds.southwest.longitude)/2,
+      (bounds!.northeast.latitude + bounds.southwest.latitude) / 2,
+      (bounds.northeast.longitude + bounds.southwest.longitude) / 2,
     );
     double bearing = _getBearing(from, to);
     mapController!.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
-      bearing: bearing, target: centerBounds, zoom: 14,
+      bearing: bearing,
+      target: centerBounds,
+      zoom: 14,
     )));
-    _zoomToFit(mapController, bounds, centerBounds, bearing, padding: 2 /*bearing == 90 ? 2 : 1.5*/);
+    _zoomToFit(mapController, bounds, centerBounds, bearing,
+        padding: 2 /*bearing == 90 ? 2 : 1.5*/);
   }
 
   LatLngBounds _boundWithMaximumLatLngPoint(List<LatLng> list) {
@@ -581,12 +646,13 @@ class TaxiLocationController extends GetxController implements GetxService {
     return LatLngBounds(southwest: LatLng(s, w), northeast: LatLng(n, e));
   }
 
-  Future<void> _zoomToFit(GoogleMapController? controller, LatLngBounds? bounds, LatLng centerBounds, double bearing, {double padding = 0.5}) async {
+  Future<void> _zoomToFit(GoogleMapController? controller, LatLngBounds? bounds,
+      LatLng centerBounds, double bearing,
+      {double padding = 0.5}) async {
     bool keepZoomingOut = true;
-    while(keepZoomingOut) {
-
+    while (keepZoomingOut) {
       final LatLngBounds screenBounds = await controller!.getVisibleRegion();
-      if(_fits(bounds!, screenBounds)) {
+      if (_fits(bounds!, screenBounds)) {
         keepZoomingOut = false;
         final double zoomLevel = await controller.getZoomLevel() - padding;
         controller.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
@@ -595,8 +661,7 @@ class TaxiLocationController extends GetxController implements GetxService {
           bearing: bearing,
         )));
         break;
-      }
-      else {
+      } else {
         // Zooming out by 0.1 zoom level per iteration
         final double zoomLevel = await controller.getZoomLevel() - 0.1;
         controller.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
@@ -608,13 +673,20 @@ class TaxiLocationController extends GetxController implements GetxService {
   }
 
   bool _fits(LatLngBounds fitBounds, LatLngBounds screenBounds) {
-    final bool northEastLatitudeCheck = screenBounds.northeast.latitude >= fitBounds.northeast.latitude;
-    final bool northEastLongitudeCheck = screenBounds.northeast.longitude >= fitBounds.northeast.longitude;
+    final bool northEastLatitudeCheck =
+        screenBounds.northeast.latitude >= fitBounds.northeast.latitude;
+    final bool northEastLongitudeCheck =
+        screenBounds.northeast.longitude >= fitBounds.northeast.longitude;
 
-    final bool southWestLatitudeCheck = screenBounds.southwest.latitude <= fitBounds.southwest.latitude;
-    final bool southWestLongitudeCheck = screenBounds.southwest.longitude <= fitBounds.southwest.longitude;
+    final bool southWestLatitudeCheck =
+        screenBounds.southwest.latitude <= fitBounds.southwest.latitude;
+    final bool southWestLongitudeCheck =
+        screenBounds.southwest.longitude <= fitBounds.southwest.longitude;
 
-    return northEastLatitudeCheck && northEastLongitudeCheck && southWestLatitudeCheck && southWestLongitudeCheck;
+    return northEastLatitudeCheck &&
+        northEastLongitudeCheck &&
+        southWestLatitudeCheck &&
+        southWestLongitudeCheck;
   }
 
   LatLngBounds _boundsFromLatLngList(List<LatLng> list) {
@@ -630,47 +702,61 @@ class TaxiLocationController extends GetxController implements GetxService {
         if (latLng.longitude < (y0 ?? 0)) y0 = latLng.longitude;
       }
     }
-    return LatLngBounds(northeast: LatLng(x1!, y1!), southwest: LatLng(x0!, y0!));
+    return LatLngBounds(
+        northeast: LatLng(x1!, y1!), southwest: LatLng(x0!, y0!));
   }
 
-  Future<List<LatLng>> _getRouteBetweenCoordinates(LatLng origin, LatLng destination) async {
+  Future<List<LatLng>> _getRouteBetweenCoordinates(
+      LatLng origin, LatLng destination) async {
     List<LatLng> coordinates = [];
-    Response response = await taxiLocationServiceInterface.getRouteBetweenCoordinates(origin, destination);
-    if (response.statusCode == 200 && response.body["routes"] != null && response.body["routes"].isNotEmpty) {
-      String encodedPolyline = response.body['routes'][0]['polyline']['encodedPolyline'];
+    Response response = await taxiLocationServiceInterface
+        .getRouteBetweenCoordinates(origin, destination);
+    if (response.statusCode == 200 &&
+        response.body["routes"] != null &&
+        response.body["routes"].isNotEmpty) {
+      String encodedPolyline =
+          response.body['routes'][0]['polyline']['encodedPolyline'];
 
       coordinates.addAll(_decodeEncodedPolyline(encodedPolyline));
     }
     return coordinates;
   }
 
-  void updatePosition(LatLng? positionLatLng, bool fromAddress, GoogleMapController? mapController) async {
-    if(_updateAddAddressData && positionLatLng != null) {
+  void updatePosition(LatLng? positionLatLng, bool fromAddress,
+      GoogleMapController? mapController) async {
+    if (_updateAddAddressData && positionLatLng != null) {
       _isLoading = true;
       update();
 
-      ZoneResponseModel response0 = await Get.find<LocationController>().getZone(
-          positionLatLng.latitude.toString(), positionLatLng.longitude.toString(), false);
+      ZoneResponseModel response0 = await Get.find<LocationController>()
+          .getZone(positionLatLng.latitude.toString(),
+              positionLatLng.longitude.toString(), false);
 
-      String addressFromGeocode = await Get.find<LocationController>().getAddressFromGeocode(
-          LatLng(positionLatLng.latitude, positionLatLng.longitude));
+      String addressFromGeocode = await Get.find<LocationController>()
+          .getAddressFromGeocode(
+              LatLng(positionLatLng.latitude, positionLatLng.longitude));
 
       AddressModel address0 = AddressModel(
         address: addressFromGeocode,
         addressType: 'other',
         latitude: positionLatLng.latitude.toString(),
         longitude: positionLatLng.longitude.toString(),
-        contactPersonName: AddressHelper.getUserAddressFromSharedPref()!.contactPersonName,
-        contactPersonNumber: AddressHelper.getUserAddressFromSharedPref()!.contactPersonNumber,
+        contactPersonName:
+            AddressHelper.getUserAddressFromSharedPref()!.contactPersonName,
+        contactPersonNumber:
+            AddressHelper.getUserAddressFromSharedPref()!.contactPersonNumber,
       );
 
       bool inZone = false;
-      if(fromAddress) {
+      if (fromAddress) {
         _inZone = false;
       }
 
-      if(response0.zoneIds.isNotEmpty && fromAddress) {
-        inZone = await taxiLocationServiceInterface.checkInZone(address0.latitude.toString(), address0.longitude.toString(), response0.zoneIds[0]);
+      if (response0.zoneIds.isNotEmpty && fromAddress) {
+        inZone = await taxiLocationServiceInterface.checkInZone(
+            address0.latitude.toString(),
+            address0.longitude.toString(),
+            response0.zoneIds[0]);
         _inZone = inZone;
       }
 
@@ -686,11 +772,9 @@ class TaxiLocationController extends GetxController implements GetxService {
         address0.zoneData!.addAll(response0.zoneData);
         _formTextEditingController.text = address0.address!;
         _fromAddress = address0;
-
-      } else if(!fromAddress) {
+      } else if (!fromAddress) {
         _toTextEditingController.text = address0.address!;
         _toAddress = address0;
-
       } else {
         showCustomSnackBar(response0.message);
       }
@@ -703,8 +787,8 @@ class TaxiLocationController extends GetxController implements GetxService {
     update();
   }
 
-  _createPolygon(bool inZone) async{
-    if(inZone) {
+  _createPolygon(bool inZone) async {
+    if (inZone) {
       _polygons = {};
       update();
     } else {
@@ -714,7 +798,8 @@ class TaxiLocationController extends GetxController implements GetxService {
       for (var zoneModel in _zoneList!) {
         zoneLatLongList.add([]);
         zoneModel.formatedCoordinates?.forEach((coordinate) {
-          zoneLatLongList[_zoneList!.indexOf(zoneModel)].add(LatLng(coordinate.lat!, coordinate.lng!));
+          zoneLatLongList[_zoneList!.indexOf(zoneModel)]
+              .add(LatLng(coordinate.lat!, coordinate.lng!));
         });
       }
 
@@ -733,7 +818,6 @@ class TaxiLocationController extends GetxController implements GetxService {
       _polygons = HashSet<Polygon>.of(polygonList);
       update();
     }
-
   }
 
   List<LatLng> _decodeEncodedPolyline(String encoded) {
@@ -786,27 +870,41 @@ class TaxiLocationController extends GetxController implements GetxService {
     update();
   }
 
-  Future<double?> _getDistanceInKM(LatLng originLatLng, LatLng destinationLatLng, {bool isDuration = false}) async {
+  Future<double?> _getDistanceInKM(
+      LatLng originLatLng, LatLng destinationLatLng,
+      {bool isDuration = false}) async {
     _distance = -1;
-    Response response = await taxiLocationServiceInterface.getDistanceInMeter(originLatLng, destinationLatLng);
+    Response response = await taxiLocationServiceInterface.getDistanceInMeter(
+        originLatLng, destinationLatLng);
     try {
       if (response.statusCode == 200 && response.statusText == 'OK') {
-        if(isDuration){
+        if (isDuration) {
           final String duration = response.body['duration'] as String;
           double parsedDuration = parseDuration(duration);
           _distance = parsedDuration / 3600;
-        }else{
-          final double distanceMater = response.body['distanceMeters']?.toDouble();
+        } else {
+          final double distanceMater =
+              response.body['distanceMeters']?.toDouble();
           _distance = distanceMater / 1000;
         }
       } else {
-        if(!isDuration) {
-          _distance = Geolocator.distanceBetween(originLatLng.latitude, originLatLng.longitude, destinationLatLng.latitude, destinationLatLng.longitude) / 1000;
+        if (!isDuration) {
+          _distance = Geolocator.distanceBetween(
+                  originLatLng.latitude,
+                  originLatLng.longitude,
+                  destinationLatLng.latitude,
+                  destinationLatLng.longitude) /
+              1000;
         }
       }
     } catch (e) {
-      if(!isDuration) {
-        _distance = Geolocator.distanceBetween(originLatLng.latitude, originLatLng.longitude, destinationLatLng.latitude, destinationLatLng.longitude) / 1000;
+      if (!isDuration) {
+        _distance = Geolocator.distanceBetween(
+                originLatLng.latitude,
+                originLatLng.longitude,
+                destinationLatLng.latitude,
+                destinationLatLng.longitude) /
+            1000;
       }
     }
     update();
@@ -816,5 +914,4 @@ class TaxiLocationController extends GetxController implements GetxService {
   double parseDuration(String duration) {
     return double.tryParse(duration.replaceAll('s', '')) ?? 0.0;
   }
-
 }

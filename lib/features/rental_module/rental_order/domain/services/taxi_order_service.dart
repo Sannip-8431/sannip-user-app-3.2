@@ -10,13 +10,17 @@ class TaxiOrderService implements TaxiOrderServiceInterface {
   TaxiOrderService({required this.taxiOrderRepositoryInterface});
 
   @override
-  Future<TripModel?> getTripList({required int offset, required String type}) async {
-    return await taxiOrderRepositoryInterface.getTripList(offset: offset, type: type);
+  Future<TripModel?> getTripList(
+      {required int offset, required String type}) async {
+    return await taxiOrderRepositoryInterface.getTripList(
+        offset: offset, type: type);
   }
 
   @override
-  Future<TripDetailsModel?> getTripDetails({required int id, String? phone}) async {
-    return await taxiOrderRepositoryInterface.getTripDetails(id: id, phone: phone);
+  Future<TripDetailsModel?> getTripDetails(
+      {required int id, String? phone}) async {
+    return await taxiOrderRepositoryInterface.getTripDetails(
+        id: id, phone: phone);
   }
 
   @override
@@ -25,14 +29,28 @@ class TaxiOrderService implements TaxiOrderServiceInterface {
   }
 
   @override
-  Future<Response> makeTripPayment({required int id, required String paymentMethod, String? paymentGateWayName}) async {
-    return await taxiOrderRepositoryInterface.makeTripPayment(id: id, paymentMethod: paymentMethod, paymentGateWayName: paymentGateWayName);
+  Future<Response> makeTripPayment(
+      {required int id,
+      required String paymentMethod,
+      String? paymentGateWayName}) async {
+    return await taxiOrderRepositoryInterface.makeTripPayment(
+        id: id,
+        paymentMethod: paymentMethod,
+        paymentGateWayName: paymentGateWayName);
   }
 
   @override
-  Future<bool> addVehicleReview({required int tripId, required int vehicleId, required int vehicleIdentityId, required int rating, required String comment}) async {
-    return await taxiOrderRepositoryInterface.addVehicleReview(tripId: tripId, vehicleId: vehicleId, vehicleIdentityId: vehicleIdentityId, rating: rating, comment: comment);
+  Future<bool> addVehicleReview(
+      {required int tripId,
+      required int vehicleId,
+      required int vehicleIdentityId,
+      required int rating,
+      required String comment}) async {
+    return await taxiOrderRepositoryInterface.addVehicleReview(
+        tripId: tripId,
+        vehicleId: vehicleId,
+        vehicleIdentityId: vehicleIdentityId,
+        rating: rating,
+        comment: comment);
   }
-
-
 }

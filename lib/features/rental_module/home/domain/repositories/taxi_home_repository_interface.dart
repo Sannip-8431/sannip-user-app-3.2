@@ -11,14 +11,27 @@ import 'package:sixam_mart/features/rental_module/home/domain/models/vehicle_det
 import 'package:sixam_mart/interfaces/repository_interface.dart';
 
 abstract class TaxiHomeRepositoryInterface extends RepositoryInterface {
-  Future<TopRatedCarsModel?> getTopRatedCarList(int offset, {required DataSourceEnum source});
-  Future<TaxiBannerModel?> getTaxiBannerList({DataSourceEnum source = DataSourceEnum.local});
-  Future<List<TaxiCouponModel>?> getTaxiCouponList({DataSourceEnum source = DataSourceEnum.local});
+  Future<TopRatedCarsModel?> getTopRatedCarList(int offset,
+      {required DataSourceEnum source});
+  Future<TaxiBannerModel?> getTaxiBannerList(
+      {DataSourceEnum source = DataSourceEnum.local});
+  Future<List<TaxiCouponModel>?> getTaxiCouponList(
+      {DataSourceEnum source = DataSourceEnum.local});
   Future<VehicleModel?> getVehicleDetails({required int id});
   Future<VehicleCategoryModel?> getVehicleCategories({required int offset});
-  Future<SelectedCarsModel?> getSelectedCars({required int offset, String? name, String? tripType,
-    double? minPrice, double? maxPrice, List<int>? brandIds, List<String>? seatingCapacity,
-    bool? airCondition, bool? nonAirCondition, List<int>? categoryIds, required String pickupTime, required LatLng pickupLocation});
+  Future<SelectedCarsModel?> getSelectedCars(
+      {required int offset,
+      String? name,
+      String? tripType,
+      double? minPrice,
+      double? maxPrice,
+      List<int>? brandIds,
+      List<String>? seatingCapacity,
+      bool? airCondition,
+      bool? nonAirCondition,
+      List<int>? categoryIds,
+      required String pickupTime,
+      required LatLng pickupLocation});
   Future<List<String>?> getSearchSuggestions({required String? name});
   Future<bool> saveSearchHistory(List<String> searchHistories);
   List<String> getSearchHistory();

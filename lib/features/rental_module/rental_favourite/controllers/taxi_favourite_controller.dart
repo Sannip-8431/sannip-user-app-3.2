@@ -26,42 +26,52 @@ class TaxiFavouriteController extends GetxController implements GetxService {
   bool _isRemoving = false;
   bool get isRemoving => _isRemoving;
 
-  void addToFavouriteList({required VehicleModel? vehicle, required int? providerId, required bool isProvider, bool getXSnackBar = false}) async {
+  void addToFavouriteList(
+      {required VehicleModel? vehicle,
+      required int? providerId,
+      required bool isProvider,
+      bool getXSnackBar = false}) async {
     _isRemoving = true;
     update();
-    if(isProvider) {
+    if (isProvider) {
       _wishProviderList ??= [];
       _wishProviderIdList.add(providerId);
       _wishProviderList!.add(TaxiVendorModel());
-    }else{
+    } else {
       _wishVehicleList = [];
       _wishVehicleList!.add(vehicle);
       _wishVehicleIdList.add(vehicle!.id);
     }
-    ResponseModel responseModel = await taxiFavouriteServiceInterface.addVehicleFavouriteList(isProvider ? providerId! : vehicle!.id!, isProvider);
+    ResponseModel responseModel =
+        await taxiFavouriteServiceInterface.addVehicleFavouriteList(
+            isProvider ? providerId! : vehicle!.id!, isProvider);
     if (responseModel.isSuccess) {
-      showCustomSnackBar(responseModel.message, isError: false, getXSnackBar: getXSnackBar);
+      showCustomSnackBar(responseModel.message,
+          isError: false, getXSnackBar: getXSnackBar);
     } else {
-      if(isProvider) {
+      if (isProvider) {
         for (var providerId in _wishProviderIdList) {
           if (providerId == providerId) {
-            _wishProviderIdList.removeAt(_wishProviderIdList.indexOf(providerId));
+            _wishProviderIdList
+                .removeAt(_wishProviderIdList.indexOf(providerId));
           }
         }
-      }else{
+      } else {
         for (var id in _wishVehicleIdList) {
-          if(id == vehicle!.id){
+          if (id == vehicle!.id) {
             _wishVehicleIdList.removeAt(_wishVehicleIdList.indexOf(id));
           }
         }
       }
-      showCustomSnackBar(responseModel.message, isError: true, getXSnackBar: getXSnackBar);
+      showCustomSnackBar(responseModel.message,
+          isError: true, getXSnackBar: getXSnackBar);
     }
     _isRemoving = false;
     update();
   }
 
-  void removeFromFavouriteList(int? id, bool isProvider, {bool getXSnackBar = false}) async {
+  void removeFromFavouriteList(int? id, bool isProvider,
+      {bool getXSnackBar = false}) async {
     _isRemoving = true;
     update();
 
@@ -69,33 +79,35 @@ class TaxiFavouriteController extends GetxController implements GetxService {
     int? providerId, vehicleId;
     TaxiVendorModel? provider;
     VehicleModel? vehicle;
-    if(isProvider) {
+    if (isProvider) {
       idIndex = _wishProviderIdList.indexOf(id);
-      if(idIndex != -1) {
+      if (idIndex != -1) {
         providerId = id;
         _wishProviderIdList.removeAt(idIndex);
         provider = _wishProviderList![idIndex];
         _wishProviderList!.removeAt(idIndex);
       }
-    }else {
+    } else {
       idIndex = _wishVehicleIdList.indexOf(id);
-      if(idIndex != -1) {
+      if (idIndex != -1) {
         vehicleId = id;
         _wishVehicleIdList.removeAt(idIndex);
         vehicle = _wishVehicleList![idIndex];
         _wishVehicleList!.removeAt(idIndex);
       }
     }
-    ResponseModel responseModel = await taxiFavouriteServiceInterface.removeVehicleFavouriteList(id, isProvider);
+    ResponseModel responseModel = await taxiFavouriteServiceInterface
+        .removeVehicleFavouriteList(id, isProvider);
     if (responseModel.isSuccess) {
-      showCustomSnackBar(responseModel.message, isError: false, getXSnackBar: getXSnackBar);
-    }
-    else {
-      showCustomSnackBar(responseModel.message, isError: true, getXSnackBar: getXSnackBar);
-      if(isProvider) {
+      showCustomSnackBar(responseModel.message,
+          isError: false, getXSnackBar: getXSnackBar);
+    } else {
+      showCustomSnackBar(responseModel.message,
+          isError: true, getXSnackBar: getXSnackBar);
+      if (isProvider) {
         _wishProviderIdList.add(providerId);
         _wishProviderList!.add(provider);
-      }else {
+      } else {
         _wishVehicleIdList.add(vehicleId);
         _wishVehicleList!.add(vehicle);
       }
@@ -107,7 +119,8 @@ class TaxiFavouriteController extends GetxController implements GetxService {
   Future<void> getFavouriteTaxiList() async {
     _wishVehicleList = null;
     _wishProviderList = null;
-    Response response = await taxiFavouriteServiceInterface.getFavouriteTaxiList();
+    Response response =
+        await taxiFavouriteServiceInterface.getFavouriteTaxiList();
 
     if (response.statusCode == 200) {
       update();
@@ -116,8 +129,8 @@ class TaxiFavouriteController extends GetxController implements GetxService {
       _wishProviderIdList = [];
       _wishVehicleIdList = [];
 
-      if(response.body['vehicles'] != null) {
-        response.body['vehicles'].forEach((vehicles) async{
+      if (response.body['vehicles'] != null) {
+        response.body['vehicles'].forEach((vehicles) async {
           VehicleModel vehicle = VehicleModel.fromJson(vehicles);
           _wishVehicleList!.add(vehicle);
           _wishVehicleIdList.add(vehicle.id);
@@ -126,12 +139,12 @@ class TaxiFavouriteController extends GetxController implements GetxService {
 
       response.body['providers'].forEach((providers) async {
         TaxiVendorModel? provider;
-        try{
+        try {
           provider = TaxiVendorModel.fromJson(providers);
-        }catch(e){
+        } catch (e) {
           debugPrint('exception create in Provider list create : $e');
         }
-        if(provider != null) {
+        if (provider != null) {
           _wishProviderList!.add(provider);
           _wishProviderIdList.add(provider.id);
         }
@@ -144,5 +157,4 @@ class TaxiFavouriteController extends GetxController implements GetxService {
     _wishVehicleIdList = [];
     _wishProviderIdList = [];
   }
-
 }

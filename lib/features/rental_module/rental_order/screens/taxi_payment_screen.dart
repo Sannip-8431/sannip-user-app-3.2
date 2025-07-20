@@ -12,7 +12,8 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 class TaxiPaymentScreen extends StatefulWidget {
   final String? paymentUrl;
   final int orderId;
-  const TaxiPaymentScreen({super.key, required this.paymentUrl, required this.orderId});
+  const TaxiPaymentScreen(
+      {super.key, required this.paymentUrl, required this.orderId});
 
   @override
   TaxiPaymentScreenState createState() => TaxiPaymentScreenState();
@@ -29,7 +30,7 @@ class TaxiPaymentScreenState extends State<TaxiPaymentScreen> {
   void initState() {
     super.initState();
 
-    selectedUrl = widget.paymentUrl??'';
+    selectedUrl = widget.paymentUrl ?? '';
     if (kDebugMode) {
       print('==========url=======> $selectedUrl');
     }
@@ -38,18 +39,21 @@ class TaxiPaymentScreenState extends State<TaxiPaymentScreen> {
   }
 
   void _initData() async {
-
     browser = MyInAppBrowser(orderID: widget.orderId, guestId: '2334');
 
-    if(GetPlatform.isAndroid){
+    if (GetPlatform.isAndroid) {
       await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
 
-      bool swAvailable = await WebViewFeature.isFeatureSupported(WebViewFeature.SERVICE_WORKER_BASIC_USAGE);
-      bool swInterceptAvailable = await WebViewFeature.isFeatureSupported(WebViewFeature.SERVICE_WORKER_SHOULD_INTERCEPT_REQUEST);
+      bool swAvailable = await WebViewFeature.isFeatureSupported(
+          WebViewFeature.SERVICE_WORKER_BASIC_USAGE);
+      bool swInterceptAvailable = await WebViewFeature.isFeatureSupported(
+          WebViewFeature.SERVICE_WORKER_SHOULD_INTERCEPT_REQUEST);
 
       if (swAvailable && swInterceptAvailable) {
-        ServiceWorkerController serviceWorkerController = ServiceWorkerController.instance();
-        await serviceWorkerController.setServiceWorkerClient(ServiceWorkerClient(
+        ServiceWorkerController serviceWorkerController =
+            ServiceWorkerController.instance();
+        await serviceWorkerController
+            .setServiceWorkerClient(ServiceWorkerClient(
           shouldInterceptRequest: (request) async {
             if (kDebugMode) {
               print(request);
@@ -63,11 +67,12 @@ class TaxiPaymentScreenState extends State<TaxiPaymentScreen> {
     await browser.openUrlRequest(
       urlRequest: URLRequest(url: WebUri(selectedUrl)),
       settings: InAppBrowserClassSettings(
-        webViewSettings: InAppWebViewSettings(useShouldOverrideUrlLoading: true, useOnLoadResource: true),
-        browserSettings: InAppBrowserSettings(hideUrlBar: true, hideToolbarTop: GetPlatform.isAndroid),
+        webViewSettings: InAppWebViewSettings(
+            useShouldOverrideUrlLoading: true, useOnLoadResource: true),
+        browserSettings: InAppBrowserSettings(
+            hideUrlBar: true, hideToolbarTop: GetPlatform.isAndroid),
       ),
     );
-
   }
 
   @override
@@ -83,15 +88,20 @@ class TaxiPaymentScreenState extends State<TaxiPaymentScreen> {
       },
       child: Scaffold(
         backgroundColor: Theme.of(context).primaryColor,
-        appBar: CustomAppBar(title: 'payment'.tr, onBackPressed: () => _exitApp()),
+        appBar:
+            CustomAppBar(title: 'payment'.tr, onBackPressed: () => _exitApp()),
         body: Center(
           child: SizedBox(
             width: Dimensions.webMaxWidth,
             child: Stack(
               children: [
-                _isLoading ? Center(
-                  child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)),
-                ) : const SizedBox.shrink(),
+                _isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Theme.of(context).primaryColor)),
+                      )
+                    : const SizedBox.shrink(),
               ],
             ),
           ),
@@ -103,7 +113,6 @@ class TaxiPaymentScreenState extends State<TaxiPaymentScreen> {
   Future<bool?> _exitApp() async {
     return Get.dialog(const CancelPaymentDialogWidget());
   }
-
 }
 
 class MyInAppBrowser extends InAppBrowser {
@@ -112,9 +121,13 @@ class MyInAppBrowser extends InAppBrowser {
   final String? url;
   final String guestId;
 
-  MyInAppBrowser({
-    super.windowId, super.initialUserScripts,
-    required this.orderID, required this.guestId, this.orderAmount, this.url});
+  MyInAppBrowser(
+      {super.windowId,
+      super.initialUserScripts,
+      required this.orderID,
+      required this.guestId,
+      this.orderAmount,
+      this.url});
 
   late bool _canRedirect = true;
 
@@ -131,9 +144,7 @@ class MyInAppBrowser extends InAppBrowser {
       print("\n\nStarted: $url\n\n");
     }
     _redirect(url.toString());
-
   }
-
 
   @override
   Future onLoadStop(url) async {
@@ -170,7 +181,8 @@ class MyInAppBrowser extends InAppBrowser {
   }
 
   @override
-  Future<NavigationActionPolicy> shouldOverrideUrlLoading(navigationAction) async {
+  Future<NavigationActionPolicy> shouldOverrideUrlLoading(
+      navigationAction) async {
     if (kDebugMode) {
       print("\n\nOverride ${navigationAction.request.url}\n\n");
     }
@@ -180,7 +192,8 @@ class MyInAppBrowser extends InAppBrowser {
   @override
   void onLoadResource(resource) {
     if (kDebugMode) {
-      print("Started at: ${resource.startTime}ms ---> duration: ${resource.duration}ms ${resource.url ?? ''}");
+      print(
+          "Started at: ${resource.startTime}ms ---> duration: ${resource.duration}ms ${resource.url ?? ''}");
     }
   }
 
@@ -195,21 +208,20 @@ class MyInAppBrowser extends InAppBrowser {
     }
   }
 
- void _redirect(String url) {
-   if (_canRedirect) {
-     bool isSuccess = url.startsWith('${AppConstants.baseUrl}/?flag=success');
-     bool isFailed = url.startsWith('${AppConstants.baseUrl}/?flag=fail');
-     bool isCancel = url.startsWith('${AppConstants.baseUrl}/?flag=cancel');
-     if (isSuccess || isFailed || isCancel) {
-       _canRedirect = false;
-       close();
-       Future.delayed(const Duration(milliseconds: 400), () {
-         Get.back(result: true);
-         Get.find<TaxiOrderController>().getTripDetails(orderID);
-       });
-       // Get.offAllNamed(RouteHelper.getInitialRoute());
-     }
-
-   }
- }
+  void _redirect(String url) {
+    if (_canRedirect) {
+      bool isSuccess = url.startsWith('${AppConstants.baseUrl}/?flag=success');
+      bool isFailed = url.startsWith('${AppConstants.baseUrl}/?flag=fail');
+      bool isCancel = url.startsWith('${AppConstants.baseUrl}/?flag=cancel');
+      if (isSuccess || isFailed || isCancel) {
+        _canRedirect = false;
+        close();
+        Future.delayed(const Duration(milliseconds: 400), () {
+          Get.back(result: true);
+          Get.find<TaxiOrderController>().getTripDetails(orderID);
+        });
+        // Get.offAllNamed(RouteHelper.getInitialRoute());
+      }
+    }
+  }
 }

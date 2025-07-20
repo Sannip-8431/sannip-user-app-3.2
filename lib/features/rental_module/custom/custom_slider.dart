@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class CustomSlider extends StatefulWidget {
-
   const CustomSlider({super.key});
 
   @override
@@ -13,7 +12,6 @@ class _CustomSliderState extends State<CustomSlider> {
 
   @override
   Widget build(BuildContext context) {
-
     return RangeSlider(
       values: _currentRangeValues,
       max: 100,

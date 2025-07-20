@@ -31,29 +31,33 @@ class DynamicTextColor extends StatelessWidget {
     return RichText(
       text: TextSpan(
         style: robotoBold.copyWith(fontSize: Dimensions.fontSizeOverLarge),
-        children: words.length > 4 ? [
-          TextSpan(
-            text: '$remainingText ',
-            style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
-          ),
-          TextSpan(
-            text: '$thirdLastWord ',
-            style: TextStyle(color: Theme.of(context).primaryColor),
-          ),
-          TextSpan(
-            text: '$secondLastWord ',
-            style: TextStyle(color: Theme.of(context).primaryColor),
-          ),
-          TextSpan(
-            text: lastWord,
-            style: TextStyle(color: Theme.of(context).primaryColor),
-          ),
-        ] : [
-          TextSpan(
-            text: secondRemainingText,
-            style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
-          ),
-        ],
+        children: words.length > 4
+            ? [
+                TextSpan(
+                  text: '$remainingText ',
+                  style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyLarge?.color),
+                ),
+                TextSpan(
+                  text: '$thirdLastWord ',
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
+                TextSpan(
+                  text: '$secondLastWord ',
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
+                TextSpan(
+                  text: lastWord,
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
+              ]
+            : [
+                TextSpan(
+                  text: secondRemainingText,
+                  style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyLarge?.color),
+                ),
+              ],
       ),
     );
   }

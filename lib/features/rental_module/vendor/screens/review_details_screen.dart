@@ -18,45 +18,52 @@ class ReviewDetailsScreen extends StatefulWidget {
 
 class _ReviewDetailsScreenState extends State<ReviewDetailsScreen> {
   final ScrollController _scrollController = ScrollController();
-  
+
   @override
   void initState() {
     super.initState();
 
-    Get.find<TaxiVendorController>().getTaxiProviderReviewDetails(widget.providerID!);
+    Get.find<TaxiVendorController>()
+        .getTaxiProviderReviewDetails(widget.providerID!);
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: '${widget.providerName}'),
-      body: GetBuilder<TaxiVendorController>(builder: (taxiVendorController){
-        TaxiProviderReviewModel? review = taxiVendorController.providerReviewDetails;
+        appBar: CustomAppBar(title: '${widget.providerName}'),
+        body: GetBuilder<TaxiVendorController>(builder: (taxiVendorController) {
+          TaxiProviderReviewModel? review =
+              taxiVendorController.providerReviewDetails;
 
-        return SingleChildScrollView(
-          controller: _scrollController,
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Column(children: [
-
-            //Overall Rating Progress bar
-            Container(
-              padding: const EdgeInsets.only(right: Dimensions.paddingSizeDefault, top: Dimensions.paddingSizeDefault, bottom: Dimensions.paddingSizeDefault),
-              margin: const EdgeInsets.all(Dimensions.paddingSizeLarge),
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-                border: Border.all(color: Colors.grey.shade100, width: 1.5),
+          return SingleChildScrollView(
+            controller: _scrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(children: [
+              //Overall Rating Progress bar
+              Container(
+                padding: const EdgeInsets.only(
+                    right: Dimensions.paddingSizeDefault,
+                    top: Dimensions.paddingSizeDefault,
+                    bottom: Dimensions.paddingSizeDefault),
+                margin: const EdgeInsets.all(Dimensions.paddingSizeLarge),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
+                  border: Border.all(color: Colors.grey.shade100, width: 1.5),
+                ),
+                child: TaxiProviderRatingWidget(
+                    averageRating: review?.provider!.avgRating ?? 0,
+                    ratingCount: review?.provider!.ratingCount ?? 0,
+                    ratings: review?.provider!.ratings),
               ),
-              child: TaxiProviderRatingWidget(averageRating: review?.provider!.avgRating ?? 0, ratingCount: review?.provider!.ratingCount ?? 0, ratings: review?.provider!.ratings),
 
-            ),
-
-            //Reviews
-            TaxiProviderReviewListWidget(taxiVendorController: taxiVendorController, providerName: widget.providerName,),
-
-          ]),
-        );
-      })
-    );
+              //Reviews
+              TaxiProviderReviewListWidget(
+                taxiVendorController: taxiVendorController,
+                providerName: widget.providerName,
+              ),
+            ]),
+          );
+        }));
   }
 }

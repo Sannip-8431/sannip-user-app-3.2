@@ -11,7 +11,8 @@ class TopRatedCarsModel {
   TopRatedCarsModel.fromJson(Map<String, dynamic> json) {
     totalSize = json['total_size'];
     limit = json['limit'] != null ? int.parse(json['limit'].toString()) : null;
-    offset = json['offset'] != null ? int.parse(json['offset'].toString()) : null;
+    offset =
+        json['offset'] != null ? int.parse(json['offset'].toString()) : null;
     if (json['vehicles'] != null) {
       vehicles = <VehicleModel>[];
       json['vehicles'].forEach((v) {

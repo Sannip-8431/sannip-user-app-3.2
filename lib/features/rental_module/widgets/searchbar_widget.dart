@@ -6,7 +6,6 @@ import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
 
-
 class SearchbarWidget extends StatelessWidget {
   const SearchbarWidget({super.key});
 
@@ -18,18 +17,30 @@ class SearchbarWidget extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.shade300),
         borderRadius: BorderRadius.circular(30),
-        color: Get.find<ThemeController>().darkTheme ? Theme.of(context).cardColor : Theme.of(context).disabledColor.withValues(alpha: 0.1),
+        color: Get.find<ThemeController>().darkTheme
+            ? Theme.of(context).cardColor
+            : Theme.of(context).disabledColor.withValues(alpha: 0.1),
       ),
       height: 50,
       child: InkWell(
-        onTap: ()=> Get.to(()=> const TaxiLocationSuggestionScreen()),
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-
+        onTap: () => Get.to(() => const TaxiLocationSuggestionScreen()),
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Expanded(
-            child: Text('where_to_go'.tr, style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeLarge, color: Theme.of(context).textTheme.bodyLarge!.color!.withValues(alpha: 0.7))),
+            child: Text('where_to_go'.tr,
+                style: robotoRegular.copyWith(
+                    fontSize: Dimensions.fontSizeLarge,
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .color!
+                        .withValues(alpha: 0.7))),
           ),
-
-          Image.asset(Images.searchIconNewHome, height: 25, width: 25,),
+          Image.asset(
+            Images.searchIconNewHome,
+            height: 25,
+            width: 25,
+          ),
         ]),
       ),
     );

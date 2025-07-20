@@ -16,17 +16,21 @@ class TaxiHomeService implements TaxiHomeServiceInterface {
   TaxiHomeService({required this.taxiHomeRepositoryInterface});
 
   @override
-  Future<TopRatedCarsModel?> getTopRatedCarList(int offset, {required DataSourceEnum source}) async {
-    return await taxiHomeRepositoryInterface.getTopRatedCarList(offset, source: source);
+  Future<TopRatedCarsModel?> getTopRatedCarList(int offset,
+      {required DataSourceEnum source}) async {
+    return await taxiHomeRepositoryInterface.getTopRatedCarList(offset,
+        source: source);
   }
 
   @override
-  Future<TaxiBannerModel?> getTaxiBannerList({DataSourceEnum source = DataSourceEnum.local}) async {
+  Future<TaxiBannerModel?> getTaxiBannerList(
+      {DataSourceEnum source = DataSourceEnum.local}) async {
     return await taxiHomeRepositoryInterface.getTaxiBannerList(source: source);
   }
 
   @override
-  Future<List<TaxiCouponModel>?> getTaxiCouponList({DataSourceEnum source = DataSourceEnum.local}) async {
+  Future<List<TaxiCouponModel>?> getTaxiCouponList(
+      {DataSourceEnum source = DataSourceEnum.local}) async {
     return await taxiHomeRepositoryInterface.getTaxiCouponList(source: source);
   }
 
@@ -36,18 +40,39 @@ class TaxiHomeService implements TaxiHomeServiceInterface {
   }
 
   @override
-  Future<VehicleCategoryModel?> getVehicleCategories({required int offset}) async {
-    return await taxiHomeRepositoryInterface.getVehicleCategories(offset: offset);
+  Future<VehicleCategoryModel?> getVehicleCategories(
+      {required int offset}) async {
+    return await taxiHomeRepositoryInterface.getVehicleCategories(
+        offset: offset);
   }
 
   @override
-  Future<SelectedCarsModel?> getSelectedCars({required int offset, String? name, String? tripType,
-    double? minPrice, double? maxPrice, List<int>? brandIds, List<String>? seatingCapacity,
-    bool? airCondition, bool? nonAirCondition, List<int>? categoryIds, required String pickupTime, required LatLng pickupLocation}) async {
-
-    return await taxiHomeRepositoryInterface.getSelectedCars(name: name, offset: offset, tripType: tripType,
-    minPrice: minPrice, maxPrice: maxPrice, brandIds: brandIds, seatingCapacity: seatingCapacity,
-    airCondition: airCondition, nonAirCondition: nonAirCondition, categoryIds: categoryIds, pickupTime: pickupTime, pickupLocation: pickupLocation);
+  Future<SelectedCarsModel?> getSelectedCars(
+      {required int offset,
+      String? name,
+      String? tripType,
+      double? minPrice,
+      double? maxPrice,
+      List<int>? brandIds,
+      List<String>? seatingCapacity,
+      bool? airCondition,
+      bool? nonAirCondition,
+      List<int>? categoryIds,
+      required String pickupTime,
+      required LatLng pickupLocation}) async {
+    return await taxiHomeRepositoryInterface.getSelectedCars(
+        name: name,
+        offset: offset,
+        tripType: tripType,
+        minPrice: minPrice,
+        maxPrice: maxPrice,
+        brandIds: brandIds,
+        seatingCapacity: seatingCapacity,
+        airCondition: airCondition,
+        nonAirCondition: nonAirCondition,
+        categoryIds: categoryIds,
+        pickupTime: pickupTime,
+        pickupLocation: pickupLocation);
   }
 
   @override

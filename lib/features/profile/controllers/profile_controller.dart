@@ -40,13 +40,16 @@ class ProfileController extends GetxController implements GetxService {
     _userInfoModel = null;
   }
 
-  Future<ResponseModel> updateUserInfo(UpdateUserModel updateUserModel, String token, {bool fromVerification = false, bool fromButton = false}) async {
-    if(fromButton) {
+  Future<ResponseModel> updateUserInfo(
+      UpdateUserModel updateUserModel, String token,
+      {bool fromVerification = false, bool fromButton = false}) async {
+    if (fromButton) {
       _isLoading = true;
       update();
     }
-    ResponseModel responseModel = await profileServiceInterface.updateProfile(updateUserModel, _pickedFile, token);
-    if(!fromVerification) {
+    ResponseModel responseModel = await profileServiceInterface.updateProfile(
+        updateUserModel, _pickedFile, token);
+    if (!fromVerification) {
       _updateProfileResponseHandle(responseModel, updateUserModel, token);
     }
     _isLoading = false;
@@ -54,56 +57,86 @@ class ProfileController extends GetxController implements GetxService {
     return responseModel;
   }
 
-  Future<void> _updateProfileResponseHandle(ResponseModel responseModel, UpdateUserModel updateUserModel, String token) async {
-    updateUserModel.verificationOn = responseModel.updateProfileResponseModel?.verificationOn;
-    updateUserModel.verificationMedium = responseModel.updateProfileResponseModel?.verificationMedium;
+  Future<void> _updateProfileResponseHandle(ResponseModel responseModel,
+      UpdateUserModel updateUserModel, String token) async {
+    updateUserModel.verificationOn =
+        responseModel.updateProfileResponseModel?.verificationOn;
+    updateUserModel.verificationMedium =
+        responseModel.updateProfileResponseModel?.verificationMedium;
 
-    if(responseModel.isSuccess && responseModel.updateProfileResponseModel != null && responseModel.updateProfileResponseModel!.verificationOn != null && responseModel.updateProfileResponseModel!.verificationOn! == 'phone'){
-      if(responseModel.updateProfileResponseModel!.verificationMedium! == 'firebase') {
-        Get.find<AuthController>().firebaseVerifyPhoneNumber(updateUserModel.phone!, token, '', fromSignUp: false, updateUserModel: updateUserModel);
+    if (responseModel.isSuccess &&
+        responseModel.updateProfileResponseModel != null &&
+        responseModel.updateProfileResponseModel!.verificationOn != null &&
+        responseModel.updateProfileResponseModel!.verificationOn! == 'phone') {
+      if (responseModel.updateProfileResponseModel!.verificationMedium! ==
+          'firebase') {
+        Get.find<AuthController>().firebaseVerifyPhoneNumber(
+            updateUserModel.phone!, token, '',
+            fromSignUp: false, updateUserModel: updateUserModel);
       } else {
-        if(Get.isDialogOpen!) {
+        if (Get.isDialogOpen!) {
           Get.back();
         }
-        if(ResponsiveHelper.isDesktop(Get.context)) {
+        if (ResponsiveHelper.isDesktop(Get.context)) {
           Get.dialog(VerificationScreen(
-            number: updateUserModel.phone!, email: null, token: '', fromSignUp: false,
-            fromForgetPassword: false, loginType: '', password: '', userModel: updateUserModel,
+            number: updateUserModel.phone!,
+            email: null,
+            token: '',
+            fromSignUp: false,
+            fromForgetPassword: false,
+            loginType: '',
+            password: '',
+            userModel: updateUserModel,
           ));
         } else {
-          Get.toNamed(RouteHelper.getVerificationRoute(updateUserModel.phone!, null, '', '', null, '', updateUserModel: updateUserModel));
+          Get.toNamed(RouteHelper.getVerificationRoute(
+              updateUserModel.phone!, null, '', '', null, '',
+              updateUserModel: updateUserModel));
         }
       }
-    } else if(responseModel.isSuccess && responseModel.updateProfileResponseModel != null && responseModel.updateProfileResponseModel!.verificationOn != null && responseModel.updateProfileResponseModel!.verificationOn! == 'email'){
-      if(Get.isDialogOpen!) {
+    } else if (responseModel.isSuccess &&
+        responseModel.updateProfileResponseModel != null &&
+        responseModel.updateProfileResponseModel!.verificationOn != null &&
+        responseModel.updateProfileResponseModel!.verificationOn! == 'email') {
+      if (Get.isDialogOpen!) {
         Get.back();
       }
-      if(ResponsiveHelper.isDesktop(Get.context)) {
+      if (ResponsiveHelper.isDesktop(Get.context)) {
         Get.dialog(VerificationScreen(
-          number: null, email: updateUserModel.email!, token: '', fromSignUp: false,
-          fromForgetPassword: false, loginType: '', password: '', userModel: updateUserModel,
+          number: null,
+          email: updateUserModel.email!,
+          token: '',
+          fromSignUp: false,
+          fromForgetPassword: false,
+          loginType: '',
+          password: '',
+          userModel: updateUserModel,
         ));
       } else {
-        Get.toNamed(RouteHelper.getVerificationRoute(null, updateUserModel.email!, '', '', null, '', updateUserModel: updateUserModel));
+        Get.toNamed(RouteHelper.getVerificationRoute(
+            null, updateUserModel.email!, '', '', null, '',
+            updateUserModel: updateUserModel));
       }
-    } else if(responseModel.isSuccess && responseModel.updateProfileResponseModel == null){
-      if(Get.isDialogOpen!) {
+    } else if (responseModel.isSuccess &&
+        responseModel.updateProfileResponseModel == null) {
+      if (Get.isDialogOpen!) {
         Get.back();
       }
       await getUserInfo();
-      if(!ResponsiveHelper.isDesktop(Get.context)){
+      if (!ResponsiveHelper.isDesktop(Get.context)) {
         Get.back();
         Get.back();
       }
       _pickedFile = null;
       showCustomSnackBar(responseModel.message, isError: false);
-    }  else if(!responseModel.isSuccess && responseModel.updateProfileResponseModel != null){
-      if(Get.isDialogOpen!) {
+    } else if (!responseModel.isSuccess &&
+        responseModel.updateProfileResponseModel != null) {
+      if (Get.isDialogOpen!) {
         Get.back();
       }
       showCustomSnackBar(responseModel.updateProfileResponseModel!.message);
     } else {
-      if(Get.isDialogOpen!) {
+      if (Get.isDialogOpen!) {
         Get.back();
       }
       showCustomSnackBar(responseModel.message);
@@ -113,7 +146,8 @@ class ProfileController extends GetxController implements GetxService {
   Future<ResponseModel> changePassword(UserInfoModel updatedUserModel) async {
     _isLoading = true;
     update();
-    ResponseModel responseModel = await profileServiceInterface.changePassword(updatedUserModel);
+    ResponseModel responseModel =
+        await profileServiceInterface.changePassword(updatedUserModel);
     _isLoading = false;
     update();
     return responseModel;
@@ -130,7 +164,7 @@ class ProfileController extends GetxController implements GetxService {
 
   void initData({bool isUpdate = false}) {
     _pickedFile = null;
-    if(isUpdate){
+    if (isUpdate) {
       update();
     }
   }
@@ -144,14 +178,15 @@ class ProfileController extends GetxController implements GetxService {
       await Get.find<AuthController>().clearSharedData(removeToken: false);
       await Get.find<AuthController>().clearUserNumberAndPassword();
       await Get.find<CartController>().clearCartList();
-      if(Get.find<AuthController>().isActiveRememberMe) {
+      if (Get.find<AuthController>().isActiveRememberMe) {
         Get.find<AuthController>().toggleRememberMe();
       }
       Get.find<FavouriteController>().removeFavourite();
       setForceFullyUserEmpty();
       showCustomSnackBar('your_account_remove_successfully'.tr, isError: false);
       _isLoading = false;
-      Get.find<LocationController>().navigateToLocationScreen('splash', offNamed: true);
+      Get.find<LocationController>()
+          .navigateToLocationScreen('splash', offNamed: true);
     } else {
       _isLoading = false;
       Get.back();
@@ -163,5 +198,4 @@ class ProfileController extends GetxController implements GetxService {
     _userInfoModel = null;
     update();
   }
-
 }

@@ -9,14 +9,21 @@ class NewTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return isNew == 1 ? Container(
-      decoration: const BoxDecoration(
-        color: Colors.orange,
-        borderRadius: BorderRadius.only(bottomRight: Radius.circular(Dimensions.radiusDefault)),
-        // borderRadius: BorderRadius.horizontal(right: Radius.circular(Dimensions.radiusSmall)),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall, vertical: 3),
-      child: Text('new'.tr, style: robotoMedium.copyWith(color: Colors.white, fontSize: Dimensions.fontSizeExtraSmall)),
-    ) : const SizedBox();
+    return isNew == 1
+        ? Container(
+            decoration: const BoxDecoration(
+              color: Colors.orange,
+              borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(Dimensions.radiusDefault)),
+              // borderRadius: BorderRadius.horizontal(right: Radius.circular(Dimensions.radiusSmall)),
+            ),
+            padding: const EdgeInsets.symmetric(
+                horizontal: Dimensions.paddingSizeSmall, vertical: 3),
+            child: Text('new'.tr,
+                style: robotoMedium.copyWith(
+                    color: Colors.white,
+                    fontSize: Dimensions.fontSizeExtraSmall)),
+          )
+        : const SizedBox();
   }
 }

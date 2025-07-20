@@ -1,4 +1,4 @@
-enum TripStatusEnum{
+enum TripStatusEnum {
   pending,
   confirmed,
   ongoing,

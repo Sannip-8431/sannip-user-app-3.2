@@ -42,50 +42,50 @@ class VehicleModel {
   Brand? brand;
   Provider? provider;
 
-  VehicleModel(
-      {this.id,
-        this.name,
-        this.description,
-        this.thumbnail,
-        this.images,
-        this.providerId,
-        this.brandId,
-        this.categoryId,
-        this.model,
-        this.type,
-        this.engineCapacity,
-        this.enginePower,
-        this.seatingCapacity,
-        this.airCondition,
-        this.fuelType,
-        this.transmissionType,
-        this.multipleVehicles,
-        this.tripHourly,
-        this.tripDistance,
-        this.tripDayWise,
-        this.hourlyPrice,
-        this.distancePrice,
-        this.dayWisePrice,
-        this.discountType,
-        this.discountPrice,
-        this.tag,
-        this.documents,
-        this.status,
-        this.newTag,
-        this.totalTrip,
-        this.avgRating,
-        this.totalReviews,
-        this.createdAt,
-        this.updatedAt,
-        this.zoneId,
-        this.vehicleIdentitiesCount,
-        this.totalVehicles,
-        this.thumbnailFullUrl,
-        this.imagesFullUrl,
-        this.documentsFullUrl,
-        this.brand,
-        this.provider,
-      });
+  VehicleModel({
+    this.id,
+    this.name,
+    this.description,
+    this.thumbnail,
+    this.images,
+    this.providerId,
+    this.brandId,
+    this.categoryId,
+    this.model,
+    this.type,
+    this.engineCapacity,
+    this.enginePower,
+    this.seatingCapacity,
+    this.airCondition,
+    this.fuelType,
+    this.transmissionType,
+    this.multipleVehicles,
+    this.tripHourly,
+    this.tripDistance,
+    this.tripDayWise,
+    this.hourlyPrice,
+    this.distancePrice,
+    this.dayWisePrice,
+    this.discountType,
+    this.discountPrice,
+    this.tag,
+    this.documents,
+    this.status,
+    this.newTag,
+    this.totalTrip,
+    this.avgRating,
+    this.totalReviews,
+    this.createdAt,
+    this.updatedAt,
+    this.zoneId,
+    this.vehicleIdentitiesCount,
+    this.totalVehicles,
+    this.thumbnailFullUrl,
+    this.imagesFullUrl,
+    this.documentsFullUrl,
+    this.brand,
+    this.provider,
+  });
 
   VehicleModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -119,7 +119,9 @@ class VehicleModel {
     newTag = json['new_tag'];
     totalTrip = json['total_trip'];
     // avgRating = json['avg_rating']?.toDouble();
-    avgRating = json['avg_rating'] != null ? double.parse(json['avg_rating'].toString()) : 0;
+    avgRating = json['avg_rating'] != null
+        ? double.parse(json['avg_rating'].toString())
+        : 0;
     totalReviews = json['total_reviews'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
@@ -131,15 +133,14 @@ class VehicleModel {
     if (json['documents_full_url'] != null) {
       documentsFullUrl = <String>[];
       json['documents_full_url'].forEach((v) {
-        if(v != null) {
+        if (v != null) {
           documentsFullUrl!.add(v);
         }
       });
     }
     brand = json['brand'] != null ? Brand.fromJson(json['brand']) : null;
-    provider = json['provider'] != null
-        ? Provider.fromJson(json['provider'])
-        : null;
+    provider =
+        json['provider'] != null ? Provider.fromJson(json['provider']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -240,20 +241,20 @@ class Provider {
 
   Provider(
       {this.id,
-        this.name,
-        this.logo,
-        this.coverPhoto,
-        this.rating,
-        this.avgRating,
-        this.ratingCount,
-        this.gstStatus,
-        this.gstCode,
-        this.logoFullUrl,
-        this.coverPhotoFullUrl,
-        this.metaImageFullUrl,
-        this.discount,
-        this.translations,
-        this.storage});
+      this.name,
+      this.logo,
+      this.coverPhoto,
+      this.rating,
+      this.avgRating,
+      this.ratingCount,
+      this.gstStatus,
+      this.gstCode,
+      this.logoFullUrl,
+      this.coverPhotoFullUrl,
+      this.metaImageFullUrl,
+      this.discount,
+      this.translations,
+      this.storage});
 
   Provider.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -261,7 +262,7 @@ class Provider {
     logo = json['logo'];
     coverPhoto = json['cover_photo'];
     // rating = json['rating'];
-    if(json['rating'] != null) {
+    if (json['rating'] != null) {
       rating = [];
       json['rating'].forEach((v) {
         rating!.add(v);
@@ -274,7 +275,8 @@ class Provider {
     logoFullUrl = json['logo_full_url'];
     coverPhotoFullUrl = json['cover_photo_full_url'];
     metaImageFullUrl = json['meta_image_full_url'];
-    discount = json['discount'] != null ? Discount.fromJson(json['discount']) : null;
+    discount =
+        json['discount'] != null ? Discount.fromJson(json['discount']) : null;
     if (json['translations'] != null) {
       translations = <Translations>[];
       json['translations'].forEach((v) {
@@ -330,7 +332,19 @@ class Discount {
   String? createdAt;
   String? updatedAt;
 
-  Discount({this.id, this.startDate, this.endDate, this.startTime, this.endTime, this.minPurchase, this.maxDiscount, this.discount, this.discountType, this.storeId, this.createdAt, this.updatedAt});
+  Discount(
+      {this.id,
+      this.startDate,
+      this.endDate,
+      this.startTime,
+      this.endTime,
+      this.minPurchase,
+      this.maxDiscount,
+      this.discount,
+      this.discountType,
+      this.storeId,
+      this.createdAt,
+      this.updatedAt});
 
   Discount.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -377,13 +391,13 @@ class Translations {
 
   Translations(
       {this.id,
-        this.translationableType,
-        this.translationableId,
-        this.locale,
-        this.key,
-        this.value,
-        this.createdAt,
-        this.updatedAt});
+      this.translationableType,
+      this.translationableId,
+      this.locale,
+      this.key,
+      this.value,
+      this.createdAt,
+      this.updatedAt});
 
   Translations.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -421,12 +435,12 @@ class Storage {
 
   Storage(
       {this.id,
-        this.dataType,
-        this.dataId,
-        this.key,
-        this.value,
-        this.createdAt,
-        this.updatedAt});
+      this.dataType,
+      this.dataId,
+      this.key,
+      this.value,
+      this.createdAt,
+      this.updatedAt});
 
   Storage.fromJson(Map<String, dynamic> json) {
     id = json['id'];

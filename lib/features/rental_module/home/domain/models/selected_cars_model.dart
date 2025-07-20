@@ -8,12 +8,20 @@ class SelectedCarsModel {
   double? minPrice;
   List<VehicleModel>? vehicles;
 
-  SelectedCarsModel({this.totalSize, this.limit, this.offset, this.maxPrice, this.minPrice, this.vehicles});
+  SelectedCarsModel(
+      {this.totalSize,
+      this.limit,
+      this.offset,
+      this.maxPrice,
+      this.minPrice,
+      this.vehicles});
 
   SelectedCarsModel.fromJson(Map<String, dynamic> json) {
     totalSize = json['total_size'];
-    limit = json['limit']/* != null ? int.parse(json['limit'].toString()) : null*/;
-    offset = json['offset']/* != null ? int.parse(json['offset'].toString()) : null*/;
+    limit =
+        json['limit'] /* != null ? int.parse(json['limit'].toString()) : null*/;
+    offset = json[
+        'offset'] /* != null ? int.parse(json['offset'].toString()) : null*/;
     maxPrice = json['max_price']?.toDouble();
     minPrice = json['min_price']?.toDouble();
     if (json['vehicles'] != null) {

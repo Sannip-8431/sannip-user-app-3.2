@@ -13,7 +13,9 @@ class CarCartModel {
         carts!.add(Carts.fromJson(v));
       });
     }
-    userData = json['user_data'] != null && json['user_data'] != '[]' && json['user_data']?.isNotEmpty
+    userData = json['user_data'] != null &&
+            json['user_data'] != '[]' &&
+            json['user_data']?.isNotEmpty
         ? UserData.fromJson(json['user_data'])
         : null;
   }
@@ -45,16 +47,16 @@ class Carts {
 
   Carts(
       {this.id,
-        this.providerId,
-        this.userId,
-        this.vehicleId,
-        this.moduleId,
-        this.quantity,
-        this.isGuest,
-        this.createdAt,
-        this.updatedAt,
-        this.vehicle,
-        this.provider});
+      this.providerId,
+      this.userId,
+      this.vehicleId,
+      this.moduleId,
+      this.quantity,
+      this.isGuest,
+      this.createdAt,
+      this.updatedAt,
+      this.vehicle,
+      this.provider});
 
   Carts.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -66,12 +68,10 @@ class Carts {
     isGuest = json['is_guest'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    vehicle = json['vehicle'] != null
-        ? VehicleModel.fromJson(json['vehicle'])
-        : null;
-    provider = json['provider'] != null
-        ? Provider.fromJson(json['provider'])
-        : null;
+    vehicle =
+        json['vehicle'] != null ? VehicleModel.fromJson(json['vehicle']) : null;
+    provider =
+        json['provider'] != null ? Provider.fromJson(json['provider']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -128,7 +128,7 @@ class Provider {
     id = json['id'];
     name = json['name'];
     tax = json['tax']?.toDouble();
-    if(json['pickup_zone_id'] != null){
+    if (json['pickup_zone_id'] != null) {
       json['pickup_zone_id'].forEach((zone) {
         pickupZoneId = [];
         pickupZoneId!.add(int.parse(zone.toString()));
@@ -139,9 +139,8 @@ class Provider {
     logoFullUrl = json['logo_full_url'];
     coverPhotoFullUrl = json['cover_photo_full_url'];
     metaImageFullUrl = json['meta_image_full_url'];
-    discount = json['discount'] != null
-        ? Discount.fromJson(json['discount'])
-        : null;
+    discount =
+        json['discount'] != null ? Discount.fromJson(json['discount']) : null;
     if (json['translations'] != null) {
       translations = <Translations>[];
       json['translations'].forEach((v) {
@@ -253,13 +252,13 @@ class Translations {
 
   Translations(
       {this.id,
-        this.translationableType,
-        this.translationableId,
-        this.locale,
-        this.key,
-        this.value,
-        this.createdAt,
-        this.updatedAt});
+      this.translationableType,
+      this.translationableId,
+      this.locale,
+      this.key,
+      this.value,
+      this.createdAt,
+      this.updatedAt});
 
   Translations.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -297,12 +296,12 @@ class Storage {
 
   Storage(
       {this.id,
-        this.dataType,
-        this.dataId,
-        this.key,
-        this.value,
-        this.createdAt,
-        this.updatedAt});
+      this.dataType,
+      this.dataId,
+      this.key,
+      this.value,
+      this.createdAt,
+      this.updatedAt});
 
   Storage.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -344,18 +343,18 @@ class UserData {
 
   UserData(
       {this.id,
-        this.userId,
-        this.pickupLocation,
-        this.destinationLocation,
-        this.pickupTime,
-        this.rentalType,
-        this.estimatedHours,
-        this.distance,
-        this.totalCartPrice,
-        this.destinationTime,
-        this.isGuest,
-        this.createdAt,
-        this.updatedAt});
+      this.userId,
+      this.pickupLocation,
+      this.destinationLocation,
+      this.pickupTime,
+      this.rentalType,
+      this.estimatedHours,
+      this.distance,
+      this.totalCartPrice,
+      this.destinationTime,
+      this.isGuest,
+      this.createdAt,
+      this.updatedAt});
 
   UserData.fromJson(Map<String, dynamic> json) {
     id = json['id'];

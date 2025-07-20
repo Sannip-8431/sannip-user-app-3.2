@@ -18,73 +18,96 @@ class BillDetailsWidget extends StatelessWidget {
   final bool? taxInclude;
   final double? taxPercent;
   const BillDetailsWidget({
-    super.key, required this.tripCost, required this.tripDiscountCost, required this.couponDiscountCost,
-    required this.subtotal, required this.vat, required this.serviceFee, this.isCompleted = false,
-    this.taxInclude = false, this.taxPercent = 0,
+    super.key,
+    required this.tripCost,
+    required this.tripDiscountCost,
+    required this.couponDiscountCost,
+    required this.subtotal,
+    required this.vat,
+    required this.serviceFee,
+    this.isCompleted = false,
+    this.taxInclude = false,
+    this.taxPercent = 0,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      spacing: Dimensions.paddingSizeSmall, crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: Dimensions.paddingSizeSmall,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
-          !isCompleted ? Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-
-            Text('bill_details'.tr, style: robotoBold.copyWith(fontSize: 14)),
-
-            CustomToolTip(
-              message: 'taxi_bill_info'.tr,
-              preferredDirection: AxisDirection.up,
-              child: Icon(Icons.info, size: 18, color: Theme.of(context).primaryColor),
-            ),
-
-          ]) : Padding(
-            padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeExtraSmall),
-            child: Text('trip_cost_info'.tr, style: robotoBold),
-          ),
-
+          !isCompleted
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                      Text('bill_details'.tr,
+                          style: robotoBold.copyWith(fontSize: 14)),
+                      CustomToolTip(
+                        message: 'taxi_bill_info'.tr,
+                        preferredDirection: AxisDirection.up,
+                        child: Icon(Icons.info,
+                            size: 18, color: Theme.of(context).primaryColor),
+                      ),
+                    ])
+              : Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: Dimensions.paddingSizeExtraSmall),
+                  child: Text('trip_cost_info'.tr, style: robotoBold),
+                ),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text('trip_cost'.tr, style: robotoRegular),
-            Text(PriceConverter.convertPrice(tripCost, forTaxi: true), style: robotoRegular, textDirection: TextDirection.ltr),
+            Text(PriceConverter.convertPrice(tripCost, forTaxi: true),
+                style: robotoRegular, textDirection: TextDirection.ltr),
           ]),
-
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text('trip_discount'.tr, style: robotoRegular),
-            Text('- ${PriceConverter.convertPrice(tripDiscountCost, forTaxi: true)}', style: robotoRegular, textDirection: TextDirection.ltr),
+            Text(
+                '- ${PriceConverter.convertPrice(tripDiscountCost, forTaxi: true)}',
+                style: robotoRegular,
+                textDirection: TextDirection.ltr),
           ]),
-
-          if(couponDiscountCost > 0)
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text('coupon_discount'.tr, style: robotoRegular),
-            Text('- ${PriceConverter.convertPrice(couponDiscountCost, forTaxi: true)}', style: robotoRegular, textDirection: TextDirection.ltr),
-          ]),
-
+          if (couponDiscountCost > 0)
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text('coupon_discount'.tr, style: robotoRegular),
+              Text(
+                  '- ${PriceConverter.convertPrice(couponDiscountCost, forTaxi: true)}',
+                  style: robotoRegular,
+                  textDirection: TextDirection.ltr),
+            ]),
           const Divider(),
-
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text('subtotal'.tr, style: robotoBold),
-            Text(PriceConverter.convertPrice(subtotal, forTaxi: true), style: robotoRegular, textDirection: TextDirection.ltr),
+            Text(PriceConverter.convertPrice(subtotal, forTaxi: true),
+                style: robotoRegular, textDirection: TextDirection.ltr),
           ]),
-
-          ((Get.find<TaxiCartController>().taxIncluded == null) || taxInclude! || (Get.find<TaxiCartController>().tripTax == 0)) ? const SizedBox() : Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Row(mainAxisSize: MainAxisSize.min, children: [
-              Text('vat_tax'.tr, style: robotoRegular),
+          ((Get.find<TaxiCartController>().taxIncluded == null) ||
+                  taxInclude! ||
+                  (Get.find<TaxiCartController>().tripTax == 0))
+              ? const SizedBox()
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                      Row(mainAxisSize: MainAxisSize.min, children: [
+                        Text('vat_tax'.tr, style: robotoRegular),
+                      ]),
+                      Text(
+                          '+ ${PriceConverter.convertPrice(vat, forTaxi: true)}',
+                          style: robotoRegular,
+                          textDirection: TextDirection.ltr),
+                    ]),
+          if (Get.find<SplashController>().configModel!.additionalChargeStatus!)
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text(
+                  Get.find<SplashController>()
+                      .configModel!
+                      .additionalChargeName!,
+                  style: robotoRegular),
+              Text(
+                '+ ${PriceConverter.convertPrice(serviceFee, forTaxi: true)}',
+                style: robotoRegular,
+                textDirection: TextDirection.ltr,
+              ),
             ]),
-
-            Text('+ ${PriceConverter.convertPrice(vat, forTaxi: true)}', style: robotoRegular, textDirection: TextDirection.ltr),
-          ]),
-
-          if(Get.find<SplashController>().configModel!.additionalChargeStatus!)
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text(Get.find<SplashController>().configModel!.additionalChargeName!, style: robotoRegular),
-            Text(
-              '+ ${PriceConverter.convertPrice(serviceFee, forTaxi: true)}',
-              style: robotoRegular, textDirection: TextDirection.ltr,
-            ),
-          ]),
-
-
-    ]);
+        ]);
   }
 }

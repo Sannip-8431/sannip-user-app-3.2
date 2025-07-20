@@ -13,15 +13,22 @@ class CustomFavouriteWidget extends StatefulWidget {
   final bool isWished;
   final double? size;
   final int? storeId;
-  const CustomFavouriteWidget({super.key, this.store, this.item, this.isStore = false, required this.isWished, this.size = 25, this.storeId});
+  const CustomFavouriteWidget(
+      {super.key,
+      this.store,
+      this.item,
+      this.isStore = false,
+      required this.isWished,
+      this.size = 25,
+      this.storeId});
 
   @override
   State<CustomFavouriteWidget> createState() => _CustomFavouriteWidgetState();
 }
 
-class _CustomFavouriteWidgetState extends State<CustomFavouriteWidget> with SingleTickerProviderStateMixin {
+class _CustomFavouriteWidgetState extends State<CustomFavouriteWidget>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
-
 
   @override
   void initState() {
@@ -44,28 +51,39 @@ class _CustomFavouriteWidgetState extends State<CustomFavouriteWidget> with Sing
   Widget build(BuildContext context) {
     return InkWell(
       splashColor: Colors.transparent,
-      onTap: Get.find<FavouriteController>().isRemoving ? null : () {
-        if(AuthHelper.isLoggedIn()) {
-          _decideWished(widget.isWished, Get.find<FavouriteController>());
-        }else {
-          showCustomSnackBar('you_are_not_logged_in'.tr, getXSnackBar: true);
-        }
-        _controller.reverse().then((value) => _controller.forward());
-      },
+      onTap: Get.find<FavouriteController>().isRemoving
+          ? null
+          : () {
+              if (AuthHelper.isLoggedIn()) {
+                _decideWished(widget.isWished, Get.find<FavouriteController>());
+              } else {
+                showCustomSnackBar('you_are_not_logged_in'.tr,
+                    getXSnackBar: true);
+              }
+              _controller.reverse().then((value) => _controller.forward());
+            },
       child: ScaleTransition(
-        scale: Tween(begin: 0.7, end: 1.0).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut)),
-        child: Icon(widget.isWished ? Icons.favorite : Icons.favorite_border_rounded, color: Theme.of(context).primaryColor, size: widget.size),
+        scale: Tween(begin: 0.7, end: 1.0).animate(
+            CurvedAnimation(parent: _controller, curve: Curves.easeOut)),
+        child: Icon(
+            widget.isWished ? Icons.favorite : Icons.favorite_border_rounded,
+            color: Theme.of(context).primaryColor,
+            size: widget.size),
         // child: CustomAssetImageWidget(widget.isWished ? Images.favouriteIcon : Images.unFavouriteIcon, height: widget.size, width: widget.size),
       ),
     );
   }
 
   _decideWished(bool isWished, FavouriteController favouriteController) {
-    if(widget.isStore) {
-      isWished ? favouriteController.removeFromFavouriteList(widget.storeId ?? widget.store?.id, true)
-          : favouriteController.addToFavouriteList(null, widget.storeId ?? widget.store?.id, true);
-    }else {
-      isWished ? favouriteController.removeFromFavouriteList(widget.item?.id, false)
+    if (widget.isStore) {
+      isWished
+          ? favouriteController.removeFromFavouriteList(
+              widget.storeId ?? widget.store?.id, true)
+          : favouriteController.addToFavouriteList(
+              null, widget.storeId ?? widget.store?.id, true);
+    } else {
+      isWished
+          ? favouriteController.removeFromFavouriteList(widget.item?.id, false)
           : favouriteController.addToFavouriteList(widget.item, null, false);
     }
   }

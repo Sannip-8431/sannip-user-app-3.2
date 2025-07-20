@@ -13,21 +13,23 @@ class SplashService implements SplashServiceInterface {
 
   @override
   Future<Response> getConfigData({required DataSourceEnum source}) async {
-    Response response = await splashRepositoryInterface.getConfigData(source: source);
+    Response response =
+        await splashRepositoryInterface.getConfigData(source: source);
     return response;
   }
 
   @override
-  ConfigModel? prepareConfigData(Response response){
+  ConfigModel? prepareConfigData(Response response) {
     ConfigModel? configModel;
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       configModel = ConfigModel.fromJson(response.body);
     }
     return configModel;
   }
 
   @override
-  Future<LandingModel?> getLandingPageData({required DataSourceEnum source}) async {
+  Future<LandingModel?> getLandingPageData(
+      {required DataSourceEnum source}) async {
     return await splashRepositoryInterface.getLandingPageData(source: source);
   }
 
@@ -52,8 +54,10 @@ class SplashService implements SplashServiceInterface {
   }
 
   @override
-  Future<List<ModuleModel>?> getModules({Map<String, String>? headers, required DataSourceEnum source}) async {
-    return await splashRepositoryInterface.getModules(headers: headers, source: source);
+  Future<List<ModuleModel>?> getModules(
+      {Map<String, String>? headers, required DataSourceEnum source}) async {
+    return await splashRepositoryInterface.getModules(
+        headers: headers, source: source);
   }
 
   @override
@@ -120,5 +124,4 @@ class SplashService implements SplashServiceInterface {
   Future<void> saveReferBottomSheetStatus(bool data) async {
     return await splashRepositoryInterface.saveReferBottomSheetStatus(data);
   }
-
 }

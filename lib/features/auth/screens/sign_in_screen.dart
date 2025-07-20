@@ -70,90 +70,82 @@ class SignInScreenState extends State<SignInScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor:
-            ResponsiveHelper.isDesktop(context)
-                ? Colors.transparent
-                : Theme.of(context).cardColor,
-        appBar:
-            (ResponsiveHelper.isDesktop(context)
-                ? null
-                : !widget.exitFromApp
+        backgroundColor: ResponsiveHelper.isDesktop(context)
+            ? Colors.transparent
+            : Theme.of(context).cardColor,
+        appBar: (ResponsiveHelper.isDesktop(context)
+            ? null
+            : !widget.exitFromApp
                 ? AppBar(
-                  leading: IconButton(
-                    onPressed: () {
-                      if (widget.fromNotification || widget.fromResetPassword) {
-                        Navigator.pushNamed(
-                          context,
-                          RouteHelper.getInitialRoute(),
-                        );
-                      } else {
-                        Get.back();
-                      }
-                    },
-                    icon: Icon(
-                      Icons.arrow_back_ios_rounded,
-                      color: Theme.of(context).textTheme.bodyLarge!.color,
+                    leading: IconButton(
+                      onPressed: () {
+                        if (widget.fromNotification ||
+                            widget.fromResetPassword) {
+                          Navigator.pushNamed(
+                            context,
+                            RouteHelper.getInitialRoute(),
+                          );
+                        } else {
+                          Get.back();
+                        }
+                      },
+                      icon: Icon(
+                        Icons.arrow_back_ios_rounded,
+                        color: Theme.of(context).textTheme.bodyLarge!.color,
+                      ),
                     ),
-                  ),
-                  elevation: 0,
-                  backgroundColor: Theme.of(context).cardColor,
-                  actions: const [SizedBox()],
-                )
+                    elevation: 0,
+                    backgroundColor: Theme.of(context).cardColor,
+                    actions: const [SizedBox()],
+                  )
                 : null),
         endDrawer: const MenuDrawer(),
         endDrawerEnableOpenDragGesture: false,
-
         body: SafeArea(
           child: Align(
             alignment: Alignment.center,
             child: Container(
               width: context.width > 700 ? 500 : context.width,
-              padding:
-                  context.width > 700
-                      ? const EdgeInsets.all(50)
-                      : const EdgeInsets.symmetric(
-                        horizontal: Dimensions.paddingSizeExtraLarge,
+              padding: context.width > 700
+                  ? const EdgeInsets.all(50)
+                  : const EdgeInsets.symmetric(
+                      horizontal: Dimensions.paddingSizeExtraLarge,
+                    ),
+              margin: context.width > 700
+                  ? const EdgeInsets.all(50)
+                  : EdgeInsets.zero,
+              decoration: context.width > 700
+                  ? BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(
+                        Dimensions.radiusSmall,
                       ),
-              margin:
-                  context.width > 700
-                      ? const EdgeInsets.all(50)
-                      : EdgeInsets.zero,
-              decoration:
-                  context.width > 700
-                      ? BoxDecoration(
-                        color: Theme.of(context).cardColor,
-                        borderRadius: BorderRadius.circular(
-                          Dimensions.radiusSmall,
-                        ),
-                        boxShadow:
-                            ResponsiveHelper.isDesktop(context)
-                                ? null
-                                : const [
-                                  BoxShadow(
-                                    color: Colors.black12,
-                                    blurRadius: 5,
-                                    spreadRadius: 1,
-                                  ),
-                                ],
-                      )
-                      : null,
+                      boxShadow: ResponsiveHelper.isDesktop(context)
+                          ? null
+                          : const [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 5,
+                                spreadRadius: 1,
+                              ),
+                            ],
+                    )
+                  : null,
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     ResponsiveHelper.isDesktop(context)
                         ? Align(
-                          alignment: Alignment.topRight,
-                          child: IconButton(
-                            onPressed: () => Get.back(),
-                            icon: const Icon(Icons.clear),
-                          ),
-                        )
+                            alignment: Alignment.topRight,
+                            child: IconButton(
+                              onPressed: () => Get.back(),
+                              icon: const Icon(Icons.clear),
+                            ),
+                          )
                         : const SizedBox(),
-
                     Image.asset(Images.logo, width: 180),
                     const SizedBox(height: Dimensions.paddingSizeExtremeLarge),
-
                     SignInView(
                       exitFromApp: widget.exitFromApp,
                       backFromThis: widget.backFromThis,

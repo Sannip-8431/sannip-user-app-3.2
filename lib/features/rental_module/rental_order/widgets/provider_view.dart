@@ -13,6 +13,7 @@ import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/images.dart';
 import 'package:sixam_mart/util/styles.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+
 class ProviderView extends StatelessWidget {
   final Provider provider;
   final int tripId;
@@ -23,55 +24,84 @@ class ProviderView extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        boxShadow: [BoxShadow(color: Theme.of(context).primaryColor.withValues(alpha: 0.1), blurRadius: 10)],
+        boxShadow: [
+          BoxShadow(
+              color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+              blurRadius: 10)
+        ],
       ),
       child: CustomInkWell(
-        onTap: ()=> Get.to(()=> VendorDetailScreen(vendorId: provider.id)),
-        padding: const EdgeInsets.symmetric(vertical: Dimensions.paddingSizeSmall, horizontal: Dimensions.paddingSizeLarge),
+        onTap: () => Get.to(() => VendorDetailScreen(vendorId: provider.id)),
+        padding: const EdgeInsets.symmetric(
+            vertical: Dimensions.paddingSizeSmall,
+            horizontal: Dimensions.paddingSizeLarge),
         child: Row(spacing: Dimensions.paddingSizeSmall, children: [
-
           SizedBox(
-            height: 60, width: 60,
+            height: 60,
+            width: 60,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(50),
-              child: CustomImage(image: provider.logoFullUrl??''),
+              child: CustomImage(image: provider.logoFullUrl ?? ''),
             ),
           ),
-
           Expanded(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, spacing: Dimensions.paddingSizeExtraSmall, children: [
-
-              Text('${provider.name}', style: robotoBold.copyWith(fontSize: Dimensions.fontSizeDefault), maxLines: 1, overflow: TextOverflow.ellipsis,),
-
-              Row(children: [
-                const Icon(Icons.star, color: Colors.yellow, size: 18,),
-                Text('${provider.avgRating}', style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall)),
-                Text('(${provider.ratingCount}+)', style: robotoRegular.copyWith(color: Theme.of(context).disabledColor, fontSize: Dimensions.fontSizeSmall)),
-              ]),
-
-              Text('${provider.totalVehicles} ${'vehicles'.tr}', style: robotoMedium.copyWith(color: Theme.of(context).disabledColor, fontSize: Dimensions.fontSizeSmall)),
-
-            ]),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: Dimensions.paddingSizeExtraSmall,
+                children: [
+                  Text(
+                    '${provider.name}',
+                    style: robotoBold.copyWith(
+                        fontSize: Dimensions.fontSizeDefault),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Row(children: [
+                    const Icon(
+                      Icons.star,
+                      color: Colors.yellow,
+                      size: 18,
+                    ),
+                    Text('${provider.avgRating}',
+                        style: robotoRegular.copyWith(
+                            fontSize: Dimensions.fontSizeSmall)),
+                    Text('(${provider.ratingCount}+)',
+                        style: robotoRegular.copyWith(
+                            color: Theme.of(context).disabledColor,
+                            fontSize: Dimensions.fontSizeSmall)),
+                  ]),
+                  Text('${provider.totalVehicles} ${'vehicles'.tr}',
+                      style: robotoMedium.copyWith(
+                          color: Theme.of(context).disabledColor,
+                          fontSize: Dimensions.fontSizeSmall)),
+                ]),
           ),
-
-          provider.chat! && AuthHelper.isLoggedIn() ? CustomInkWell(
-            onTap: () async {
-              await Get.toNamed(RouteHelper.getChatRoute(
-                notificationBody: NotificationBodyModel(orderId: tripId, restaurantId: provider.id),
-                user: User(id: provider.id, fName: provider.name, lName: '', imageFullUrl: provider.logoFullUrl),
-              ));
-            },
-            child: Image.asset(Images.chatOrderDetails, height: 30, width: 30),
-          ) : const SizedBox(),
-
+          provider.chat! && AuthHelper.isLoggedIn()
+              ? CustomInkWell(
+                  onTap: () async {
+                    await Get.toNamed(RouteHelper.getChatRoute(
+                      notificationBody: NotificationBodyModel(
+                          orderId: tripId, restaurantId: provider.id),
+                      user: User(
+                          id: provider.id,
+                          fName: provider.name,
+                          lName: '',
+                          imageFullUrl: provider.logoFullUrl),
+                    ));
+                  },
+                  child: Image.asset(Images.chatOrderDetails,
+                      height: 30, width: 30),
+                )
+              : const SizedBox(),
           CustomInkWell(
             onTap: () async {
-              if(await canLaunchUrlString('tel:${provider.phone}')) {
-                launchUrlString('tel:${provider.phone}', mode: LaunchMode.externalApplication);
-              }else {
+              if (await canLaunchUrlString('tel:${provider.phone}')) {
+                launchUrlString('tel:${provider.phone}',
+                    mode: LaunchMode.externalApplication);
+              } else {
                 showCustomSnackBar('${'can_not_launch'.tr} ${provider.phone}');
               }
-              },
+            },
             child: Image.asset(Images.phoneOrderDetails, height: 30, width: 30),
           ),
         ]),

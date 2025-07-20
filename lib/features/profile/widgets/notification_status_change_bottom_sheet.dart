@@ -18,48 +18,63 @@ class NotificationStatusChangeBottomSheet extends StatelessWidget {
       padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: ResponsiveHelper.isDesktop(context) ? BorderRadius.circular(Dimensions.radiusLarge) : const BorderRadius.only(
-          topLeft: Radius.circular(Dimensions.radiusExtraLarge), topRight: Radius.circular(Dimensions.radiusExtraLarge),
-        ),
+        borderRadius: ResponsiveHelper.isDesktop(context)
+            ? BorderRadius.circular(Dimensions.radiusLarge)
+            : const BorderRadius.only(
+                topLeft: Radius.circular(Dimensions.radiusExtraLarge),
+                topRight: Radius.circular(Dimensions.radiusExtraLarge),
+              ),
       ),
       child: GetBuilder<AuthController>(builder: (authController) {
         return SafeArea(
           child: Column(mainAxisSize: MainAxisSize.min, children: [
-
-            ResponsiveHelper.isDesktop(context) ?
-                Align(alignment: Alignment.topRight, child: IconButton(onPressed: ()=> Get.back(), icon: const Icon(Icons.clear))) : Container(
-              height: 5, width: 50,
-              decoration: BoxDecoration(
-                color: Theme.of(context).hintColor.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-              ),
-            ),
+            ResponsiveHelper.isDesktop(context)
+                ? Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                        onPressed: () => Get.back(),
+                        icon: const Icon(Icons.clear)))
+                : Container(
+                    height: 5,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).hintColor.withValues(alpha: 0.2),
+                      borderRadius:
+                          BorderRadius.circular(Dimensions.radiusSmall),
+                    ),
+                  ),
             const SizedBox(height: 35),
-
             const CustomAssetImageWidget(
-              Images.warning, height: 50, width: 50,
+              Images.warning,
+              height: 50,
+              width: 50,
             ),
             const SizedBox(height: 35),
-
-            Text('are_you_sure'.tr, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge), textAlign: TextAlign.center),
+            Text('are_you_sure'.tr,
+                style:
+                    robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge),
+                textAlign: TextAlign.center),
             const SizedBox(height: Dimensions.paddingSizeSmall),
-
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Dimensions.paddingSizeLarge),
               child: Text(
-                !authController.notification ? 'you_want_to_enable_notification'.tr : 'you_want_to_disable_notification'.tr,
-                style: robotoRegular.copyWith(color: Theme.of(context).hintColor), textAlign: TextAlign.center,
+                !authController.notification
+                    ? 'you_want_to_enable_notification'.tr
+                    : 'you_want_to_disable_notification'.tr,
+                style:
+                    robotoRegular.copyWith(color: Theme.of(context).hintColor),
+                textAlign: TextAlign.center,
               ),
             ),
             const SizedBox(height: 50),
-
             Row(children: [
-
               Expanded(
                 child: CustomButton(
                   isLoading: authController.notificationLoading,
                   onPressed: () async {
-                    await authController.setNotificationActive(!authController.notification);
+                    await authController
+                        .setNotificationActive(!authController.notification);
                     Get.back();
                   },
                   buttonText: 'yes'.tr,
@@ -67,7 +82,6 @@ class NotificationStatusChangeBottomSheet extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: Dimensions.paddingSizeSmall),
-
               Expanded(
                 child: CustomButton(
                   onPressed: () {
@@ -78,9 +92,7 @@ class NotificationStatusChangeBottomSheet extends StatelessWidget {
                   textColor: Theme.of(context).textTheme.bodyLarge!.color,
                 ),
               ),
-
             ]),
-
           ]),
         );
       }),

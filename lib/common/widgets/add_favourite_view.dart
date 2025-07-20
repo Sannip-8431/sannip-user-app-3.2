@@ -10,34 +10,47 @@ class AddFavouriteView extends StatelessWidget {
   final double? top, right;
   final double? left;
   final int? storeId;
-  const AddFavouriteView({super.key, required this.item, this.top = 15, this.right = 15, this.left, this.storeId});
+  const AddFavouriteView(
+      {super.key,
+      required this.item,
+      this.top = 15,
+      this.right = 15,
+      this.left,
+      this.storeId});
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: top, right: right, left: left,
+      top: top,
+      right: right,
+      left: left,
       child: GetBuilder<FavouriteController>(builder: (favouriteController) {
         bool isWished;
-        if(storeId != null) {
+        if (storeId != null) {
           isWished = favouriteController.wishStoreIdList.contains(storeId);
         } else {
           isWished = favouriteController.wishItemIdList.contains(item!.id);
         }
         return InkWell(
           onTap: () {
-            if(AuthHelper.isLoggedIn()) {
-              if(storeId != null) {
-                isWished ? favouriteController.removeFromFavouriteList(storeId, true)
-                    : favouriteController.addToFavouriteList(null, storeId, true);
+            if (AuthHelper.isLoggedIn()) {
+              if (storeId != null) {
+                isWished
+                    ? favouriteController.removeFromFavouriteList(storeId, true)
+                    : favouriteController.addToFavouriteList(
+                        null, storeId, true);
               } else {
-                isWished ? favouriteController.removeFromFavouriteList(item!.id, false)
+                isWished
+                    ? favouriteController.removeFromFavouriteList(
+                        item!.id, false)
                     : favouriteController.addToFavouriteList(item, null, false);
               }
-            }else {
+            } else {
               showCustomSnackBar('you_are_not_logged_in'.tr);
             }
           },
-          child: Icon(isWished ? Icons.favorite : Icons.favorite_border, color: Theme.of(context).primaryColor, size: 20),
+          child: Icon(isWished ? Icons.favorite : Icons.favorite_border,
+              color: Theme.of(context).primaryColor, size: 20),
         );
       }),
     );

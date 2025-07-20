@@ -71,13 +71,13 @@ class Translations {
 
   Translations(
       {this.id,
-        this.translationableType,
-        this.translationableId,
-        this.locale,
-        this.key,
-        this.value,
-        this.createdAt,
-        this.updatedAt});
+      this.translationableType,
+      this.translationableId,
+      this.locale,
+      this.key,
+      this.value,
+      this.createdAt,
+      this.updatedAt});
 
   Translations.fromJson(Map<String, dynamic> json) {
     id = json['id'];

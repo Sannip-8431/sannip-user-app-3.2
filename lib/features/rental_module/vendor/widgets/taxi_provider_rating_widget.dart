@@ -10,7 +10,12 @@ class TaxiProviderRatingWidget extends StatelessWidget {
   final int? ratingCount;
   final int? reviewCommentCount;
   final List<int>? ratings;
-  const TaxiProviderRatingWidget({super.key, this.averageRating, this.ratingCount, this.reviewCommentCount, this.ratings});
+  const TaxiProviderRatingWidget(
+      {super.key,
+      this.averageRating,
+      this.ratingCount,
+      this.reviewCommentCount,
+      this.ratings});
 
   @override
   Widget build(BuildContext context) {
@@ -38,54 +43,71 @@ class TaxiProviderRatingWidget extends StatelessWidget {
       Expanded(
         flex: 2,
         child: Column(children: [
-          Text('overall_rating'.tr, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault)),
-
+          Text('overall_rating'.tr,
+              style:
+                  robotoMedium.copyWith(fontSize: Dimensions.fontSizeDefault)),
           Padding(
-            padding: const EdgeInsets.only(bottom: Dimensions.paddingSizeExtraSmall, top: Dimensions.paddingSizeSmall),
+            padding: const EdgeInsets.only(
+                bottom: Dimensions.paddingSizeExtraSmall,
+                top: Dimensions.paddingSizeSmall),
             child: Text(
               averageRating?.toStringAsFixed(1) ?? '0.0',
-              style: robotoBold.copyWith(fontSize: 30, color: Theme.of(context).primaryColor),
+              style: robotoBold.copyWith(
+                  fontSize: 30, color: Theme.of(context).primaryColor),
             ),
           ),
-
-          TaxiRatingBar(rating: averageRating ?? 0, ratingCount: null, size: 18),
+          TaxiRatingBar(
+              rating: averageRating ?? 0, ratingCount: null, size: 18),
           const SizedBox(height: 6),
-
-          RichText(text: TextSpan(children: <TextSpan>[
+          RichText(
+              text: TextSpan(children: <TextSpan>[
             TextSpan(
                 text: '${ratingCount ?? 0} ',
-                style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall, color: Colors.grey.shade900)
-            ),
+                style: robotoMedium.copyWith(
+                    fontSize: Dimensions.fontSizeSmall,
+                    color: Colors.grey.shade900)),
             TextSpan(
                 text: 'ratings'.tr,
-                style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall, color: Colors.grey.shade700)
-            )
+                style: robotoRegular.copyWith(
+                    fontSize: Dimensions.fontSizeSmall,
+                    color: Colors.grey.shade700))
           ])),
         ]),
       ),
-
       Container(
-        margin: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-        width: 1, height: 100,
+        margin: const EdgeInsets.symmetric(
+            horizontal: Dimensions.paddingSizeDefault),
+        width: 1,
+        height: 100,
         color: Theme.of(context).hintColor.withValues(alpha: 0.5),
       ),
-
       Expanded(
         flex: 3,
         child: Column(children: [
-          RatingProgressWidget(ratingNumber: '5', ratingPercent: percentages[0], progressValue: progressForEach[0]),
+          RatingProgressWidget(
+              ratingNumber: '5',
+              ratingPercent: percentages[0],
+              progressValue: progressForEach[0]),
           const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
-          RatingProgressWidget(ratingNumber: '4', ratingPercent: percentages[1], progressValue: progressForEach[1]),
+          RatingProgressWidget(
+              ratingNumber: '4',
+              ratingPercent: percentages[1],
+              progressValue: progressForEach[1]),
           const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
-          RatingProgressWidget(ratingNumber: '3', ratingPercent: percentages[2], progressValue: progressForEach[2]),
+          RatingProgressWidget(
+              ratingNumber: '3',
+              ratingPercent: percentages[2],
+              progressValue: progressForEach[2]),
           const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
-          RatingProgressWidget(ratingNumber: '2', ratingPercent: percentages[3], progressValue: progressForEach[3]),
+          RatingProgressWidget(
+              ratingNumber: '2',
+              ratingPercent: percentages[3],
+              progressValue: progressForEach[3]),
           const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
-          RatingProgressWidget(ratingNumber: '1', ratingPercent: percentages[4], progressValue: progressForEach[4]),
+          RatingProgressWidget(
+              ratingNumber: '1',
+              ratingPercent: percentages[4],
+              progressValue: progressForEach[4]),
         ]),
       ),
     ]);
@@ -100,4 +122,3 @@ class TaxiProviderRatingWidget extends StatelessWidget {
     return progressList;
   }
 }
-

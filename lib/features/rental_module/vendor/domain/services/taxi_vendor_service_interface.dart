@@ -7,9 +7,19 @@ import 'package:sixam_mart/features/rental_module/vendor/domain/models/vendor_ve
 abstract class TaxiVendorServiceInterface {
   Future<TaxiVendorModel?> getTaxiVendorDetails({required int id});
   Future<List<VendorBannerModel>?> getVendorBannerList({required int id});
-  Future<VendorVehiclesModel?> getVendorVehicleList({required int offset, required int providerId, int? categoryId, String? searchName, double? minPrice, double? maxPrice, List<int>? brandIds, List<String>? seatingCapacity,
-    bool? airCondition, bool? nonAirCondition});
+  Future<VendorVehiclesModel?> getVendorVehicleList(
+      {required int offset,
+      required int providerId,
+      int? categoryId,
+      String? searchName,
+      double? minPrice,
+      double? maxPrice,
+      List<int>? brandIds,
+      List<String>? seatingCapacity,
+      bool? airCondition,
+      bool? nonAirCondition});
   Future<VendorVehicleCategoryModel?> getVendorVehicleCategoryList();
-  Future<TaxiProviderReviewModel?> getTaxiProviderReviewDetails({int? offset, required int id});
+  Future<TaxiProviderReviewModel?> getTaxiProviderReviewDetails(
+      {int? offset, required int id});
 // Future<SelectedCarsModel?> getVehicleSearchItemList({required int offset, String? searchText, required int? providerId});
 }

@@ -13,7 +13,8 @@ class BannerService implements BannerServiceInterface {
 
   @override
   Future<BannerModel?> getBannerList({required DataSourceEnum source}) async {
-    return await bannerRepositoryInterface.getList(isBanner: true, source: source);
+    return await bannerRepositoryInterface.getList(
+        isBanner: true, source: source);
   }
 
   @override
@@ -27,8 +28,10 @@ class BannerService implements BannerServiceInterface {
   }
 
   @override
-  Future<ParcelOtherBannerModel?> getParcelOtherBannerList({required DataSourceEnum source}) async {
-    return await bannerRepositoryInterface.getList(isParcelOtherBanner: true, source: source);
+  Future<ParcelOtherBannerModel?> getParcelOtherBannerList(
+      {required DataSourceEnum source}) async {
+    return await bannerRepositoryInterface.getList(
+        isParcelOtherBanner: true, source: source);
   }
 
   @override
@@ -39,12 +42,12 @@ class BannerService implements BannerServiceInterface {
   @override
   List<int?> moduleIdList() {
     List<int?> moduleIdList = [];
-    for (ZoneData zone in AddressHelper.getUserAddressFromSharedPref()!.zoneData!) {
+    for (ZoneData zone
+        in AddressHelper.getUserAddressFromSharedPref()!.zoneData!) {
       for (Modules module in zone.modules ?? []) {
         moduleIdList.add(module.id);
       }
     }
     return moduleIdList;
   }
-
 }

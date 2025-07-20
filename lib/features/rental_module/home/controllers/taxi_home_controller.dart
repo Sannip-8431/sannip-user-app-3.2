@@ -71,7 +71,8 @@ class TaxiHomeController extends GetxController implements GetxService {
   TaxiBrandModel? get taxiBrandModel => _taxiBrandModel;
 
   List<PopularCarSuggestionModel>? _popularCarSuggestionModelList = [];
-  List<PopularCarSuggestionModel>? get popularCarSuggestionModelList => _popularCarSuggestionModelList;
+  List<PopularCarSuggestionModel>? get popularCarSuggestionModelList =>
+      _popularCarSuggestionModelList;
 
   void initFilterSetup() {
     _tripType = 'hourly';
@@ -94,18 +95,21 @@ class TaxiHomeController extends GetxController implements GetxService {
     update();
   }
 
-  Future<void> getTopRatedCarList(int offset, bool reload, {DataSourceEnum source = DataSourceEnum.local}) async {
-    if(reload) {
+  Future<void> getTopRatedCarList(int offset, bool reload,
+      {DataSourceEnum source = DataSourceEnum.local}) async {
+    if (reload) {
       _topRatedCarsModel = null;
       update();
     }
     TopRatedCarsModel? carsModel;
-    if(source == DataSourceEnum.local && offset == 1) {
-      carsModel = await taxiHomeServiceInterface.getTopRatedCarList(offset, source: DataSourceEnum.local);
+    if (source == DataSourceEnum.local && offset == 1) {
+      carsModel = await taxiHomeServiceInterface.getTopRatedCarList(offset,
+          source: DataSourceEnum.local);
       _prepareTopRatedCarModel(carsModel, offset);
       getTopRatedCarList(offset, false, source: DataSourceEnum.client);
     } else {
-      carsModel = await taxiHomeServiceInterface.getTopRatedCarList(offset, source: DataSourceEnum.client);
+      carsModel = await taxiHomeServiceInterface.getTopRatedCarList(offset,
+          source: DataSourceEnum.client);
       _prepareTopRatedCarModel(carsModel, offset);
     }
   }
@@ -114,7 +118,7 @@ class TaxiHomeController extends GetxController implements GetxService {
     if (carsModel != null) {
       if (offset == 1) {
         _topRatedCarsModel = carsModel;
-      }else {
+      } else {
         _topRatedCarsModel!.totalSize = carsModel.totalSize;
         _topRatedCarsModel!.offset = carsModel.offset;
         _topRatedCarsModel!.vehicles!.addAll(carsModel.vehicles!);
@@ -123,50 +127,61 @@ class TaxiHomeController extends GetxController implements GetxService {
     }
   }
 
-  Future<void> getTaxiBannerList(bool reload, {DataSourceEnum source = DataSourceEnum.local}) async {
-    if(reload) {
+  Future<void> getTaxiBannerList(bool reload,
+      {DataSourceEnum source = DataSourceEnum.local}) async {
+    if (reload) {
       _taxiBannerModel = null;
       update();
     }
-    if(source == DataSourceEnum.local) {
-      _taxiBannerModel = await taxiHomeServiceInterface.getTaxiBannerList(source: DataSourceEnum.local);
+    if (source == DataSourceEnum.local) {
+      _taxiBannerModel = await taxiHomeServiceInterface.getTaxiBannerList(
+          source: DataSourceEnum.local);
       update();
       getTaxiBannerList(false, source: DataSourceEnum.client);
     } else {
-      _taxiBannerModel = await taxiHomeServiceInterface.getTaxiBannerList(source: DataSourceEnum.client);
+      _taxiBannerModel = await taxiHomeServiceInterface.getTaxiBannerList(
+          source: DataSourceEnum.client);
       update();
     }
   }
 
-  Future<void> getTaxiCouponList(bool reload, {DataSourceEnum source = DataSourceEnum.local}) async {
-    if(reload) {
+  Future<void> getTaxiCouponList(bool reload,
+      {DataSourceEnum source = DataSourceEnum.local}) async {
+    if (reload) {
       _taxiCouponList = null;
       update();
     }
-    if(source == DataSourceEnum.local) {
-      _taxiCouponList = await taxiHomeServiceInterface.getTaxiCouponList(source: DataSourceEnum.local);
+    if (source == DataSourceEnum.local) {
+      _taxiCouponList = await taxiHomeServiceInterface.getTaxiCouponList(
+          source: DataSourceEnum.local);
       update();
       getTaxiCouponList(false, source: DataSourceEnum.client);
     } else {
-      _taxiCouponList = await taxiHomeServiceInterface.getTaxiCouponList(source: DataSourceEnum.client);
+      _taxiCouponList = await taxiHomeServiceInterface.getTaxiCouponList(
+          source: DataSourceEnum.client);
       update();
     }
   }
 
   Future<void> getVehicleDetails(int vehicleId) async {
     _vehicleDetailsModel = null;
-    _vehicleDetailsModel = await taxiHomeServiceInterface.getVehicleDetails(id: vehicleId);
+    _vehicleDetailsModel =
+        await taxiHomeServiceInterface.getVehicleDetails(id: vehicleId);
     update();
   }
 
-  Future<void> getSelectedCars({String? name, required int offset, bool reload = false, bool fromFilter = false}) async {
-    if(offset == 1) {
+  Future<void> getSelectedCars(
+      {String? name,
+      required int offset,
+      bool reload = false,
+      bool fromFilter = false}) async {
+    if (offset == 1) {
       _selectedCarsModel = null;
     }
-    if(reload) {
+    if (reload) {
       update();
     }
-    if(name != null && name.isNotEmpty) {
+    if (name != null && name.isNotEmpty) {
       if (!_searchHistoryList.contains(name)) {
         _searchHistoryList.insert(0, name);
       }
@@ -174,14 +189,31 @@ class TaxiHomeController extends GetxController implements GetxService {
       taxiHomeServiceInterface.saveSearchHistory(_searchHistoryList);
     }
     _tripType = Get.find<TaxiLocationController>().tripType;
-    String pickupTime = DateConverter.formatDate(Get.find<TaxiLocationController>().finalTripDateTime!);
-    LatLng pickupLocation = LatLng(double.parse(Get.find<TaxiLocationController>().fromAddress!.latitude!.toString()), double.parse(Get.find<TaxiLocationController>().fromAddress!.longitude!.toString()));
+    String pickupTime = DateConverter.formatDate(
+        Get.find<TaxiLocationController>().finalTripDateTime!);
+    LatLng pickupLocation = LatLng(
+        double.parse(Get.find<TaxiLocationController>()
+            .fromAddress!
+            .latitude!
+            .toString()),
+        double.parse(Get.find<TaxiLocationController>()
+            .fromAddress!
+            .longitude!
+            .toString()));
 
     SelectedCarsModel? carsModel;
     carsModel = await taxiHomeServiceInterface.getSelectedCars(
-      name: name, offset: offset, tripType: _tripType, minPrice: _minPrice, maxPrice: _maxPrice,
-      brandIds: _brandIds, seatingCapacity: _selectedSeatingCapacity, airCondition: _airCondition,
-      nonAirCondition: _nonAirCondition, categoryIds: _selectedCategoryIds, pickupTime: pickupTime,
+      name: name,
+      offset: offset,
+      tripType: _tripType,
+      minPrice: _minPrice,
+      maxPrice: _maxPrice,
+      brandIds: _brandIds,
+      seatingCapacity: _selectedSeatingCapacity,
+      airCondition: _airCondition,
+      nonAirCondition: _nonAirCondition,
+      categoryIds: _selectedCategoryIds,
+      pickupTime: pickupTime,
       pickupLocation: pickupLocation,
     );
 
@@ -194,7 +226,7 @@ class TaxiHomeController extends GetxController implements GetxService {
         _selectedCarsModel!.vehicles!.addAll(carsModel.vehicles!);
       }
 
-      if(!fromFilter) {
+      if (!fromFilter) {
         _maxPrice = _selectedCarsModel!.maxPrice ?? 0;
       }
     }
@@ -203,7 +235,8 @@ class TaxiHomeController extends GetxController implements GetxService {
 
   Future<List<String>?> getSearchSuggestions(String searchText) async {
     List<String>? vehicles = <String>[];
-    vehicles = await taxiHomeServiceInterface.getSearchSuggestions(name: searchText);
+    vehicles =
+        await taxiHomeServiceInterface.getSearchSuggestions(name: searchText);
     return vehicles;
   }
 
@@ -228,15 +261,16 @@ class TaxiHomeController extends GetxController implements GetxService {
 
   Future<void> getVehicleCategoryList() async {
     VehicleCategoryModel? categoryModel;
-    categoryModel = await taxiHomeServiceInterface.getVehicleCategories(offset: 1);
-    if(categoryModel != null) {
+    categoryModel =
+        await taxiHomeServiceInterface.getVehicleCategories(offset: 1);
+    if (categoryModel != null) {
       _vehicleCategoryModel = categoryModel;
     }
     update();
   }
 
   Future<void> getTaxiBrandList(int offset, {bool reload = true}) async {
-    if(reload) {
+    if (reload) {
       _taxiBrandModel = null;
       update();
     }
@@ -245,14 +279,13 @@ class TaxiHomeController extends GetxController implements GetxService {
     if (brand != null) {
       if (offset == 1) {
         _taxiBrandModel = brand;
-      }else {
+      } else {
         _taxiBrandModel!.totalSize = brand.totalSize;
         _taxiBrandModel!.offset = brand.offset;
         _taxiBrandModel!.brands!.addAll(brand.brands!);
       }
       update();
     }
-
   }
 
   void selectTripFilter(String type) {
@@ -263,14 +296,14 @@ class TaxiHomeController extends GetxController implements GetxService {
   void setMinAndMaxPrice(double lower, double upper, {bool willUpdate = true}) {
     _minPrice = lower;
     _maxPrice = upper;
-    if(willUpdate) {
+    if (willUpdate) {
       update();
     }
   }
 
   void addOrRemoveBrand(int id, {bool isRemove = false}) {
-    if(_brandIds.contains(id)) {
-      _brandIds.removeWhere((i)=> (i==id));
+    if (_brandIds.contains(id)) {
+      _brandIds.removeWhere((i) => (i == id));
     } else {
       _brandIds.add(id);
     }
@@ -278,8 +311,8 @@ class TaxiHomeController extends GetxController implements GetxService {
   }
 
   void addOrRemoveSeatingCapacity(String count) {
-    if(_selectedSeatingCapacity.contains(count)) {
-      _selectedSeatingCapacity.removeWhere((i)=> (i==count));
+    if (_selectedSeatingCapacity.contains(count)) {
+      _selectedSeatingCapacity.removeWhere((i) => (i == count));
     } else {
       _selectedSeatingCapacity.add(count);
     }
@@ -287,8 +320,8 @@ class TaxiHomeController extends GetxController implements GetxService {
   }
 
   void addOrRemoveCategory(int id) {
-    if(_selectedCategoryIds.contains(id)) {
-      _selectedCategoryIds.removeWhere((i)=> (i==id));
+    if (_selectedCategoryIds.contains(id)) {
+      _selectedCategoryIds.removeWhere((i) => (i == id));
     } else {
       _selectedCategoryIds.add(id);
     }
@@ -307,14 +340,14 @@ class TaxiHomeController extends GetxController implements GetxService {
 
   Future<void> getPopularSearchList() async {
     _popularCarSuggestionModelList = [];
-    List<PopularCarSuggestionModel>? list = await taxiHomeServiceInterface.getPopularSearchList();
-    if(list != null) {
-      for (int i=0; i<(list.length>10 ? 10 : list.length); i++) {
+    List<PopularCarSuggestionModel>? list =
+        await taxiHomeServiceInterface.getPopularSearchList();
+    if (list != null) {
+      for (int i = 0; i < (list.length > 10 ? 10 : list.length); i++) {
         _popularCarSuggestionModelList!.add(list[i]);
       }
     }
     update();
-
   }
 
   // Future<void> getHistoryTripList(int offset, bool reload) async {
@@ -344,5 +377,4 @@ class TaxiHomeController extends GetxController implements GetxService {
   //     update();
   //   }
   // }
-
 }

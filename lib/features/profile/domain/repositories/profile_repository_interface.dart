@@ -6,6 +6,7 @@ import 'package:sixam_mart/interfaces/repository_interface.dart';
 
 abstract class ProfileRepositoryInterface extends RepositoryInterface {
   //Future<dynamic> updateProfile(UserInfoModel userInfoModel, XFile? data, String token);
-  Future<ResponseModel> updateProfile(UpdateUserModel userInfoModel, XFile? data, String token);
+  Future<ResponseModel> updateProfile(
+      UpdateUserModel userInfoModel, XFile? data, String token);
   Future<dynamic> changePassword(UserInfoModel userInfoModel);
 }

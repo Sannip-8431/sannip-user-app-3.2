@@ -55,58 +55,58 @@ class TripDetailsModel {
 
   TripDetailsModel(
       {this.id,
-        this.userId,
-        this.providerId,
-        this.zoneId,
-        this.moduleId,
-        this.cashBackId,
-        this.tripAmount,
-        this.discountOnTrip,
-        this.discountOnTripBy,
-        this.couponDiscountAmount,
-        this.couponDiscountBy,
-        this.couponCode,
-        this.tripStatus,
-        this.paymentStatus,
-        this.paymentMethod,
-        this.transactionReference,
-        this.taxAmount,
-        this.taxStatus,
-        this.taxPercentage,
-        this.tripType,
-        this.additionalCharge,
-        this.partiallyPaidAmount,
-        this.distance,
-        this.estimatedHours,
-        this.refBonusAmount,
-        this.canceledBy,
-        this.cancellationReason,
-        this.pickupLocation,
-        this.destinationLocation,
-        this.tripNote,
-        this.callback,
-        this.otp,
-        this.isGuest,
-        this.edited,
-        this.checked,
-        this.scheduled,
-        this.scheduleAt,
-        this.pending,
-        this.confirmed,
-        this.ongoing,
-        this.completed,
-        this.canceled,
-        this.paymentFailed,
-        this.quantity,
-        this.estimatedTripEndTime,
-        this.createdAt,
-        this.updatedAt,
-        this.pickupZoneId,
-        this.attachment,
-        this.userInfo,
-        this.tripDetails,
-        this.vehicleIdentity,
-        this.provider});
+      this.userId,
+      this.providerId,
+      this.zoneId,
+      this.moduleId,
+      this.cashBackId,
+      this.tripAmount,
+      this.discountOnTrip,
+      this.discountOnTripBy,
+      this.couponDiscountAmount,
+      this.couponDiscountBy,
+      this.couponCode,
+      this.tripStatus,
+      this.paymentStatus,
+      this.paymentMethod,
+      this.transactionReference,
+      this.taxAmount,
+      this.taxStatus,
+      this.taxPercentage,
+      this.tripType,
+      this.additionalCharge,
+      this.partiallyPaidAmount,
+      this.distance,
+      this.estimatedHours,
+      this.refBonusAmount,
+      this.canceledBy,
+      this.cancellationReason,
+      this.pickupLocation,
+      this.destinationLocation,
+      this.tripNote,
+      this.callback,
+      this.otp,
+      this.isGuest,
+      this.edited,
+      this.checked,
+      this.scheduled,
+      this.scheduleAt,
+      this.pending,
+      this.confirmed,
+      this.ongoing,
+      this.completed,
+      this.canceled,
+      this.paymentFailed,
+      this.quantity,
+      this.estimatedTripEndTime,
+      this.createdAt,
+      this.updatedAt,
+      this.pickupZoneId,
+      this.attachment,
+      this.userInfo,
+      this.tripDetails,
+      this.vehicleIdentity,
+      this.provider});
 
   TripDetailsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -162,9 +162,8 @@ class TripDetailsModel {
     updatedAt = json['updated_at'];
     pickupZoneId = json['pickup_zone_id'];
     attachment = json['attachment'];
-    userInfo = json['user_info'] != null
-        ? UserInfo.fromJson(json['user_info'])
-        : null;
+    userInfo =
+        json['user_info'] != null ? UserInfo.fromJson(json['user_info']) : null;
     if (json['trip_details'] != null) {
       tripDetails = <TripDetails>[];
       json['trip_details'].forEach((v) {
@@ -177,9 +176,8 @@ class TripDetailsModel {
         vehicleIdentity!.add(VehicleIdentity.fromJson(v));
       });
     }
-    provider = json['provider'] != null
-        ? Provider.fromJson(json['provider'])
-        : null;
+    provider =
+        json['provider'] != null ? Provider.fromJson(json['provider']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -286,8 +284,8 @@ class UserInfo {
 
   UserInfo(
       {this.contactPersonName,
-        this.contactPersonNumber,
-        this.contactPersonEmail});
+      this.contactPersonNumber,
+      this.contactPersonEmail});
 
   UserInfo.fromJson(Map<String, dynamic> json) {
     contactPersonName = json['contact_person_name'];
@@ -312,7 +310,13 @@ class TripDetails {
   double? calculatedPrice;
   List<String>? licensePlateNumber;
 
-  TripDetails({this.id, this.tripId, this.quantity, this.vehicleDetails, this.calculatedPrice, this.licensePlateNumber});
+  TripDetails(
+      {this.id,
+      this.tripId,
+      this.quantity,
+      this.vehicleDetails,
+      this.calculatedPrice,
+      this.licensePlateNumber});
 
   TripDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -378,45 +382,45 @@ class VehicleDetails {
   List<String>? imagesFullUrl;
   List<String>? documentsFullUrl;
 
-  VehicleDetails(
-      {this.id,
-        this.name,
-        this.description,
-        this.thumbnail,
-        this.images,
-        this.providerId,
-        this.brandId,
-        this.categoryId,
-        this.model,
-        this.type,
-        this.engineCapacity,
-        this.enginePower,
-        this.seatingCapacity,
-        this.airCondition,
-        this.fuelType,
-        this.transmissionType,
-        this.multipleVehicles,
-        this.tripHourly,
-        this.tripDistance,
-        this.hourlyPrice,
-        this.distancePrice,
-        this.discountType,
-        this.discountPrice,
-        this.tag,
-        this.documents,
-        this.status,
-        this.newTag,
-        this.totalTrip,
-        this.avgRating,
-        this.totalReviews,
-        this.createdAt,
-        this.updatedAt,
-        this.zoneId,
-        // this.rating,
-        this.thumbnailFullUrl,
-        this.imagesFullUrl,
-        this.documentsFullUrl,
-        });
+  VehicleDetails({
+    this.id,
+    this.name,
+    this.description,
+    this.thumbnail,
+    this.images,
+    this.providerId,
+    this.brandId,
+    this.categoryId,
+    this.model,
+    this.type,
+    this.engineCapacity,
+    this.enginePower,
+    this.seatingCapacity,
+    this.airCondition,
+    this.fuelType,
+    this.transmissionType,
+    this.multipleVehicles,
+    this.tripHourly,
+    this.tripDistance,
+    this.hourlyPrice,
+    this.distancePrice,
+    this.discountType,
+    this.discountPrice,
+    this.tag,
+    this.documents,
+    this.status,
+    this.newTag,
+    this.totalTrip,
+    this.avgRating,
+    this.totalReviews,
+    this.createdAt,
+    this.updatedAt,
+    this.zoneId,
+    // this.rating,
+    this.thumbnailFullUrl,
+    this.imagesFullUrl,
+    this.documentsFullUrl,
+  });
 
   VehicleDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -447,7 +451,9 @@ class VehicleDetails {
     status = json['status'];
     newTag = json['new_tag'];
     totalTrip = json['total_trip'];
-    avgRating = json['avg_rating'] != null ? double.parse(json['avg_rating'].toString()) : null;
+    avgRating = json['avg_rating'] != null
+        ? double.parse(json['avg_rating'].toString())
+        : null;
     // avgRating = json['avg_rating']?.toDouble();
     totalReviews = json['total_reviews'];
     createdAt = json['created_at'];
@@ -524,23 +530,23 @@ class VehicleIdentity {
 
   VehicleIdentity(
       {this.id,
-        this.tripId,
-        this.vehicleId,
-        this.vehicleIdentityId,
-        this.vehicleDriverId,
-        this.createdAt,
-        this.updatedAt,
-        this.estimatedTripEndTime,
-        this.tripDetailsId,
-        this.licensePlateNumber,
-        this.vehicleName,
-        this.vehicleThumbnail,
-        this.rating,
-        this.comment,
-        this.reply,
-        this.driverData,
-        this.vehicleIdentityData,
-        this.vehicles});
+      this.tripId,
+      this.vehicleId,
+      this.vehicleIdentityId,
+      this.vehicleDriverId,
+      this.createdAt,
+      this.updatedAt,
+      this.estimatedTripEndTime,
+      this.tripDetailsId,
+      this.licensePlateNumber,
+      this.vehicleName,
+      this.vehicleThumbnail,
+      this.rating,
+      this.comment,
+      this.reply,
+      this.driverData,
+      this.vehicleIdentityData,
+      this.vehicles});
 
   VehicleIdentity.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -564,9 +570,8 @@ class VehicleIdentity {
     vehicleIdentityData = json['vehicle_identity_data'] != null
         ? VehicleIdentityData.fromJson(json['vehicle_identity_data'])
         : null;
-    vehicles = json['vehicles'] != null
-        ? Vehicles.fromJson(json['vehicles'])
-        : null;
+    vehicles =
+        json['vehicles'] != null ? Vehicles.fromJson(json['vehicles']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -608,15 +613,15 @@ class DriverData {
   String? image;
   String? imageFullUrl;
 
-  DriverData(
-      {this.id,
-        this.firstName,
-        this.lastName,
-        this.email,
-        this.phone,
-        this.image,
-        this.imageFullUrl,
-        });
+  DriverData({
+    this.id,
+    this.firstName,
+    this.lastName,
+    this.email,
+    this.phone,
+    this.image,
+    this.imageFullUrl,
+  });
 
   DriverData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -672,15 +677,15 @@ class Vehicles {
   // List<Null>? documentsFullUrl;
   // List<Null>? storage;
 
-  Vehicles(
-      {this.id,
-        this.name,
-        this.thumbnail,
-        this.thumbnailFullUrl,
-        this.imagesFullUrl,
-        // this.documentsFullUrl,
-        // this.storage
-      });
+  Vehicles({
+    this.id,
+    this.name,
+    this.thumbnail,
+    this.thumbnailFullUrl,
+    this.imagesFullUrl,
+    // this.documentsFullUrl,
+    // this.storage
+  });
 
   Vehicles.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -714,8 +719,7 @@ class Vehicles {
     data['thumbnail'] = thumbnail;
     data['thumbnail_full_url'] = thumbnailFullUrl;
     if (imagesFullUrl != null) {
-      data['images_full_url'] =
-          imagesFullUrl!.map((v) => v).toList();
+      data['images_full_url'] = imagesFullUrl!.map((v) => v).toList();
     }
     // if (this.documentsFullUrl != null) {
     //   data['documents_full_url'] =
@@ -750,30 +754,30 @@ class Provider {
 
   Provider(
       {this.id,
-        this.name,
-        this.logo,
-        this.coverPhoto,
-        this.rating,
-        this.phone,
-        this.totalVehicles,
-        this.avgRating,
-        this.ratingCount,
-        this.gstStatus,
-        this.gstCode,
-        this.chat,
-        this.reviewSection,
-        this.logoFullUrl,
-        this.coverPhotoFullUrl,
-        this.metaImageFullUrl,
-        this.translations,
-        this.storage});
+      this.name,
+      this.logo,
+      this.coverPhoto,
+      this.rating,
+      this.phone,
+      this.totalVehicles,
+      this.avgRating,
+      this.ratingCount,
+      this.gstStatus,
+      this.gstCode,
+      this.chat,
+      this.reviewSection,
+      this.logoFullUrl,
+      this.coverPhotoFullUrl,
+      this.metaImageFullUrl,
+      this.translations,
+      this.storage});
 
   Provider.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     logo = json['logo'];
     coverPhoto = json['cover_photo'];
-    if(json['rating'] != null) {
+    if (json['rating'] != null) {
       rating = json['rating'].cast<int>();
     }
     phone = json['phone'];
@@ -842,13 +846,13 @@ class Translations {
 
   Translations(
       {this.id,
-        this.translationableType,
-        this.translationableId,
-        this.locale,
-        this.key,
-        this.value,
-        this.createdAt,
-        this.updatedAt});
+      this.translationableType,
+      this.translationableId,
+      this.locale,
+      this.key,
+      this.value,
+      this.createdAt,
+      this.updatedAt});
 
   Translations.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -886,12 +890,12 @@ class Storage {
 
   Storage(
       {this.id,
-        this.dataType,
-        this.dataId,
-        this.key,
-        this.value,
-        this.createdAt,
-        this.updatedAt});
+      this.dataType,
+      this.dataId,
+      this.key,
+      this.value,
+      this.createdAt,
+      this.updatedAt});
 
   Storage.fromJson(Map<String, dynamic> json) {
     id = json['id'];

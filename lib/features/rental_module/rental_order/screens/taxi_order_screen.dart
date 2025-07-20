@@ -15,7 +15,8 @@ class TaxiOrderScreen extends StatefulWidget {
   State<TaxiOrderScreen> createState() => _TaxiOrderScreenState();
 }
 
-class _TaxiOrderScreenState extends State<TaxiOrderScreen> with TickerProviderStateMixin {
+class _TaxiOrderScreenState extends State<TaxiOrderScreen>
+    with TickerProviderStateMixin {
   TabController? _tabController;
 
   @override
@@ -24,7 +25,7 @@ class _TaxiOrderScreenState extends State<TaxiOrderScreen> with TickerProviderSt
 
     _tabController = TabController(length: 2, initialIndex: 0, vsync: this);
 
-    if(AuthHelper.isLoggedIn()) {
+    if (AuthHelper.isLoggedIn()) {
       Get.find<TaxiOrderController>().getTripList(1, isRunning: true);
       Get.find<TaxiOrderController>().getTripList(1, isRunning: false);
     }
@@ -36,31 +37,35 @@ class _TaxiOrderScreenState extends State<TaxiOrderScreen> with TickerProviderSt
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: CustomAppBar(title: 'trip'.tr, backButton: false),
-      body: isLoggedIn ? Column(children: [
-
-        TabBar(
-          controller: _tabController,
-          indicatorColor: Theme.of(context).primaryColor,
-          indicatorWeight: 3,
-          labelColor: Theme.of(context).primaryColor,
-          unselectedLabelColor: Theme.of(context).disabledColor,
-          unselectedLabelStyle: robotoRegular.copyWith(color: Theme.of(context).disabledColor, fontSize: Dimensions.fontSizeSmall),
-          labelStyle: robotoBold.copyWith(fontSize: Dimensions.fontSizeSmall, color: Theme.of(context).primaryColor),
-          tabs: [
-            Tab(text: 'running'.tr),
-            Tab(text: 'history'.tr),
-          ],
-        ),
-
-        Expanded(child: TabBarView(
-          controller: _tabController,
-          children: const [
-            TripOrderViewWidget(isRunning: true),
-            TripOrderViewWidget(isRunning: false),
-          ],
-        )),
-
-      ]) : const TaxiGuestTrackOrderInputViewWidget(),
+      body: isLoggedIn
+          ? Column(children: [
+              TabBar(
+                controller: _tabController,
+                indicatorColor: Theme.of(context).primaryColor,
+                indicatorWeight: 3,
+                labelColor: Theme.of(context).primaryColor,
+                unselectedLabelColor: Theme.of(context).disabledColor,
+                unselectedLabelStyle: robotoRegular.copyWith(
+                    color: Theme.of(context).disabledColor,
+                    fontSize: Dimensions.fontSizeSmall),
+                labelStyle: robotoBold.copyWith(
+                    fontSize: Dimensions.fontSizeSmall,
+                    color: Theme.of(context).primaryColor),
+                tabs: [
+                  Tab(text: 'running'.tr),
+                  Tab(text: 'history'.tr),
+                ],
+              ),
+              Expanded(
+                  child: TabBarView(
+                controller: _tabController,
+                children: const [
+                  TripOrderViewWidget(isRunning: true),
+                  TripOrderViewWidget(isRunning: false),
+                ],
+              )),
+            ])
+          : const TaxiGuestTrackOrderInputViewWidget(),
     );
   }
 }

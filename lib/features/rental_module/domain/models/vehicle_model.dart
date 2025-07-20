@@ -51,5 +51,3 @@ class VehicleDetailsModel {
     required this.featureName,
   });
 }
-
-

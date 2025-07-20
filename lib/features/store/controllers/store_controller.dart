@@ -133,23 +133,32 @@ class StoreController extends GetxController implements GetxService {
   double _upperValue = 0;
   double get upperValue => _upperValue;
 
-  double getRestaurantDistance(LatLng storeLatLng){
+  double getRestaurantDistance(LatLng storeLatLng) {
     double distance = 0;
-    distance = Geolocator.distanceBetween(storeLatLng.latitude, storeLatLng.longitude,
-        double.parse(AddressHelper.getUserAddressFromSharedPref()!.latitude!), double.parse(AddressHelper.getUserAddressFromSharedPref()!.longitude!)) / 1000;
+    distance = Geolocator.distanceBetween(
+            storeLatLng.latitude,
+            storeLatLng.longitude,
+            double.parse(
+                AddressHelper.getUserAddressFromSharedPref()!.latitude!),
+            double.parse(
+                AddressHelper.getUserAddressFromSharedPref()!.longitude!)) /
+        1000;
     return distance;
   }
 
-  String filteringUrl(String slug){
+  String filteringUrl(String slug) {
     return storeServiceInterface.filterRestaurantLinkUrl(slug, _store!);
   }
 
-  void pickPrescriptionImage({required bool isRemove, required bool isCamera}) async {
-    if(isRemove) {
+  void pickPrescriptionImage(
+      {required bool isRemove, required bool isCamera}) async {
+    if (isRemove) {
       _pickedPrescriptions = [];
-    }else {
-      XFile? xFile = await ImagePicker().pickImage(source: isCamera ? ImageSource.camera : ImageSource.gallery, imageQuality: 50);
-      if(xFile != null) {
+    } else {
+      XFile? xFile = await ImagePicker().pickImage(
+          source: isCamera ? ImageSource.camera : ImageSource.gallery,
+          imageQuality: 50);
+      if (xFile != null) {
         _pickedPrescriptions.add(xFile);
       }
       update();
@@ -161,28 +170,30 @@ class StoreController extends GetxController implements GetxService {
     update();
   }
 
-  void changeFavVisibility(){
+  void changeFavVisibility() {
     _showFavButton = !_showFavButton;
     update();
   }
 
-  void hideAnimation(){
+  void hideAnimation() {
     _currentState = false;
   }
 
-  void showButtonAnimation(){
+  void showButtonAnimation() {
     Future.delayed(const Duration(seconds: 3), () {
       _currentState = true;
       update();
     });
   }
 
-  Future<void> getRestaurantRecommendedItemList(int? storeId, bool reload) async {
-    if(reload) {
+  Future<void> getRestaurantRecommendedItemList(
+      int? storeId, bool reload) async {
+    if (reload) {
       _storeModel = null;
       update();
     }
-    RecommendedItemModel? recommendedItemModel = await storeServiceInterface.getStoreRecommendedItemList(storeId);
+    RecommendedItemModel? recommendedItemModel =
+        await storeServiceInterface.getStoreRecommendedItemList(storeId);
     if (recommendedItemModel != null) {
       _recommendedItemModel = recommendedItemModel;
     }
@@ -190,8 +201,13 @@ class StoreController extends GetxController implements GetxService {
   }
 
   Future<void> getCartStoreSuggestedItemList(int? storeId) async {
-    CartSuggestItemModel? cartSuggestItemModel = await storeServiceInterface.getCartStoreSuggestedItemList(storeId, Get.find<LocalizationController>().locale.languageCode,
-        ModuleHelper.getModule(), ModuleHelper.getCacheModule()?.id, ModuleHelper.getModule()?.id);
+    CartSuggestItemModel? cartSuggestItemModel =
+        await storeServiceInterface.getCartStoreSuggestedItemList(
+            storeId,
+            Get.find<LocalizationController>().locale.languageCode,
+            ModuleHelper.getModule(),
+            ModuleHelper.getCacheModule()?.id,
+            ModuleHelper.getModule()?.id);
     if (cartSuggestItemModel != null) {
       _cartSuggestItemModel = cartSuggestItemModel;
     }
@@ -199,7 +215,8 @@ class StoreController extends GetxController implements GetxService {
   }
 
   Future<void> getStoreBannerList(int? storeId) async {
-    List<StoreBannerModel>? storeBanners = await storeServiceInterface.getStoreBannerList(storeId);
+    List<StoreBannerModel>? storeBanners =
+        await storeServiceInterface.getStoreBannerList(storeId);
     if (storeBanners != null) {
       _storeBanners = [];
       _storeBanners!.addAll(storeBanners);
@@ -207,18 +224,23 @@ class StoreController extends GetxController implements GetxService {
     update();
   }
 
-  Future<void> getStoreList(int offset, bool reload, {DataSourceEnum source = DataSourceEnum.local}) async {
-    if(reload) {
+  Future<void> getStoreList(int offset, bool reload,
+      {DataSourceEnum source = DataSourceEnum.local}) async {
+    if (reload) {
       _storeModel = null;
       update();
     }
     StoreModel? storeModel;
-    if(source == DataSourceEnum.local && offset == 1) {
-      storeModel = await storeServiceInterface.getStoreList(offset, _filterType, _storeType, source: DataSourceEnum.local);
+    if (source == DataSourceEnum.local && offset == 1) {
+      storeModel = await storeServiceInterface.getStoreList(
+          offset, _filterType, _storeType,
+          source: DataSourceEnum.local);
       _prepareStoreModel(storeModel, offset);
       getStoreList(offset, false, source: DataSourceEnum.client);
     } else {
-      storeModel = await storeServiceInterface.getStoreList(offset, _filterType, _storeType, source: DataSourceEnum.client);
+      storeModel = await storeServiceInterface.getStoreList(
+          offset, _filterType, _storeType,
+          source: DataSourceEnum.client);
       _prepareStoreModel(storeModel, offset);
     }
   }
@@ -227,7 +249,7 @@ class StoreController extends GetxController implements GetxService {
     if (storeModel != null) {
       if (offset == 1) {
         _storeModel = storeModel;
-      }else {
+      } else {
         _storeModel!.totalSize = storeModel.totalSize;
         _storeModel!.offset = storeModel.offset;
         _storeModel!.stores!.addAll(storeModel.stores!);
@@ -251,56 +273,65 @@ class StoreController extends GetxController implements GetxService {
     _storeType = 'all';
   }
 
-  Future<void> getPopularStoreList(bool reload, String type, bool notify, {DataSourceEnum dataSource = DataSourceEnum.local, bool fromRecall = false}) async {
+  Future<void> getPopularStoreList(bool reload, String type, bool notify,
+      {DataSourceEnum dataSource = DataSourceEnum.local,
+      bool fromRecall = false}) async {
     _type = type;
-    if(reload) {
+    if (reload) {
       _popularStoreList = null;
     }
-    if(notify) {
+    if (notify) {
       update();
     }
-    if(_popularStoreList == null || reload || fromRecall) {
+    if (_popularStoreList == null || reload || fromRecall) {
       List<Store>? popularStoreList;
-      if(dataSource == DataSourceEnum.local) {
-        popularStoreList = await storeServiceInterface.getPopularStoreList(type, source: DataSourceEnum.local);
+      if (dataSource == DataSourceEnum.local) {
+        popularStoreList = await storeServiceInterface.getPopularStoreList(type,
+            source: DataSourceEnum.local);
         if (popularStoreList != null) {
           _popularStoreList = [];
           _popularStoreList!.addAll(popularStoreList);
         }
         update();
-        getPopularStoreList(false, type, notify, dataSource: DataSourceEnum.client, fromRecall: true);
+        getPopularStoreList(false, type, notify,
+            dataSource: DataSourceEnum.client, fromRecall: true);
       } else {
-        popularStoreList = await storeServiceInterface.getPopularStoreList(type, source: DataSourceEnum.client);
+        popularStoreList = await storeServiceInterface.getPopularStoreList(type,
+            source: DataSourceEnum.client);
         if (popularStoreList != null) {
           _popularStoreList = [];
           _popularStoreList!.addAll(popularStoreList);
         }
         update();
       }
-
     }
   }
 
-  Future<void> getLatestStoreList(bool reload, String type, bool notify, {DataSourceEnum dataSource = DataSourceEnum.local, bool fromRecall = false}) async {
+  Future<void> getLatestStoreList(bool reload, String type, bool notify,
+      {DataSourceEnum dataSource = DataSourceEnum.local,
+      bool fromRecall = false}) async {
     _type = type;
-    if(reload){
+    if (reload) {
       _latestStoreList = null;
     }
-    if(notify) {
+    if (notify) {
       update();
     }
-    if(_latestStoreList == null || reload || fromRecall) {
+    if (_latestStoreList == null || reload || fromRecall) {
       List<Store>? latestStoreList;
-      if(dataSource == DataSourceEnum.local) {
-        latestStoreList = await storeServiceInterface.getLatestStoreList(type, source: DataSourceEnum.local);
+      if (dataSource == DataSourceEnum.local) {
+        latestStoreList = await storeServiceInterface.getLatestStoreList(type,
+            source: DataSourceEnum.local);
         if (latestStoreList != null) {
           _latestStoreList = [];
           _latestStoreList!.addAll(latestStoreList);
         }
         update();
-        getLatestStoreList(false, type, notify, fromRecall: true, dataSource: DataSourceEnum.client);
+        getLatestStoreList(false, type, notify,
+            fromRecall: true, dataSource: DataSourceEnum.client);
       } else {
-        latestStoreList = await storeServiceInterface.getLatestStoreList(type, source: DataSourceEnum.client);
+        latestStoreList = await storeServiceInterface.getLatestStoreList(type,
+            source: DataSourceEnum.client);
         if (latestStoreList != null) {
           _latestStoreList = [];
           _latestStoreList!.addAll(latestStoreList);
@@ -310,25 +341,34 @@ class StoreController extends GetxController implements GetxService {
     }
   }
 
-  Future<void> getTopOfferStoreList(bool reload, bool notify, {DataSourceEnum dataSource = DataSourceEnum.local, bool fromRecall = false}) async {
-    if(reload){
+  Future<void> getTopOfferStoreList(bool reload, bool notify,
+      {DataSourceEnum dataSource = DataSourceEnum.local,
+      bool fromRecall = false}) async {
+    if (reload) {
       _topOfferStoreList = null;
     }
-    if(notify) {
+    if (notify) {
       update();
     }
-    if(_topOfferStoreList == null || reload || fromRecall) {
+    if (_topOfferStoreList == null || reload || fromRecall) {
       List<Store>? latestStoreList;
-      if(dataSource == DataSourceEnum.local) {
-        latestStoreList = await storeServiceInterface.getTopOfferStoreList(source: DataSourceEnum.local, filterBy: _topOfferFilter, sortBy: _topOfferSort);
+      if (dataSource == DataSourceEnum.local) {
+        latestStoreList = await storeServiceInterface.getTopOfferStoreList(
+            source: DataSourceEnum.local,
+            filterBy: _topOfferFilter,
+            sortBy: _topOfferSort);
         if (latestStoreList != null) {
           _topOfferStoreList = [];
           _topOfferStoreList!.addAll(latestStoreList);
         }
         update();
-        getTopOfferStoreList(false, notify, dataSource: DataSourceEnum.client, fromRecall: true);
+        getTopOfferStoreList(false, notify,
+            dataSource: DataSourceEnum.client, fromRecall: true);
       } else {
-        latestStoreList = await storeServiceInterface.getTopOfferStoreList(source: DataSourceEnum.client, filterBy: _topOfferFilter, sortBy: _topOfferSort);
+        latestStoreList = await storeServiceInterface.getTopOfferStoreList(
+            source: DataSourceEnum.client,
+            filterBy: _topOfferFilter,
+            sortBy: _topOfferSort);
         if (latestStoreList != null) {
           _topOfferStoreList = [];
           _topOfferStoreList!.addAll(latestStoreList);
@@ -340,7 +380,7 @@ class StoreController extends GetxController implements GetxService {
 
   void setTopOfferFilter(String type) {
     _topOfferFilter = type;
-   getTopOfferStoreList(true, false);
+    getTopOfferStoreList(true, false);
   }
 
   void setTopOfferSort(String sort) {
@@ -348,17 +388,19 @@ class StoreController extends GetxController implements GetxService {
     getTopOfferStoreList(true, false);
   }
 
-  Future<void> getFeaturedStoreList({DataSourceEnum dataSource = DataSourceEnum.local}) async {
+  Future<void> getFeaturedStoreList(
+      {DataSourceEnum dataSource = DataSourceEnum.local}) async {
     List<Store>? stores;
-    if(dataSource == DataSourceEnum.local) {
-      stores = await storeServiceInterface.getFeaturedStoreList(source: dataSource);
+    if (dataSource == DataSourceEnum.local) {
+      stores =
+          await storeServiceInterface.getFeaturedStoreList(source: dataSource);
       _prepareFeaturedStore(stores);
       getFeaturedStoreList(dataSource: DataSourceEnum.client);
     } else {
-      stores = await storeServiceInterface.getFeaturedStoreList(source: dataSource);
+      stores =
+          await storeServiceInterface.getFeaturedStoreList(source: dataSource);
       _prepareFeaturedStore(stores);
     }
-
   }
 
   _prepareFeaturedStore(List<Store>? stores) {
@@ -368,8 +410,8 @@ class StoreController extends GetxController implements GetxService {
       moduleList.addAll(storeServiceInterface.moduleList());
       for (Store store in stores) {
         for (var module in moduleList) {
-          if(module.id == store.moduleId){
-            if(module.pivot!.zoneId == store.zoneId){
+          if (module.id == store.moduleId) {
+            if (module.pivot!.zoneId == store.zoneId) {
               _featuredStoreList!.add(store);
             }
           }
@@ -379,20 +421,25 @@ class StoreController extends GetxController implements GetxService {
     update();
   }
 
-  Future<void> getVisitAgainStoreList({bool fromModule = false, DataSourceEnum dataSource = DataSourceEnum.local, bool fromRecall = false}) async {
-    if(fromModule && !fromRecall) {
+  Future<void> getVisitAgainStoreList(
+      {bool fromModule = false,
+      DataSourceEnum dataSource = DataSourceEnum.local,
+      bool fromRecall = false}) async {
+    if (fromModule && !fromRecall) {
       _visitAgainStoreList = null;
     }
     List<Store>? stores;
-    if(dataSource == DataSourceEnum.local) {
-      stores = await storeServiceInterface.getVisitAgainStoreList(source: DataSourceEnum.local);
+    if (dataSource == DataSourceEnum.local) {
+      stores = await storeServiceInterface.getVisitAgainStoreList(
+          source: DataSourceEnum.local);
       _prepareVisitAgainStore(stores);
-      getVisitAgainStoreList(dataSource: DataSourceEnum.client, fromRecall: true);
+      getVisitAgainStoreList(
+          dataSource: DataSourceEnum.client, fromRecall: true);
     } else {
-      stores = await storeServiceInterface.getVisitAgainStoreList(source: DataSourceEnum.client);
+      stores = await storeServiceInterface.getVisitAgainStoreList(
+          source: DataSourceEnum.client);
       _prepareVisitAgainStore(stores);
     }
-
   }
 
   _prepareVisitAgainStore(List<Store>? stores) {
@@ -402,8 +449,8 @@ class StoreController extends GetxController implements GetxService {
       moduleList.addAll(storeServiceInterface.moduleList());
       for (var store in stores) {
         for (var module in moduleList) {
-          if(module.id == store.moduleId){
-            if(module.pivot!.zoneId == store.zoneId){
+          if (module.id == store.moduleId) {
+            if (module.pivot!.zoneId == store.zoneId) {
               _visitAgainStoreList!.add(store);
             }
           }
@@ -414,11 +461,11 @@ class StoreController extends GetxController implements GetxService {
   }
 
   void setCategoryList() {
-    if(Get.find<CategoryController>().categoryList != null && _store != null) {
+    if (Get.find<CategoryController>().categoryList != null && _store != null) {
       _categoryList = [];
       _categoryList!.add(CategoryModel(id: 0, name: 'all'.tr));
       for (var category in Get.find<CategoryController>().categoryList!) {
-        if(_store!.categoryIds!.contains(category.id)) {
+        if (_store!.categoryIds!.contains(category.id)) {
           _categoryList!.add(category);
         }
       }
@@ -428,42 +475,60 @@ class StoreController extends GetxController implements GetxService {
   Future<void> initCheckoutData(int? storeId) async {
     Get.find<CouponController>().removeCouponData(false);
     Get.find<CheckoutController>().clearPrevData();
-    await Get.find<StoreController>().getStoreDetails(Store(id: storeId), false);
+    await Get.find<StoreController>()
+        .getStoreDetails(Store(id: storeId), false);
     Get.find<CheckoutController>().initializeTimeSlot(_store!);
   }
 
-  Future<Store?> getStoreDetails(Store store, bool fromModule, {bool fromCart = false, String slug = ''}) async {
+  Future<Store?> getStoreDetails(Store store, bool fromModule,
+      {bool fromCart = false, String slug = ''}) async {
     _categoryIndex = 0;
-    if(store.name != null) {
+    if (store.name != null) {
       _store = store;
-    }else {
+    } else {
       _isLoading = true;
       _store = null;
-      Store? storeDetails = await storeServiceInterface.getStoreDetails(store.id.toString(), fromCart, slug, Get.find<LocalizationController>().locale.languageCode,
-          ModuleHelper.getModule(), ModuleHelper.getCacheModule()?.id, ModuleHelper.getModule()?.id);
+      Store? storeDetails = await storeServiceInterface.getStoreDetails(
+          store.id.toString(),
+          fromCart,
+          slug,
+          Get.find<LocalizationController>().locale.languageCode,
+          ModuleHelper.getModule(),
+          ModuleHelper.getCacheModule()?.id,
+          ModuleHelper.getModule()?.id);
       if (storeDetails != null) {
         _store = storeDetails;
         Get.find<CheckoutController>().initializeTimeSlot(_store!);
-        if(!fromCart && slug.isEmpty){
+        if (!fromCart && slug.isEmpty) {
           Get.find<CheckoutController>().getDistanceInKM(
             LatLng(
-              double.parse(AddressHelper.getUserAddressFromSharedPref()!.latitude!),
-              double.parse(AddressHelper.getUserAddressFromSharedPref()!.longitude!),
+              double.parse(
+                  AddressHelper.getUserAddressFromSharedPref()!.latitude!),
+              double.parse(
+                  AddressHelper.getUserAddressFromSharedPref()!.longitude!),
             ),
-            LatLng(double.parse(_store!.latitude!), double.parse(_store!.longitude!)),
+            LatLng(double.parse(_store!.latitude!),
+                double.parse(_store!.longitude!)),
           );
         }
-        if(slug.isNotEmpty){
-          await Get.find<LocationController>().setStoreAddressToUserAddress(LatLng(double.parse(_store!.latitude!), double.parse(_store!.longitude!)));
+        if (slug.isNotEmpty) {
+          await Get.find<LocationController>().setStoreAddressToUserAddress(
+              LatLng(double.parse(_store!.latitude!),
+                  double.parse(_store!.longitude!)));
         }
-        if(fromModule) {
+        if (fromModule) {
           HomeScreen.loadData(true);
-        }else {
+        } else {
           Get.find<CheckoutController>().clearPrevData();
         }
       }
       Get.find<CheckoutController>().setOrderType(
-        _store != null ? _store!.delivery! ? 'delivery' : 'take_away' : 'delivery', notify: false,
+        _store != null
+            ? _store!.delivery!
+                ? 'delivery'
+                : 'take_away'
+            : 'delivery',
+        notify: false,
       );
       _isLoading = false;
       update();
@@ -471,17 +536,22 @@ class StoreController extends GetxController implements GetxService {
     return _store;
   }
 
-  Future<void> getRecommendedStoreList({DataSourceEnum dataSource = DataSourceEnum.local, bool fromRecall = false}) async {
-    if(!fromRecall) {
+  Future<void> getRecommendedStoreList(
+      {DataSourceEnum dataSource = DataSourceEnum.local,
+      bool fromRecall = false}) async {
+    if (!fromRecall) {
       _recommendedStoreList = null;
     }
     List<Store>? recommendedStoreList;
-    if(dataSource == DataSourceEnum.local) {
-      recommendedStoreList = await storeServiceInterface.getRecommendedStoreList(source: DataSourceEnum.local);
+    if (dataSource == DataSourceEnum.local) {
+      recommendedStoreList = await storeServiceInterface
+          .getRecommendedStoreList(source: DataSourceEnum.local);
       _prepareRecommendedStores(recommendedStoreList);
-      getRecommendedStoreList(dataSource: DataSourceEnum.client, fromRecall: true);
+      getRecommendedStoreList(
+          dataSource: DataSourceEnum.client, fromRecall: true);
     } else {
-      recommendedStoreList = await storeServiceInterface.getRecommendedStoreList(source: DataSourceEnum.client);
+      recommendedStoreList = await storeServiceInterface
+          .getRecommendedStoreList(source: DataSourceEnum.client);
       _prepareRecommendedStores(recommendedStoreList);
     }
   }
@@ -494,17 +564,23 @@ class StoreController extends GetxController implements GetxService {
     update();
   }
 
-  Future<void> getStoreItemList(int? storeID, int offset, String type, bool notify) async {
-    if(offset == 1 || _storeItemModel == null) {
+  Future<void> getStoreItemList(
+      int? storeID, int offset, String type, bool notify) async {
+    if (offset == 1 || _storeItemModel == null) {
       _type = type;
       _storeItemModel = null;
-      if(notify) {
+      if (notify) {
         update();
       }
     }
     ItemModel? storeItemModel = await storeServiceInterface.getStoreItemList(
-      storeID: storeID, offset: offset,
-      categoryID: (_store != null && _store!.categoryIds!.isNotEmpty && _categoryIndex != 0) ? _categoryList![_categoryIndex].id : 0,
+      storeID: storeID,
+      offset: offset,
+      categoryID: (_store != null &&
+              _store!.categoryIds!.isNotEmpty &&
+              _categoryIndex != 0)
+          ? _categoryList![_categoryIndex].id
+          : 0,
       type: type,
       filter: _filter,
       rating: _rating == -1 ? null : _rating,
@@ -514,7 +590,7 @@ class StoreController extends GetxController implements GetxService {
     if (storeItemModel != null) {
       if (offset == 1) {
         _storeItemModel = storeItemModel;
-      }else {
+      } else {
         _storeItemModel!.items!.addAll(storeItemModel.items!);
         _storeItemModel!.totalSize = storeItemModel.totalSize;
         _storeItemModel!.offset = storeItemModel.offset;
@@ -523,24 +599,34 @@ class StoreController extends GetxController implements GetxService {
     update();
   }
 
-  Future<void> getStoreSearchItemList(String searchText, String? storeID, int offset, String type) async {
-    if(searchText.isEmpty) {
+  Future<void> getStoreSearchItemList(
+      String searchText, String? storeID, int offset, String type) async {
+    if (searchText.isEmpty) {
       showCustomSnackBar('write_item_name'.tr);
-    }else {
+    } else {
       _isSearching = true;
       _searchText = searchText;
       _type = type;
-      if(offset == 1 || _storeSearchItemModel == null) {
+      if (offset == 1 || _storeSearchItemModel == null) {
         _searchType = type;
         _storeSearchItemModel = null;
         update();
       }
-      ItemModel? storeSearchItemModel = await storeServiceInterface.getStoreSearchItemList(searchText, storeID, offset, type,
-          (_store != null && _store!.categoryIds!.isNotEmpty && _categoryIndex != 0) ? _categoryList![_categoryIndex].id : 0);
+      ItemModel? storeSearchItemModel =
+          await storeServiceInterface.getStoreSearchItemList(
+              searchText,
+              storeID,
+              offset,
+              type,
+              (_store != null &&
+                      _store!.categoryIds!.isNotEmpty &&
+                      _categoryIndex != 0)
+                  ? _categoryList![_categoryIndex].id
+                  : 0);
       if (storeSearchItemModel != null) {
         if (offset == 1) {
           _storeSearchItemModel = storeSearchItemModel;
-        }else {
+        } else {
           _storeSearchItemModel!.items!.addAll(storeSearchItemModel.items!);
           _storeSearchItemModel!.totalSize = storeSearchItemModel.totalSize;
           _storeSearchItemModel!.offset = storeSearchItemModel.offset;
@@ -552,7 +638,7 @@ class StoreController extends GetxController implements GetxService {
 
   void changeSearchStatus({bool isUpdate = true}) {
     _isSearching = !_isSearching;
-    if(isUpdate) {
+    if (isUpdate) {
       update();
     }
   }
@@ -564,7 +650,7 @@ class StoreController extends GetxController implements GetxService {
 
   void setCategoryIndex(int index, {bool itemSearching = false}) {
     _categoryIndex = index;
-    if(itemSearching){
+    if (itemSearching) {
       _storeSearchItemModel = null;
       getStoreSearchItemList(_searchText, _store!.id.toString(), 1, type);
     } else {
@@ -575,19 +661,19 @@ class StoreController extends GetxController implements GetxService {
   }
 
   bool isStoreClosed(bool today, bool active, List<Schedules>? schedules) {
-    if(!active) {
+    if (!active) {
       return true;
     }
     DateTime date = DateTime.now();
-    if(!today) {
+    if (!today) {
       date = date.add(const Duration(days: 1));
     }
     int weekday = date.weekday;
-    if(weekday == 7) {
+    if (weekday == 7) {
       weekday = 0;
     }
-    for(int index=0; index<schedules!.length; index++) {
-      if(weekday == schedules[index].day) {
+    for (int index = 0; index < schedules!.length; index++) {
+      if (weekday == schedules[index].day) {
         return false;
       }
     }
@@ -595,16 +681,17 @@ class StoreController extends GetxController implements GetxService {
   }
 
   bool isStoreOpenNow(bool active, List<Schedules>? schedules) {
-    if(isStoreClosed(true, active, schedules)) {
+    if (isStoreClosed(true, active, schedules)) {
       return false;
     }
     int weekday = DateTime.now().weekday;
-    if(weekday == 7) {
+    if (weekday == 7) {
       weekday = 0;
     }
-    for(int index=0; index<schedules!.length; index++) {
-      if(weekday == schedules[index].day
-          && DateConverter.isAvailable(schedules[index].openingTime, schedules[index].closingTime)) {
+    for (int index = 0; index < schedules!.length; index++) {
+      if (weekday == schedules[index].day &&
+          DateConverter.isAvailable(
+              schedules[index].openingTime, schedules[index].closingTime)) {
         return true;
       }
     }
@@ -613,18 +700,22 @@ class StoreController extends GetxController implements GetxService {
 
   bool isOpenNow(Store store) => store.open == 1 && store.active!;
 
-  double? getDiscount(Store store) => store.discount != null ? store.discount!.discount : 0;
+  double? getDiscount(Store store) =>
+      store.discount != null ? store.discount!.discount : 0;
 
-  String? getDiscountType(Store store) => store.discount != null ? store.discount!.discountType : 'percent';
+  String? getDiscountType(Store store) =>
+      store.discount != null ? store.discount!.discountType : 'percent';
 
   void shareStore() {
-    if(ResponsiveHelper.isDesktop(Get.context)){
-      String shareUrl = '${AppConstants.webHostedUrl}${filteringUrl(store!.slug ?? '')}';
+    if (ResponsiveHelper.isDesktop(Get.context)) {
+      String shareUrl =
+          '${AppConstants.webHostedUrl}${filteringUrl(store!.slug ?? '')}';
 
       Clipboard.setData(ClipboardData(text: shareUrl));
       showCustomSnackBar('store_url_copied'.tr, isError: false);
     } else {
-      String shareUrl = '${AppConstants.webHostedUrl}${filteringUrl(store!.slug ?? '')}';
+      String shareUrl =
+          '${AppConstants.webHostedUrl}${filteringUrl(store!.slug ?? '')}';
       Share.share(shareUrl);
     }
   }
@@ -646,7 +737,7 @@ class StoreController extends GetxController implements GetxService {
 
   void toggleAvailableItems() {
     _isAvailableItems = !_isAvailableItems;
-    if(_isAvailableItems) {
+    if (_isAvailableItems) {
       _filter!.add("available_now");
     } else {
       _filter!.remove("available_now");
@@ -656,7 +747,7 @@ class StoreController extends GetxController implements GetxService {
 
   void toggleDiscountedItems() {
     _isDiscountedItems = !_isDiscountedItems;
-    if(_isDiscountedItems) {
+    if (_isDiscountedItems) {
       _filter!.add("discounted");
     } else {
       _filter!.remove("discounted");
@@ -677,9 +768,8 @@ class StoreController extends GetxController implements GetxService {
     _lowerValue = 0;
     _upperValue = 0;
     _filter = [];
-    if(isUpdate) {
+    if (isUpdate) {
       update();
     }
   }
-
 }

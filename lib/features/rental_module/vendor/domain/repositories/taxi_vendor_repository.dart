@@ -14,9 +14,10 @@ class TaxiVendorRepository implements TaxiVendorRepositoryInterface {
   TaxiVendorRepository({required this.apiClient});
 
   @override
-  Future<TaxiVendorModel?> getTaxiVendorDetails({required int id}) async{
+  Future<TaxiVendorModel?> getTaxiVendorDetails({required int id}) async {
     TaxiVendorModel? taxiVendorModel;
-    Response response = await apiClient.getData('${AppConstants.getProviderDetailsUri}/$id');
+    Response response =
+        await apiClient.getData('${AppConstants.getProviderDetailsUri}/$id');
     if (response.statusCode == 200) {
       taxiVendorModel = TaxiVendorModel.fromJson(response.body);
     }
@@ -24,10 +25,14 @@ class TaxiVendorRepository implements TaxiVendorRepositoryInterface {
   }
 
   @override
-  Future<List<VendorBannerModel>?> getVendorBannerList({required int id}) async{
+  Future<List<VendorBannerModel>?> getVendorBannerList(
+      {required int id}) async {
     List<VendorBannerModel>? taxiBannerModel;
-    Response response = await apiClient.getData('${AppConstants.getProviderBannerUri}/$id');
-    if (response.statusCode == 200 && response.body != null && response.body.isNotEmpty) {
+    Response response =
+        await apiClient.getData('${AppConstants.getProviderBannerUri}/$id');
+    if (response.statusCode == 200 &&
+        response.body != null &&
+        response.body.isNotEmpty) {
       taxiBannerModel = [];
       response.body.forEach((banner) {
         taxiBannerModel!.add(VendorBannerModel.fromJson(banner));
@@ -37,13 +42,21 @@ class TaxiVendorRepository implements TaxiVendorRepositoryInterface {
   }
 
   @override
-  Future<VendorVehiclesModel?> getVendorVehicleList({required int offset, required int providerId, int? categoryId,
-    String? searchName, double? minPrice, double? maxPrice, List<int>? brandIds, List<String>? seatingCapacity,
-    bool? airCondition, bool? nonAirCondition}) async{
-
+  Future<VendorVehiclesModel?> getVendorVehicleList(
+      {required int offset,
+      required int providerId,
+      int? categoryId,
+      String? searchName,
+      double? minPrice,
+      double? maxPrice,
+      List<int>? brandIds,
+      List<String>? seatingCapacity,
+      bool? airCondition,
+      bool? nonAirCondition}) async {
     VendorVehiclesModel? vendorVehiclesModel;
 
-    Response response = await apiClient.getData('${AppConstants.getProviderVehicleListUri}?offset=$offset&limit=25&provider_id=$providerId${(categoryId == -1 || categoryId == null) ? '' : '&category_ids=[$categoryId]'}&name=${searchName??''}'
+    Response response = await apiClient.getData(
+        '${AppConstants.getProviderVehicleListUri}?offset=$offset&limit=25&provider_id=$providerId${(categoryId == -1 || categoryId == null) ? '' : '&category_ids=[$categoryId]'}&name=${searchName ?? ''}'
         '&min_price=$minPrice&max_price=$maxPrice&brand_ids=$brandIds&seating_capacity=$seatingCapacity&air_condition=${airCondition! ? 'true' : ''}&no_air_condition=${nonAirCondition! ? 'true' : ''}');
     if (response.statusCode == 200) {
       vendorVehiclesModel = VendorVehiclesModel.fromJson(response.body);
@@ -52,20 +65,24 @@ class TaxiVendorRepository implements TaxiVendorRepositoryInterface {
   }
 
   @override
-  Future<VendorVehicleCategoryModel?> getVendorVehicleCategoryList() async{
+  Future<VendorVehicleCategoryModel?> getVendorVehicleCategoryList() async {
     VendorVehicleCategoryModel? vendorVehicleCategoryModel;
 
-    Response response = await apiClient.getData(AppConstants.getProviderVehicleCategoryListUri);
+    Response response =
+        await apiClient.getData(AppConstants.getProviderVehicleCategoryListUri);
     if (response.statusCode == 200) {
-      vendorVehicleCategoryModel = VendorVehicleCategoryModel.fromJson(response.body);
+      vendorVehicleCategoryModel =
+          VendorVehicleCategoryModel.fromJson(response.body);
     }
     return vendorVehicleCategoryModel;
   }
 
   @override
-  Future<TaxiProviderReviewModel?> getTaxiProviderReviewDetails({int? offset, required int id}) async{
+  Future<TaxiProviderReviewModel?> getTaxiProviderReviewDetails(
+      {int? offset, required int id}) async {
     TaxiProviderReviewModel? providerReviewDetails;
-    Response response = await apiClient.getData('${AppConstants.getTaxiProviderReviewUri}/$id');
+    Response response =
+        await apiClient.getData('${AppConstants.getTaxiProviderReviewUri}/$id');
     if (response.statusCode == 200) {
       providerReviewDetails = TaxiProviderReviewModel.fromJson(response.body);
     }
@@ -112,6 +129,4 @@ class TaxiVendorRepository implements TaxiVendorRepositoryInterface {
     // TODO: implement update
     throw UnimplementedError();
   }
-
-
 }

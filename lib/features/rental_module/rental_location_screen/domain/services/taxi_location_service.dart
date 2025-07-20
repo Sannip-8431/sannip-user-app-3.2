@@ -5,7 +5,7 @@ import 'package:sixam_mart/features/location/domain/models/zone_data_model.dart'
 import 'package:sixam_mart/features/rental_module/rental_location_screen/domain/repository/taxi_repository_interface.dart';
 import 'package:sixam_mart/features/rental_module/rental_location_screen/domain/services/taxi_location_service_interface.dart';
 
-class TaxiLocationService implements TaxiLocationServiceInterface{
+class TaxiLocationService implements TaxiLocationServiceInterface {
   TaxiRepositoryInterface taxiRepositoryInterface;
   TaxiLocationService({required this.taxiRepositoryInterface});
 
@@ -13,8 +13,7 @@ class TaxiLocationService implements TaxiLocationServiceInterface{
   Future<LatLng> getPlaceDetails(String? placeID) async {
     LatLng latLng = const LatLng(0, 0);
     Response? response = await taxiRepositoryInterface.getPlaceDetails(placeID);
-    if(response.statusCode == 200) {
-
+    if (response.statusCode == 200) {
       final data = response.body;
       final location = data['location'];
       final double lat = location['latitude'];
@@ -25,8 +24,10 @@ class TaxiLocationService implements TaxiLocationServiceInterface{
   }
 
   @override
-  Future<Response> getRouteBetweenCoordinates(LatLng origin, LatLng destination) async {
-    return await taxiRepositoryInterface.getRouteBetweenCoordinates(origin, destination);
+  Future<Response> getRouteBetweenCoordinates(
+      LatLng origin, LatLng destination) async {
+    return await taxiRepositoryInterface.getRouteBetweenCoordinates(
+        origin, destination);
   }
 
   @override
@@ -50,8 +51,9 @@ class TaxiLocationService implements TaxiLocationServiceInterface{
   }
 
   @override
-  Future<Response> getDistanceInMeter(LatLng originLatLng, LatLng destinationLatLng) async {
-    return await taxiRepositoryInterface.getDistanceInMeter(originLatLng, destinationLatLng);
+  Future<Response> getDistanceInMeter(
+      LatLng originLatLng, LatLng destinationLatLng) async {
+    return await taxiRepositoryInterface.getDistanceInMeter(
+        originLatLng, destinationLatLng);
   }
-
 }

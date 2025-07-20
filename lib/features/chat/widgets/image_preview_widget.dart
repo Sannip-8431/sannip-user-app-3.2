@@ -7,7 +7,8 @@ import 'package:sixam_mart/util/dimensions.dart';
 class ImagePreviewWidget extends StatefulWidget {
   final Message currentMessage;
   final int currentIndex;
-  const ImagePreviewWidget({super.key, required this.currentMessage, this.currentIndex = 0});
+  const ImagePreviewWidget(
+      {super.key, required this.currentMessage, this.currentIndex = 0});
 
   @override
   State<ImagePreviewWidget> createState() => _ImagePreviewWidgetState();
@@ -32,7 +33,6 @@ class _ImagePreviewWidgetState extends State<ImagePreviewWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     bool isDesktop = ResponsiveHelper.isDesktop(context);
 
     return Container(
@@ -40,11 +40,13 @@ class _ImagePreviewWidgetState extends State<ImagePreviewWidget> {
       height: isDesktop ? 600 : MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
         color: Colors.black,
-        borderRadius: isDesktop ? const BorderRadius.all(Radius.circular(Dimensions.radiusExtraLarge)) : null,
+        borderRadius: isDesktop
+            ? const BorderRadius.all(
+                Radius.circular(Dimensions.radiusExtraLarge))
+            : null,
       ),
       child: Column(mainAxisSize: MainAxisSize.min, children: [
         const SizedBox(height: Dimensions.paddingSizeLarge),
-
         Align(
           alignment: Alignment.centerRight,
           child: IconButton(
@@ -52,7 +54,6 @@ class _ImagePreviewWidgetState extends State<ImagePreviewWidget> {
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
-
         Stack(
           children: [
             SizedBox(
@@ -74,52 +75,58 @@ class _ImagePreviewWidgetState extends State<ImagePreviewWidget> {
                 },
               ),
             ),
-
             Positioned(
-              top: 0, left: 0, right: 0, bottom: 0,
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeSmall),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: Dimensions.paddingSizeSmall),
                 child: Row(children: [
                   if (_currentIndex > 0)
-                  InkWell(
-                    onTap: () {
-                      if (_currentIndex > 0) {
-                        _pageController.previousPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        );
-                      }
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.black),
+                    InkWell(
+                      onTap: () {
+                        if (_currentIndex > 0) {
+                          _pageController.previousPage(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
+                        }
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(
+                            Dimensions.paddingSizeExtraSmall),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.black),
+                        ),
+                        child: const Icon(Icons.arrow_back),
                       ),
-                      child: const Icon(Icons.arrow_back),
                     ),
-                  ),
                   const Spacer(),
-
-                  if (_currentIndex < widget.currentMessage.fileFullUrl!.length - 1)
-                  InkWell(
-                    onTap: () {
-                      if (_currentIndex < widget.currentMessage.fileFullUrl!.length - 1) {
-                        _pageController.nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.easeInOut,
-                        );
-                      }
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.black),
+                  if (_currentIndex <
+                      widget.currentMessage.fileFullUrl!.length - 1)
+                    InkWell(
+                      onTap: () {
+                        if (_currentIndex <
+                            widget.currentMessage.fileFullUrl!.length - 1) {
+                          _pageController.nextPage(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
+                        }
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(
+                            Dimensions.paddingSizeExtraSmall),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.black),
+                        ),
+                        child: const Icon(Icons.arrow_forward),
                       ),
-                      child: const Icon(Icons.arrow_forward),
                     ),
-                  ),
                 ]),
               ),
             ),

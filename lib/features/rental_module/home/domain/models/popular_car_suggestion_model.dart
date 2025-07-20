@@ -4,12 +4,12 @@ class PopularCarSuggestionModel {
   String? vehiclesSumTotalTrip;
   String? imageFullUrl;
 
-  PopularCarSuggestionModel(
-      {this.id,
-        this.name,
-        this.vehiclesSumTotalTrip,
-        this.imageFullUrl,
-      });
+  PopularCarSuggestionModel({
+    this.id,
+    this.name,
+    this.vehiclesSumTotalTrip,
+    this.imageFullUrl,
+  });
 
   PopularCarSuggestionModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

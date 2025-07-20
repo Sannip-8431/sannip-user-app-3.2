@@ -18,60 +18,79 @@ class NotificationBottomSheet extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20), topRight: Radius.circular(20),
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
         ),
       ),
-      child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          const SizedBox(),
-
-          Container(
-            height: 5, width: 35,
-            decoration: BoxDecoration(
-              color: Theme.of(context).disabledColor.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(5),
+      child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const SizedBox(),
+              Container(
+                height: 5,
+                width: 35,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).disabledColor.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.only(right: Dimensions.paddingSizeDefault),
+                child: InkWell(
+                  onTap: () => Get.back(),
+                  child: Icon(Icons.close,
+                      color: Theme.of(context)
+                          .disabledColor
+                          .withValues(alpha: 0.4),
+                      size: 25),
+                ),
+              ),
+            ]),
+            Flexible(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: Dimensions.paddingSizeLarge,
+                      vertical: Dimensions.paddingSizeDefault),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        notificationModel.imageFullUrl != null &&
+                                notificationModel.imageFullUrl!.isNotEmpty
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(
+                                    Dimensions.radiusSmall),
+                                child: CustomImage(
+                                  placeholder: Images.placeholder,
+                                  image: '${notificationModel.imageFullUrl}',
+                                  height: 140,
+                                  width: MediaQuery.of(context).size.width,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            : const SizedBox(),
+                        SizedBox(
+                            height: notificationModel.imageFullUrl != null &&
+                                    notificationModel.imageFullUrl!.isNotEmpty
+                                ? Dimensions.paddingSizeDefault
+                                : 0),
+                        Text(notificationModel.data?.title ?? '',
+                            style: robotoBold.copyWith(
+                                fontSize: Dimensions.fontSizeLarge)),
+                        const SizedBox(
+                            height: Dimensions.paddingSizeExtraSmall),
+                        Text(notificationModel.data?.description ?? '',
+                            style: robotoRegular.copyWith(
+                                fontSize: Dimensions.fontSizeSmall)),
+                        const SizedBox(height: Dimensions.paddingSizeSmall),
+                      ]),
+                ),
+              ),
             ),
-          ),
-
-          Padding(
-            padding: const EdgeInsets.only(right: Dimensions.paddingSizeDefault),
-            child: InkWell(
-              onTap: () => Get.back(),
-              child: Icon(Icons.close, color: Theme.of(context).disabledColor.withValues(alpha: 0.4), size: 25),
-            ),
-          ),
-        ]),
-
-        Flexible(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeLarge, vertical: Dimensions.paddingSizeDefault),
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-
-                notificationModel.imageFullUrl != null && notificationModel.imageFullUrl!.isNotEmpty ? ClipRRect(
-                  borderRadius: BorderRadius.circular(Dimensions.radiusSmall),
-                  child: CustomImage(
-                    placeholder: Images.placeholder,
-                    image: '${notificationModel.imageFullUrl}',
-                    height: 140, width: MediaQuery.of(context).size.width, fit: BoxFit.cover,
-                  ),
-                ) : const SizedBox(),
-                SizedBox(height: notificationModel.imageFullUrl != null && notificationModel.imageFullUrl!.isNotEmpty ? Dimensions.paddingSizeDefault : 0),
-
-                Text(notificationModel.data?.title ?? '', style: robotoBold.copyWith(fontSize: Dimensions.fontSizeLarge)),
-                const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
-                Text(notificationModel.data?.description ?? '', style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall)),
-                const SizedBox(height: Dimensions.paddingSizeSmall),
-
-              ]),
-            ),
-          ),
-        ),
-
-      ]),
-
+          ]),
     );
   }
 }

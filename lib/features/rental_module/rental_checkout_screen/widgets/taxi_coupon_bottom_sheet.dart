@@ -10,7 +10,8 @@ class CheckoutCouponBottomSheet extends StatefulWidget {
   const CheckoutCouponBottomSheet({super.key});
 
   @override
-  State<CheckoutCouponBottomSheet> createState() => _CheckoutCouponBottomSheetState();
+  State<CheckoutCouponBottomSheet> createState() =>
+      _CheckoutCouponBottomSheetState();
 }
 
 class _CheckoutCouponBottomSheetState extends State<CheckoutCouponBottomSheet> {
@@ -18,7 +19,7 @@ class _CheckoutCouponBottomSheetState extends State<CheckoutCouponBottomSheet> {
   void initState() {
     super.initState();
 
-    if(Get.find<TaxiHomeController>().taxiCouponList == null) {
+    if (Get.find<TaxiHomeController>().taxiCouponList == null) {
       Get.find<TaxiHomeController>().getTaxiCouponList(false);
     }
   }
@@ -26,28 +27,39 @@ class _CheckoutCouponBottomSheetState extends State<CheckoutCouponBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.5),
+      constraints:
+          BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.5),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: const BorderRadius.only(topLeft: Radius.circular(Dimensions.radiusLarge), topRight: Radius.circular(Dimensions.radiusLarge)),
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(Dimensions.radiusLarge),
+            topRight: Radius.circular(Dimensions.radiusLarge)),
       ),
       padding: const EdgeInsets.only(top: Dimensions.paddingSizeSmall),
       child: Column(children: [
-        Container(width: 33, height: 4.0, decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.circular(23.0))),
+        Container(
+            width: 33,
+            height: 4.0,
+            decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(23.0))),
         const SizedBox(height: Dimensions.paddingSizeDefault),
 
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Padding(
-            padding: const EdgeInsets.only(left: Dimensions.paddingSizeExtremeLarge),
-            child: Text('available_promo'.tr, style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
+            padding:
+                const EdgeInsets.only(left: Dimensions.paddingSizeExtremeLarge),
+            child: Text('available_promo'.tr,
+                style:
+                    robotoMedium.copyWith(fontSize: Dimensions.fontSizeLarge)),
           ),
-
           Container(
             padding: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
             alignment: Alignment.centerRight,
             child: InkWell(
               onTap: () => Get.back(),
-              child: Icon(Icons.close, size: Dimensions.fontSizeOverLarge, color: Colors.grey[300]),
+              child: Icon(Icons.close,
+                  size: Dimensions.fontSizeOverLarge, color: Colors.grey[300]),
             ),
           ),
         ]),
@@ -58,24 +70,34 @@ class _CheckoutCouponBottomSheetState extends State<CheckoutCouponBottomSheet> {
         Expanded(
           child: GetBuilder<TaxiHomeController>(
             builder: (taxiHomeController) {
-              return taxiHomeController.taxiCouponList != null ? taxiHomeController.taxiCouponList!.isNotEmpty
-                  ? Container(
-                color: Theme.of(context).disabledColor.withValues(alpha: 0.2),
-                child: ListView.builder(
-                  itemCount: taxiHomeController.taxiCouponList!.length,
-                  padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault, vertical: Dimensions.paddingSizeSmall),
-                  itemBuilder: (context, index) {
-
-                    return CouponCard(couponModel: taxiHomeController.taxiCouponList![index], fromCouponScreen: true, fromBottomSheet: true);
-
-                  }),
-              ) : Column(children: [
-                Image.asset(Images.noCoupon, height: 70),
-                const SizedBox(height: Dimensions.paddingSizeSmall),
-
-                Text('no_promo_available'.tr, style: robotoMedium),
-                const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-              ]) : const Center(child: CircularProgressIndicator());
+              return taxiHomeController.taxiCouponList != null
+                  ? taxiHomeController.taxiCouponList!.isNotEmpty
+                      ? Container(
+                          color: Theme.of(context)
+                              .disabledColor
+                              .withValues(alpha: 0.2),
+                          child: ListView.builder(
+                              itemCount:
+                                  taxiHomeController.taxiCouponList!.length,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: Dimensions.paddingSizeDefault,
+                                  vertical: Dimensions.paddingSizeSmall),
+                              itemBuilder: (context, index) {
+                                return CouponCard(
+                                    couponModel: taxiHomeController
+                                        .taxiCouponList![index],
+                                    fromCouponScreen: true,
+                                    fromBottomSheet: true);
+                              }),
+                        )
+                      : Column(children: [
+                          Image.asset(Images.noCoupon, height: 70),
+                          const SizedBox(height: Dimensions.paddingSizeSmall),
+                          Text('no_promo_available'.tr, style: robotoMedium),
+                          const SizedBox(
+                              height: Dimensions.paddingSizeExtraSmall),
+                        ])
+                  : const Center(child: CircularProgressIndicator());
             },
           ),
         )

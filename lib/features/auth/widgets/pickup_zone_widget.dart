@@ -10,11 +10,13 @@ class PickupZoneWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<StoreRegistrationController>(builder: (storeRegistrationController) {
+    return GetBuilder<StoreRegistrationController>(
+        builder: (storeRegistrationController) {
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         CustomDropdownButton(
           dropdownMenuItems: storeRegistrationController.zoneList?.map((e) {
-            bool isInPickupZoneList = storeRegistrationController.pickupZoneList.contains(e.name);
+            bool isInPickupZoneList =
+                storeRegistrationController.pickupZoneList.contains(e.name);
             return DropdownMenuItem<String>(
               value: e.name,
               child: Row(
@@ -30,34 +32,40 @@ class PickupZoneWidget extends StatelessWidget {
           showTitle: false,
           hintText: 'select_pick_zone'.tr,
           onChanged: (String? value) {
-            final selectedZone = storeRegistrationController.zoneList?.firstWhere((zone) => zone.name == value);
+            final selectedZone = storeRegistrationController.zoneList
+                ?.firstWhere((zone) => zone.name == value);
             if (selectedZone != null) {
-              storeRegistrationController.setSelectedPickupZone(selectedZone.name, selectedZone.id);
+              storeRegistrationController.setSelectedPickupZone(
+                  selectedZone.name, selectedZone.id);
             }
           },
           selectedValue: storeRegistrationController.selectedPickupZone,
         ),
-        SizedBox(height: storeRegistrationController.pickupZoneList.isNotEmpty ? Dimensions.paddingSizeSmall : 0),
-
+        SizedBox(
+            height: storeRegistrationController.pickupZoneList.isNotEmpty
+                ? Dimensions.paddingSizeSmall
+                : 0),
         Wrap(
-          children: List.generate(storeRegistrationController.pickupZoneList.length, (index) {
+          children: List.generate(
+              storeRegistrationController.pickupZoneList.length, (index) {
             final zoneName = storeRegistrationController.pickupZoneList[index];
             final zoneId = storeRegistrationController.pickupZoneIdList[index];
             return Padding(
-              padding: const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
+              padding:
+                  const EdgeInsets.only(right: Dimensions.paddingSizeSmall),
               child: Stack(clipBehavior: Clip.none, children: [
                 FilterChip(
                   label: Text(zoneName),
                   selected: false,
                   onSelected: (bool value) {},
                 ),
-
                 Positioned(
                   right: -5,
                   top: 0,
                   child: InkWell(
                     onTap: () {
-                      storeRegistrationController.removePickupZone(zoneName, zoneId);
+                      storeRegistrationController.removePickupZone(
+                          zoneName, zoneId);
                     },
                     child: Container(
                       padding: const EdgeInsets.all(1),
@@ -66,7 +74,8 @@ class PickupZoneWidget extends StatelessWidget {
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.red, width: 1),
                       ),
-                      child: const Icon(Icons.close, size: 15, color: Colors.red),
+                      child:
+                          const Icon(Icons.close, size: 15, color: Colors.red),
                     ),
                   ),
                 ),

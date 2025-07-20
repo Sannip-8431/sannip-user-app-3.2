@@ -10,11 +10,12 @@ import 'package:sixam_mart/features/language/domain/service/language_service_int
 
 class LocalizationController extends GetxController implements GetxService {
   final LanguageServiceInterface languageServiceInterface;
-  LocalizationController({required this.languageServiceInterface}){
+  LocalizationController({required this.languageServiceInterface}) {
     loadCurrentLanguage();
   }
 
-  Locale _locale = Locale(AppConstants.languages[0].languageCode!, AppConstants.languages[0].countryCode);
+  Locale _locale = Locale(AppConstants.languages[0].languageCode!,
+      AppConstants.languages[0].countryCode);
   Locale get locale => _locale;
 
   bool _isLtr = true;
@@ -30,20 +31,27 @@ class LocalizationController extends GetxController implements GetxService {
     Get.updateLocale(locale);
     _locale = locale;
     _isLtr = languageServiceInterface.setLTR(_locale);
-    languageServiceInterface.updateHeader(_locale, Get.find<SplashController>().module?.id);
+    languageServiceInterface.updateHeader(
+        _locale, Get.find<SplashController>().module?.id);
 
-    if(!fromBottomSheet) {
+    if (!fromBottomSheet) {
       saveLanguage(_locale);
     }
-    
-    if(AddressHelper.getUserAddressFromSharedPref() != null && !fromBottomSheet) {
+
+    if (AddressHelper.getUserAddressFromSharedPref() != null &&
+        !fromBottomSheet) {
       HomeScreen.loadData(true);
-    } else if(ResponsiveHelper.isDesktop(Get.context) && AddressHelper.getUserAddressFromSharedPref() == null){
+    } else if (ResponsiveHelper.isDesktop(Get.context) &&
+        AddressHelper.getUserAddressFromSharedPref() == null) {
       Get.find<SplashController>().getLandingPageData();
     }
 
-    if(Get.find<SplashController>().moduleList == null) {
-      Get.find<SplashController>().getModules(headers: {'Content-Type': 'application/json; charset=UTF-8', AppConstants.localizationKey: Get.find<LocalizationController>().locale.languageCode});
+    if (Get.find<SplashController>().moduleList == null) {
+      Get.find<SplashController>().getModules(headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        AppConstants.localizationKey:
+            Get.find<LocalizationController>().locale.languageCode
+      });
     }
 
     update();
@@ -52,7 +60,8 @@ class LocalizationController extends GetxController implements GetxService {
   void loadCurrentLanguage() async {
     _locale = languageServiceInterface.getLocaleFromSharedPref();
     _isLtr = _locale.languageCode != 'ar';
-    _selectedLanguageIndex = languageServiceInterface.setSelectedIndex(AppConstants.languages, _locale);
+    _selectedLanguageIndex = languageServiceInterface.setSelectedIndex(
+        AppConstants.languages, _locale);
     _languages = [];
     _languages.addAll(AppConstants.languages);
     update();
@@ -63,7 +72,8 @@ class LocalizationController extends GetxController implements GetxService {
   }
 
   void saveCacheLanguage(Locale? locale) {
-    languageServiceInterface.saveCacheLanguage(locale ?? languageServiceInterface.getLocaleFromSharedPref());
+    languageServiceInterface.saveCacheLanguage(
+        locale ?? languageServiceInterface.getLocaleFromSharedPref());
   }
 
   void setSelectLanguageIndex(int index) {
@@ -77,10 +87,11 @@ class LocalizationController extends GetxController implements GetxService {
 
   void searchSelectedLanguage() {
     for (var language in AppConstants.languages) {
-      if (language.languageCode!.toLowerCase().contains(_locale.languageCode.toLowerCase())) {
+      if (language.languageCode!
+          .toLowerCase()
+          .contains(_locale.languageCode.toLowerCase())) {
         _selectedLanguageIndex = AppConstants.languages.indexOf(language);
       }
     }
   }
-
 }

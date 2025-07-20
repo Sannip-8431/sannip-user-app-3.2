@@ -12,45 +12,51 @@ class TopRatedVehicleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return  GetBuilder<TaxiHomeController>(
-        builder: (taxiHomeController) {
-          return taxiHomeController.topRatedCarsModel != null && taxiHomeController.topRatedCarsModel!.vehicles != null
-              ? taxiHomeController.topRatedCarsModel!.vehicles!.where((vehicle) => vehicle.status == 1).isNotEmpty
-              ? Column(crossAxisAlignment: CrossAxisAlignment.start,  children: [
-
-                Padding(padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault),
-                  child: HeadersTitleWidget(
-                    title: 'top_rated_vehicles'.tr,
-                    onSeeAllPressed: () {
-                      Get.to(()=> const AllVehicleScreen());
-                    }
+    return GetBuilder<TaxiHomeController>(builder: (taxiHomeController) {
+      return taxiHomeController.topRatedCarsModel != null &&
+              taxiHomeController.topRatedCarsModel!.vehicles != null
+          ? taxiHomeController.topRatedCarsModel!.vehicles!
+                  .where((vehicle) => vehicle.status == 1)
+                  .isNotEmpty
+              ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: Dimensions.paddingSizeDefault),
+                    child: HeadersTitleWidget(
+                        title: 'top_rated_vehicles'.tr,
+                        onSeeAllPressed: () {
+                          Get.to(() => const AllVehicleScreen());
+                        }),
                   ),
-                ),
-                const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-
-                SizedBox(
-                  height: 210,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: taxiHomeController.topRatedCarsModel!.vehicles!.length,
-                    padding: const EdgeInsets.only(left: 16),
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      if(taxiHomeController.topRatedCarsModel!.vehicles![index].status != 1) {
-                        return const SizedBox();
-                      }
-                      return Padding(
-                        padding: const EdgeInsets.only(right: Dimensions.paddingSizeDefault),
-                        child: HorizontalVehicleCard(vehicleModel: taxiHomeController.topRatedCarsModel!.vehicles![index]),
-                      );
-                    },
+                  const SizedBox(height: Dimensions.paddingSizeExtraSmall),
+                  SizedBox(
+                    height: 210,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: taxiHomeController
+                          .topRatedCarsModel!.vehicles!.length,
+                      padding: const EdgeInsets.only(left: 16),
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        if (taxiHomeController
+                                .topRatedCarsModel!.vehicles![index].status !=
+                            1) {
+                          return const SizedBox();
+                        }
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                              right: Dimensions.paddingSizeDefault),
+                          child: HorizontalVehicleCard(
+                              vehicleModel: taxiHomeController
+                                  .topRatedCarsModel!.vehicles![index]),
+                        );
+                      },
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
-              ]
-          ): const SizedBox() : const TopRatedVehicleShimmerView();
-        }
-    );
+                  const SizedBox(height: 20),
+                ])
+              : const SizedBox()
+          : const TopRatedVehicleShimmerView();
+    });
   }
 }

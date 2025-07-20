@@ -18,21 +18,25 @@ class ItemRepository implements ItemRepositoryInterface {
   @override
   Future<BasicMedicineModel?> getBasicMedicine(DataSourceEnum source) async {
     BasicMedicineModel? basicMedicineModel;
-    String cacheId = '${AppConstants.basicMedicineUri}?offset=1&limit=50-${Get.find<SplashController>().module!.id!}';
+    String cacheId =
+        '${AppConstants.basicMedicineUri}?offset=1&limit=50-${Get.find<SplashController>().module!.id!}';
 
-    switch(source) {
-
+    switch (source) {
       case DataSourceEnum.client:
-        Response response = await apiClient.getData('${AppConstants.basicMedicineUri}?offset=1&limit=50');
+        Response response = await apiClient
+            .getData('${AppConstants.basicMedicineUri}?offset=1&limit=50');
         if (response.statusCode == 200) {
           basicMedicineModel = BasicMedicineModel.fromJson(response.body);
-          LocalClient.organize(DataSourceEnum.client, cacheId, jsonEncode(response.body), apiClient.getHeader());
+          LocalClient.organize(DataSourceEnum.client, cacheId,
+              jsonEncode(response.body), apiClient.getHeader());
         }
 
       case DataSourceEnum.local:
-        String? cacheResponseData = await LocalClient.organize(DataSourceEnum.local, cacheId, null, null);
-        if(cacheResponseData != null) {
-          basicMedicineModel = BasicMedicineModel.fromJson(jsonDecode(cacheResponseData));
+        String? cacheResponseData = await LocalClient.organize(
+            DataSourceEnum.local, cacheId, null, null);
+        if (cacheResponseData != null) {
+          basicMedicineModel =
+              BasicMedicineModel.fromJson(jsonDecode(cacheResponseData));
         }
     }
     return basicMedicineModel;
@@ -50,7 +54,7 @@ class ItemRepository implements ItemRepositoryInterface {
 
   @override
   Future get(String? id, {bool isConditionWiseItem = false}) async {
-    if(isConditionWiseItem) {
+    if (isConditionWiseItem) {
       return await _getConditionsWiseItems(int.parse(id!));
     } else {
       return await _getItemDetails(int.parse(id!));
@@ -59,7 +63,8 @@ class ItemRepository implements ItemRepositoryInterface {
 
   Future<Item?> _getItemDetails(int? itemID) async {
     Item? item;
-    Response response = await apiClient.getData('${AppConstants.itemDetailsUri}$itemID');
+    Response response =
+        await apiClient.getData('${AppConstants.itemDetailsUri}$itemID');
     if (response.statusCode == 200) {
       item = Item.fromJson(response.body);
     }
@@ -68,7 +73,8 @@ class ItemRepository implements ItemRepositoryInterface {
 
   Future<List<Item>?> _getConditionsWiseItems(int id) async {
     List<Item>? conditionWiseProduct;
-    Response response = await apiClient.getData('${AppConstants.conditionWiseItemUri}$id?limit=15&offset=1');
+    Response response = await apiClient
+        .getData('${AppConstants.conditionWiseItemUri}$id?limit=15&offset=1');
     if (response.statusCode == 200) {
       conditionWiseProduct = [];
       conditionWiseProduct.addAll(ItemModel.fromJson(response.body).items!);
@@ -77,63 +83,86 @@ class ItemRepository implements ItemRepositoryInterface {
   }
 
   @override
-  Future getList({int? offset, String? type, bool isPopularItem = false, bool isReviewedItem = false, bool isFeaturedCategoryItems = false, bool isRecommendedItems = false, bool isCommonConditions = false, bool isDiscountedItems = false, DataSourceEnum? source}) async {
-    if(isPopularItem) {
-      return await _getPopularItemList(type!, source: source ?? DataSourceEnum.client);
-    } else if(isReviewedItem) {
-      return await _getReviewedItemList(type!, source: source ?? DataSourceEnum.client);
-    } else if(isFeaturedCategoryItems) {
-      return await _getFeaturedCategoriesItemList(source: source ?? DataSourceEnum.client);
-    } else if(isRecommendedItems) {
-      return await _getRecommendedItemList(type!, source: source ?? DataSourceEnum.client);
-    } else if(isCommonConditions) {
+  Future getList(
+      {int? offset,
+      String? type,
+      bool isPopularItem = false,
+      bool isReviewedItem = false,
+      bool isFeaturedCategoryItems = false,
+      bool isRecommendedItems = false,
+      bool isCommonConditions = false,
+      bool isDiscountedItems = false,
+      DataSourceEnum? source}) async {
+    if (isPopularItem) {
+      return await _getPopularItemList(type!,
+          source: source ?? DataSourceEnum.client);
+    } else if (isReviewedItem) {
+      return await _getReviewedItemList(type!,
+          source: source ?? DataSourceEnum.client);
+    } else if (isFeaturedCategoryItems) {
+      return await _getFeaturedCategoriesItemList(
+          source: source ?? DataSourceEnum.client);
+    } else if (isRecommendedItems) {
+      return await _getRecommendedItemList(type!,
+          source: source ?? DataSourceEnum.client);
+    } else if (isCommonConditions) {
       return await _getCommonConditions();
-    } else if(isDiscountedItems) {
-      return await _getDiscountedItemList(type!, source: source ?? DataSourceEnum.client);
+    } else if (isDiscountedItems) {
+      return await _getDiscountedItemList(type!,
+          source: source ?? DataSourceEnum.client);
     }
   }
 
-  Future<List<Item>?> _getPopularItemList(String type, {required DataSourceEnum source}) async {
+  Future<List<Item>?> _getPopularItemList(String type,
+      {required DataSourceEnum source}) async {
     List<Item>? popularItemList;
-    String cacheId = '${AppConstants.popularItemUri}?type=$type-${Get.find<SplashController>().module!.id!}';
+    String cacheId =
+        '${AppConstants.popularItemUri}?type=$type-${Get.find<SplashController>().module!.id!}';
 
-    switch(source) {
-
+    switch (source) {
       case DataSourceEnum.client:
-        Response response = await apiClient.getData('${AppConstants.popularItemUri}?type=$type');
+        Response response = await apiClient
+            .getData('${AppConstants.popularItemUri}?type=$type');
         if (response.statusCode == 200) {
           popularItemList = [];
           popularItemList.addAll(ItemModel.fromJson(response.body).items!);
-          LocalClient.organize(DataSourceEnum.client, cacheId, jsonEncode(response.body), apiClient.getHeader());
+          LocalClient.organize(DataSourceEnum.client, cacheId,
+              jsonEncode(response.body), apiClient.getHeader());
         }
 
       case DataSourceEnum.local:
-        String? cacheResponseData = await LocalClient.organize(DataSourceEnum.local, cacheId, null, null);
-        if(cacheResponseData != null) {
+        String? cacheResponseData = await LocalClient.organize(
+            DataSourceEnum.local, cacheId, null, null);
+        if (cacheResponseData != null) {
           popularItemList = [];
-          popularItemList.addAll(ItemModel.fromJson(jsonDecode(cacheResponseData)).items!);
+          popularItemList
+              .addAll(ItemModel.fromJson(jsonDecode(cacheResponseData)).items!);
         }
     }
 
     return popularItemList;
   }
 
-  Future<ItemModel?> _getReviewedItemList(String type, {required DataSourceEnum source}) async {
+  Future<ItemModel?> _getReviewedItemList(String type,
+      {required DataSourceEnum source}) async {
     ItemModel? itemModel;
-    String cacheId = '${AppConstants.reviewedItemUri}?type=$type${Get.find<SplashController>().module!.id!}';
+    String cacheId =
+        '${AppConstants.reviewedItemUri}?type=$type${Get.find<SplashController>().module!.id!}';
 
-    switch(source) {
-
+    switch (source) {
       case DataSourceEnum.client:
-        Response response = await apiClient.getData('${AppConstants.reviewedItemUri}?type=$type');
-        if(response.statusCode == 200) {
+        Response response = await apiClient
+            .getData('${AppConstants.reviewedItemUri}?type=$type');
+        if (response.statusCode == 200) {
           itemModel = ItemModel.fromJson(response.body);
-          LocalClient.organize(DataSourceEnum.client, cacheId, jsonEncode(response.body), apiClient.getHeader());
+          LocalClient.organize(DataSourceEnum.client, cacheId,
+              jsonEncode(response.body), apiClient.getHeader());
         }
 
       case DataSourceEnum.local:
-        String? cacheResponseData = await LocalClient.organize(DataSourceEnum.local, cacheId, null, null);
-        if(cacheResponseData != null) {
+        String? cacheResponseData = await LocalClient.organize(
+            DataSourceEnum.local, cacheId, null, null);
+        if (cacheResponseData != null) {
           itemModel = ItemModel.fromJson(jsonDecode(cacheResponseData));
         }
     }
@@ -141,48 +170,58 @@ class ItemRepository implements ItemRepositoryInterface {
     return itemModel;
   }
 
-  Future<ItemModel?> _getFeaturedCategoriesItemList({required DataSourceEnum source}) async {
+  Future<ItemModel?> _getFeaturedCategoriesItemList(
+      {required DataSourceEnum source}) async {
     ItemModel? featuredCategoriesItem;
-    String cacheId = '${AppConstants.featuredCategoriesItemsUri}?limit=30&offset=1${Get.find<SplashController>().module!.id!}';
+    String cacheId =
+        '${AppConstants.featuredCategoriesItemsUri}?limit=30&offset=1${Get.find<SplashController>().module!.id!}';
 
-    switch(source) {
-
+    switch (source) {
       case DataSourceEnum.client:
-        Response response = await apiClient.getData('${AppConstants.featuredCategoriesItemsUri}?limit=30&offset=1');
+        Response response = await apiClient.getData(
+            '${AppConstants.featuredCategoriesItemsUri}?limit=30&offset=1');
         if (response.statusCode == 200) {
           featuredCategoriesItem = ItemModel.fromJson(response.body);
-          LocalClient.organize(DataSourceEnum.client, cacheId, jsonEncode(response.body), apiClient.getHeader());
+          LocalClient.organize(DataSourceEnum.client, cacheId,
+              jsonEncode(response.body), apiClient.getHeader());
         }
 
       case DataSourceEnum.local:
-        String? cacheResponseData = await LocalClient.organize(DataSourceEnum.local, cacheId, null, null);
-        if(cacheResponseData != null) {
-          featuredCategoriesItem = ItemModel.fromJson(jsonDecode(cacheResponseData));
+        String? cacheResponseData = await LocalClient.organize(
+            DataSourceEnum.local, cacheId, null, null);
+        if (cacheResponseData != null) {
+          featuredCategoriesItem =
+              ItemModel.fromJson(jsonDecode(cacheResponseData));
         }
     }
 
     return featuredCategoriesItem;
   }
 
-  Future<List<Item>?> _getRecommendedItemList(String type, {required DataSourceEnum source}) async {
+  Future<List<Item>?> _getRecommendedItemList(String type,
+      {required DataSourceEnum source}) async {
     List<Item>? recommendedItemList;
-    String cacheId = '${AppConstants.recommendedItemsUri}$type&limit=30${Get.find<SplashController>().module!.id!}';
+    String cacheId =
+        '${AppConstants.recommendedItemsUri}$type&limit=30${Get.find<SplashController>().module!.id!}';
 
-    switch(source) {
-
+    switch (source) {
       case DataSourceEnum.client:
-        Response response = await apiClient.getData('${AppConstants.recommendedItemsUri}$type&limit=30');
+        Response response = await apiClient
+            .getData('${AppConstants.recommendedItemsUri}$type&limit=30');
         if (response.statusCode == 200) {
           recommendedItemList = [];
           recommendedItemList.addAll(ItemModel.fromJson(response.body).items!);
-          LocalClient.organize(DataSourceEnum.client, cacheId, jsonEncode(response.body), apiClient.getHeader());
+          LocalClient.organize(DataSourceEnum.client, cacheId,
+              jsonEncode(response.body), apiClient.getHeader());
         }
 
       case DataSourceEnum.local:
-        String? cacheResponseData = await LocalClient.organize(DataSourceEnum.local, cacheId, null, null);
-        if(cacheResponseData != null) {
+        String? cacheResponseData = await LocalClient.organize(
+            DataSourceEnum.local, cacheId, null, null);
+        if (cacheResponseData != null) {
           recommendedItemList = [];
-          recommendedItemList.addAll(ItemModel.fromJson(jsonDecode(cacheResponseData)).items!);
+          recommendedItemList
+              .addAll(ItemModel.fromJson(jsonDecode(cacheResponseData)).items!);
         }
     }
 
@@ -191,34 +230,40 @@ class ItemRepository implements ItemRepositoryInterface {
 
   Future<List<CommonConditionModel>?> _getCommonConditions() async {
     List<CommonConditionModel>? commonConditions;
-    Response response = await apiClient.getData(AppConstants.commonConditionUri);
+    Response response =
+        await apiClient.getData(AppConstants.commonConditionUri);
     if (response.statusCode == 200) {
       commonConditions = [];
-      response.body.forEach((condition) => commonConditions!.add(CommonConditionModel.fromJson(condition)));
+      response.body.forEach((condition) =>
+          commonConditions!.add(CommonConditionModel.fromJson(condition)));
     }
     return commonConditions;
   }
 
-  Future<List<Item>?> _getDiscountedItemList(String type, {required DataSourceEnum source}) async {
+  Future<List<Item>?> _getDiscountedItemList(String type,
+      {required DataSourceEnum source}) async {
     List<Item>? discountedItemList;
-    String cacheId = '${AppConstants.discountedItemsUri}?type=$type&offset=1&limit=50${Get.find<SplashController>().module!.id!}';
+    String cacheId =
+        '${AppConstants.discountedItemsUri}?type=$type&offset=1&limit=50${Get.find<SplashController>().module!.id!}';
 
-    switch(source) {
-
+    switch (source) {
       case DataSourceEnum.client:
-        Response response = await apiClient.getData('${AppConstants.discountedItemsUri}?type=$type&offset=1&limit=50');
+        Response response = await apiClient.getData(
+            '${AppConstants.discountedItemsUri}?type=$type&offset=1&limit=50');
         if (response.statusCode == 200) {
           discountedItemList = [];
           discountedItemList.addAll(ItemModel.fromJson(response.body).items!);
-          LocalClient.organize(DataSourceEnum.client, cacheId, jsonEncode(response.body), apiClient.getHeader());
-
+          LocalClient.organize(DataSourceEnum.client, cacheId,
+              jsonEncode(response.body), apiClient.getHeader());
         }
 
       case DataSourceEnum.local:
-        String? cacheResponseData = await LocalClient.organize(DataSourceEnum.local, cacheId, null, null);
-        if(cacheResponseData != null) {
+        String? cacheResponseData = await LocalClient.organize(
+            DataSourceEnum.local, cacheId, null, null);
+        if (cacheResponseData != null) {
           discountedItemList = [];
-          discountedItemList.addAll(ItemModel.fromJson(jsonDecode(cacheResponseData)).items!);
+          discountedItemList
+              .addAll(ItemModel.fromJson(jsonDecode(cacheResponseData)).items!);
         }
     }
 
@@ -229,5 +274,4 @@ class ItemRepository implements ItemRepositoryInterface {
   Future update(Map<String, dynamic> body, int? id) {
     throw UnimplementedError();
   }
-
 }

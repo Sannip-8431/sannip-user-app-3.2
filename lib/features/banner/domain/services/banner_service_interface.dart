@@ -7,7 +7,8 @@ abstract class BannerServiceInterface {
   Future<BannerModel?> getBannerList({required DataSourceEnum source});
   Future<BannerModel?> getTaxiBannerList();
   Future<BannerModel?> getFeaturedBannerList();
-  Future<ParcelOtherBannerModel?> getParcelOtherBannerList({required DataSourceEnum source});
+  Future<ParcelOtherBannerModel?> getParcelOtherBannerList(
+      {required DataSourceEnum source});
   Future<PromotionalBanner?> getPromotionalBannerList();
   List<int?> moduleIdList();
 }

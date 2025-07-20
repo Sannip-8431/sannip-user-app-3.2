@@ -4,6 +4,7 @@ import 'package:sixam_mart/features/rental_module/widgets/bill_details_widget.da
 import 'package:sixam_mart/helper/price_converter.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/styles.dart';
+
 class TripCalculationView extends StatelessWidget {
   final double tripCost;
   final double discount;
@@ -18,9 +19,19 @@ class TripCalculationView extends StatelessWidget {
   final double? walletPay;
   final double? duePay;
   const TripCalculationView({
-    super.key, required this.tripCost, required this.discount, required this.couponDiscount, required this.subTotal,
-    required this.tax, required this.total, this.isCompleted = false, required this.serviceFee, this.taxInclude,
-    this.taxPercent, this.walletPay, this.duePay,
+    super.key,
+    required this.tripCost,
+    required this.discount,
+    required this.couponDiscount,
+    required this.subTotal,
+    required this.tax,
+    required this.total,
+    this.isCompleted = false,
+    required this.serviceFee,
+    this.taxInclude,
+    this.taxPercent,
+    this.walletPay,
+    this.duePay,
   });
 
   @override
@@ -28,11 +39,14 @@ class TripCalculationView extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        boxShadow: [BoxShadow(color: Theme.of(context).primaryColor.withValues(alpha: 0.1), blurRadius: 10)],
+        boxShadow: [
+          BoxShadow(
+              color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+              blurRadius: 10)
+        ],
       ),
       padding: const EdgeInsets.only(right: 20, left: 20, top: 5, bottom: 15),
       child: Column(children: [
-
         BillDetailsWidget(
           tripCost: tripCost,
           tripDiscountCost: discount,
@@ -45,26 +59,28 @@ class TripCalculationView extends StatelessWidget {
           taxInclude: taxInclude,
         ),
         const Divider(),
-
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text('total'.tr, style: robotoMedium),
-          Text(PriceConverter.convertPrice(total, forTaxi: true), style: robotoMedium, textDirection: TextDirection.ltr),
+          Text(PriceConverter.convertPrice(total, forTaxi: true),
+              style: robotoMedium, textDirection: TextDirection.ltr),
         ]),
         const SizedBox(height: Dimensions.paddingSizeSmall),
-
-        if(walletPay != null && walletPay! > 0)
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text('wallet_payment'.tr, style: robotoRegular),
-          Text('- ${PriceConverter.convertPrice(0)}', style: robotoRegular, textDirection: TextDirection.ltr),
-        ]),
-        SizedBox(height: (walletPay != null && walletPay! > 0) ?Dimensions.paddingSizeSmall : 0),
-
-        if(duePay != null && duePay! > 0)
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text('due_payment'.tr, style: robotoRegular),
-          Text('- ${PriceConverter.convertPrice(0)}', style: robotoRegular, textDirection: TextDirection.ltr),
-        ]),
-
+        if (walletPay != null && walletPay! > 0)
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text('wallet_payment'.tr, style: robotoRegular),
+            Text('- ${PriceConverter.convertPrice(0)}',
+                style: robotoRegular, textDirection: TextDirection.ltr),
+          ]),
+        SizedBox(
+            height: (walletPay != null && walletPay! > 0)
+                ? Dimensions.paddingSizeSmall
+                : 0),
+        if (duePay != null && duePay! > 0)
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text('due_payment'.tr, style: robotoRegular),
+            Text('- ${PriceConverter.convertPrice(0)}',
+                style: robotoRegular, textDirection: TextDirection.ltr),
+          ]),
       ]),
     );
   }

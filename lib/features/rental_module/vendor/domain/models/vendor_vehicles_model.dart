@@ -8,7 +8,13 @@ class VendorVehiclesModel {
   double? minPrice;
   List<VehicleModel>? vehicles;
 
-  VendorVehiclesModel({this.totalSize, this.limit, this.offset, this.maxPrice, this.minPrice, this.vehicles});
+  VendorVehiclesModel(
+      {this.totalSize,
+      this.limit,
+      this.offset,
+      this.maxPrice,
+      this.minPrice,
+      this.vehicles});
 
   VendorVehiclesModel.fromJson(Map<String, dynamic> json) {
     totalSize = json['total_size'];

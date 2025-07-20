@@ -13,6 +13,7 @@ import 'package:sixam_mart/features/rental_module/rental_location_screen/widgets
 import 'package:sixam_mart/helper/address_helper.dart';
 import 'package:sixam_mart/util/dimensions.dart';
 import 'package:sixam_mart/util/images.dart';
+
 class TaxiLocationSuggestionScreen extends StatefulWidget {
   final GoogleMapController? mapController;
   final AddressModel? fromAddress;
@@ -20,29 +21,40 @@ class TaxiLocationSuggestionScreen extends StatefulWidget {
   final UserData? userData;
   final VehicleModel? vehicle;
   final bool? isFromSelected;
-  const TaxiLocationSuggestionScreen({super.key, this.mapController, this.fromAddress, this.toAddress, this.userData, this.vehicle, this.isFromSelected = false});
+  const TaxiLocationSuggestionScreen(
+      {super.key,
+      this.mapController,
+      this.fromAddress,
+      this.toAddress,
+      this.userData,
+      this.vehicle,
+      this.isFromSelected = false});
 
   @override
-  State<TaxiLocationSuggestionScreen> createState() => _TaxiLocationSuggestionScreenState();
+  State<TaxiLocationSuggestionScreen> createState() =>
+      _TaxiLocationSuggestionScreenState();
 }
 
-class _TaxiLocationSuggestionScreenState extends State<TaxiLocationSuggestionScreen> {
-
+class _TaxiLocationSuggestionScreenState
+    extends State<TaxiLocationSuggestionScreen> {
   GoogleMapController? _mapController;
 
   @override
   void initState() {
     super.initState();
 
-    if(widget.mapController != null) {
+    if (widget.mapController != null) {
       _mapController = widget.mapController;
     }
 
-    if(widget.mapController == null) {
+    if (widget.mapController == null) {
       Get.find<TaxiLocationController>().initialSetup();
-      Get.find<TaxiLocationController>().getInitialLocation(widget.fromAddress ?? AddressHelper.getUserAddressFromSharedPref(), _mapController);
+      Get.find<TaxiLocationController>().getInitialLocation(
+          widget.fromAddress ?? AddressHelper.getUserAddressFromSharedPref(),
+          _mapController);
     }
-    Get.find<TaxiLocationController>().selectLocationType(isForm: widget.isFromSelected!, willUpdate: false);
+    Get.find<TaxiLocationController>()
+        .selectLocationType(isForm: widget.isFromSelected!, willUpdate: false);
 
     Get.find<TaxiLocationController>().getHistoryAddresses();
   }
@@ -51,8 +63,8 @@ class _TaxiLocationSuggestionScreenState extends State<TaxiLocationSuggestionScr
   Widget build(BuildContext context) {
     return PopScope(
       canPop: true,
-      onPopInvokedWithResult: (didPop, result) async{
-        if(widget.userData == null) {
+      onPopInvokedWithResult: (didPop, result) async {
+        if (widget.userData == null) {
           Get.find<TaxiLocationController>().initialSetup();
           return;
         }
@@ -63,53 +75,81 @@ class _TaxiLocationSuggestionScreenState extends State<TaxiLocationSuggestionScr
           onBackPressed: () {
             Get.find<TaxiLocationController>().initialSetup();
             Get.back();
-            },
+          },
         ),
         body: Column(children: [
-
           Container(
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-              boxShadow: [BoxShadow(color: Theme.of(context).disabledColor.withValues(alpha: 0.3), spreadRadius: 2, blurRadius: 4, offset: const Offset(0, 2))],
+              boxShadow: [
+                BoxShadow(
+                    color:
+                        Theme.of(context).disabledColor.withValues(alpha: 0.3),
+                    spreadRadius: 2,
+                    blurRadius: 4,
+                    offset: const Offset(0, 2))
+              ],
             ),
             margin: const EdgeInsets.all(Dimensions.paddingSizeLarge),
             child: Row(children: [
               GetBuilder<TaxiLocationController>(
-                builder: (taxiLocationController) {
-                  return Padding(
-                    padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                    child: Column(children: [
-
-                      CustomIconLayout(height: 20, width: 20, icon: Icons.location_on_rounded, color: taxiLocationController.isFormSelected ? Theme.of(context).primaryColor : Theme.of(context).textTheme.bodyLarge!.color!.withValues(alpha: 0.4)),
-
-                      const CustomVerticalDottedLine(dotCount: 6),
-
-                      CustomIconLayout(height: 15, width: 15, iconImage: Images.navigationArrowIcon, color: !taxiLocationController.isFormSelected ? Theme.of(context).primaryColor : Theme.of(context).textTheme.bodyLarge!.color!.withValues(alpha: 0.4)),
-                    ]),
-                  );
-                }
-              ),
-
-              Expanded(child: Column(children: [
+                  builder: (taxiLocationController) {
+                return Padding(
+                  padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                  child: Column(children: [
+                    CustomIconLayout(
+                        height: 20,
+                        width: 20,
+                        icon: Icons.location_on_rounded,
+                        color: taxiLocationController.isFormSelected
+                            ? Theme.of(context).primaryColor
+                            : Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .color!
+                                .withValues(alpha: 0.4)),
+                    const CustomVerticalDottedLine(dotCount: 6),
+                    CustomIconLayout(
+                        height: 15,
+                        width: 15,
+                        iconImage: Images.navigationArrowIcon,
+                        color: !taxiLocationController.isFormSelected
+                            ? Theme.of(context).primaryColor
+                            : Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .color!
+                                .withValues(alpha: 0.4)),
+                  ]),
+                );
+              }),
+              Expanded(
+                  child: Column(children: [
                 RiderAddressInputField(
-                  isFormAddress: true, showInMapView: false, mapController: _mapController,
-                  vehicle: widget.vehicle, userData: widget.userData,
+                  isFormAddress: true,
+                  showInMapView: false,
+                  mapController: _mapController,
+                  vehicle: widget.vehicle,
+                  userData: widget.userData,
                 ),
-
                 const Divider(endIndent: 10),
                 RiderAddressInputField(
-                  isFormAddress: false, showInMapView: false, mapController: _mapController,
-                  vehicle: widget.vehicle, userData: widget.userData,
+                  isFormAddress: false,
+                  showInMapView: false,
+                  mapController: _mapController,
+                  vehicle: widget.vehicle,
+                  userData: widget.userData,
                 ),
               ])),
-
             ]),
           ),
-
-          Expanded(child: MapRecentSavedAddress(mapController: _mapController, userData: widget.userData, vehicle: widget.vehicle,)),
-
-
+          Expanded(
+              child: MapRecentSavedAddress(
+            mapController: _mapController,
+            userData: widget.userData,
+            vehicle: widget.vehicle,
+          )),
         ]),
       ),
     );

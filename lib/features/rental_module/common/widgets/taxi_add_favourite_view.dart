@@ -9,33 +9,45 @@ class TaxiAddFavouriteView extends StatelessWidget {
   final VehicleModel? vehicle;
   final int? providerId;
   final int? favIconSize;
-  const TaxiAddFavouriteView({super.key, this.providerId, this.vehicle, this.favIconSize});
+  const TaxiAddFavouriteView(
+      {super.key, this.providerId, this.vehicle, this.favIconSize});
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<TaxiFavouriteController>(builder: (taxiFavouriteController) {
+    return GetBuilder<TaxiFavouriteController>(
+        builder: (taxiFavouriteController) {
       bool isWished = false;
-      if(providerId != null) {
-        isWished = taxiFavouriteController.wishProviderIdList.contains(providerId);
-      } else if(vehicle != null){
-        isWished = taxiFavouriteController.wishVehicleIdList.contains(vehicle!.id);
+      if (providerId != null) {
+        isWished =
+            taxiFavouriteController.wishProviderIdList.contains(providerId);
+      } else if (vehicle != null) {
+        isWished =
+            taxiFavouriteController.wishVehicleIdList.contains(vehicle!.id);
       }
 
       return InkWell(
         onTap: () {
-          if(AuthHelper.isLoggedIn()) {
-            if(providerId != null) {
-              isWished ? taxiFavouriteController.removeFromFavouriteList(providerId, true)
-                  : taxiFavouriteController.addToFavouriteList(vehicle: null, providerId: providerId, isProvider: true);
+          if (AuthHelper.isLoggedIn()) {
+            if (providerId != null) {
+              isWished
+                  ? taxiFavouriteController.removeFromFavouriteList(
+                      providerId, true)
+                  : taxiFavouriteController.addToFavouriteList(
+                      vehicle: null, providerId: providerId, isProvider: true);
             } else {
-              isWished ? taxiFavouriteController.removeFromFavouriteList(vehicle!.id, false)
-                  : taxiFavouriteController.addToFavouriteList(vehicle: vehicle, providerId: null, isProvider: false);
+              isWished
+                  ? taxiFavouriteController.removeFromFavouriteList(
+                      vehicle!.id, false)
+                  : taxiFavouriteController.addToFavouriteList(
+                      vehicle: vehicle, providerId: null, isProvider: false);
             }
-          }else {
+          } else {
             showCustomSnackBar('you_are_not_logged_in'.tr);
           }
         },
-        child: Icon(isWished ? Icons.favorite : Icons.favorite_border, color: Theme.of(context).primaryColor, size: favIconSize?.toDouble()),
+        child: Icon(isWished ? Icons.favorite : Icons.favorite_border,
+            color: Theme.of(context).primaryColor,
+            size: favIconSize?.toDouble()),
       );
     });
   }

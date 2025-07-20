@@ -28,26 +28,33 @@ class _TaxiCouponScreenState extends State<TaxiCouponScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'coupon'.tr),
+        appBar: CustomAppBar(title: 'coupon'.tr),
         backgroundColor: Theme.of(context).colorScheme.surface,
-      body: GetBuilder<TaxiHomeController>(
-        builder: (taxiHomeController) {
-          return taxiHomeController.taxiCouponList != null ? taxiHomeController.taxiCouponList!.isNotEmpty
-              ? ListView.builder(
-                itemCount: taxiHomeController.taxiCouponList!.length,
-                padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeDefault, vertical: Dimensions.paddingSizeSmall),
-                itemBuilder: (context, index) {
-                  return CouponCard(couponModel: taxiHomeController.taxiCouponList![index], fromCouponScreen: true);
-                },
-              ) : Column(children: [
-            Image.asset(Images.noCoupon, height: 70),
-            const SizedBox(height: Dimensions.paddingSizeSmall),
-
-            Text('no_promo_available'.tr, style: robotoMedium),
-            const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-          ]) : const Center(child: CircularProgressIndicator());
-        },
-      )
-    );
+        body: GetBuilder<TaxiHomeController>(
+          builder: (taxiHomeController) {
+            return taxiHomeController.taxiCouponList != null
+                ? taxiHomeController.taxiCouponList!.isNotEmpty
+                    ? ListView.builder(
+                        itemCount: taxiHomeController.taxiCouponList!.length,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: Dimensions.paddingSizeDefault,
+                            vertical: Dimensions.paddingSizeSmall),
+                        itemBuilder: (context, index) {
+                          return CouponCard(
+                              couponModel:
+                                  taxiHomeController.taxiCouponList![index],
+                              fromCouponScreen: true);
+                        },
+                      )
+                    : Column(children: [
+                        Image.asset(Images.noCoupon, height: 70),
+                        const SizedBox(height: Dimensions.paddingSizeSmall),
+                        Text('no_promo_available'.tr, style: robotoMedium),
+                        const SizedBox(
+                            height: Dimensions.paddingSizeExtraSmall),
+                      ])
+                : const Center(child: CircularProgressIndicator());
+          },
+        ));
   }
 }

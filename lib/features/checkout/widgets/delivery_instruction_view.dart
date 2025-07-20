@@ -40,12 +40,12 @@ class _DeliveryInstructionViewState extends State<DeliveryInstructionView> {
               key: widget.key,
               controller: controller,
               title:
-              Text('add_more_delivery_instruction'.tr, style: robotoMedium),
+                  Text('add_more_delivery_instruction'.tr, style: robotoMedium),
               trailing: Icon(
                   orderController.isExpanded ? Icons.remove : Icons.add,
                   size: 18),
               tilePadding:
-              const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                  const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
               onExpansionChanged: (value) =>
                   orderController.expandedUpdate(value),
               children: [
@@ -67,15 +67,15 @@ class _DeliveryInstructionViewState extends State<DeliveryInstructionView> {
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? Theme.of(context)
-                                .primaryColor
-                                .withValues(alpha: 0.5)
+                                    .primaryColor
+                                    .withValues(alpha: 0.5)
                                 : Colors.grey[200],
                             borderRadius:
-                            BorderRadius.circular(Dimensions.radiusSmall),
+                                BorderRadius.circular(Dimensions.radiusSmall),
                             // boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, spreadRadius: 1)],
                           ),
                           padding:
-                          const EdgeInsets.all(Dimensions.paddingSizeSmall),
+                              const EdgeInsets.all(Dimensions.paddingSizeSmall),
                           margin: const EdgeInsets.all(
                               Dimensions.paddingSizeExtraSmall),
                           child: Row(children: [
@@ -104,24 +104,24 @@ class _DeliveryInstructionViewState extends State<DeliveryInstructionView> {
           ),
           orderController.selectedInstruction != -1
               ? Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: orderController.isExpanded
-                      ? Dimensions.paddingSizeSmall
-                      : 0),
-              child: Row(children: [
-                Text(
-                  AppConstants
-                      .deliveryInstructionList[
-                  orderController.selectedInstruction]
-                      .tr,
-                  style: robotoRegular.copyWith(
-                      color: Theme.of(context).primaryColor),
-                ),
-                InkWell(
-                  onTap: () => orderController.setInstruction(-1),
-                  child: const Icon(Icons.clear, size: 16),
-                ),
-              ]))
+                  padding: EdgeInsets.symmetric(
+                      vertical: orderController.isExpanded
+                          ? Dimensions.paddingSizeSmall
+                          : 0),
+                  child: Row(children: [
+                    Text(
+                      AppConstants
+                          .deliveryInstructionList[
+                              orderController.selectedInstruction]
+                          .tr,
+                      style: robotoRegular.copyWith(
+                          color: Theme.of(context).primaryColor),
+                    ),
+                    InkWell(
+                      onTap: () => orderController.setInstruction(-1),
+                      child: const Icon(Icons.clear, size: 16),
+                    ),
+                  ]))
               : const SizedBox(),
         ]);
       }),

@@ -19,84 +19,91 @@ import 'package:sixam_mart/util/app_constants.dart';
 class TaxiHomeRepository implements TaxiHomeRepositoryInterface {
   final ApiClient apiClient;
   final SharedPreferences sharedPreferences;
-  TaxiHomeRepository({required this.sharedPreferences, required this.apiClient});
+  TaxiHomeRepository(
+      {required this.sharedPreferences, required this.apiClient});
 
   @override
-  Future<TopRatedCarsModel?> getTopRatedCarList(int offset, {required DataSourceEnum source}) async {
+  Future<TopRatedCarsModel?> getTopRatedCarList(int offset,
+      {required DataSourceEnum source}) async {
     TopRatedCarsModel? carsModel;
-    String cacheId = '${AppConstants.getTopRatedCarsUri}?offset=$offset&limit=10';
+    String cacheId =
+        '${AppConstants.getTopRatedCarsUri}?offset=$offset&limit=10';
 
-    switch(source) {
+    switch (source) {
       case DataSourceEnum.client:
-        Response response = await apiClient.getData('${AppConstants.getTopRatedCarsUri}?offset=$offset&limit=10');
+        Response response = await apiClient.getData(
+            '${AppConstants.getTopRatedCarsUri}?offset=$offset&limit=10');
         if (response.statusCode == 200) {
-
           carsModel = TopRatedCarsModel.fromJson(response.body);
-          LocalClient.organize(DataSourceEnum.client, cacheId, jsonEncode(response.body), apiClient.getHeader());
+          LocalClient.organize(DataSourceEnum.client, cacheId,
+              jsonEncode(response.body), apiClient.getHeader());
         }
 
       case DataSourceEnum.local:
-
-        String? cacheResponseData = await LocalClient.organize(DataSourceEnum.local, cacheId, null, null);
-        if(cacheResponseData != null) {
+        String? cacheResponseData = await LocalClient.organize(
+            DataSourceEnum.local, cacheId, null, null);
+        if (cacheResponseData != null) {
           carsModel = TopRatedCarsModel.fromJson(jsonDecode(cacheResponseData));
         }
-
     }
     return carsModel;
   }
 
   @override
-  Future<TaxiBannerModel?> getTaxiBannerList({DataSourceEnum source = DataSourceEnum.local}) async {
+  Future<TaxiBannerModel?> getTaxiBannerList(
+      {DataSourceEnum source = DataSourceEnum.local}) async {
     TaxiBannerModel? taxiBannerModel;
     String cacheId = AppConstants.getTaxiBannerUri;
 
-    switch(source) {
+    switch (source) {
       case DataSourceEnum.client:
-        Response response = await apiClient.getData(AppConstants.getTaxiBannerUri);
+        Response response =
+            await apiClient.getData(AppConstants.getTaxiBannerUri);
         if (response.statusCode == 200) {
-
           taxiBannerModel = TaxiBannerModel.fromJson(response.body);
-          LocalClient.organize(DataSourceEnum.client, cacheId, jsonEncode(response.body), apiClient.getHeader());
+          LocalClient.organize(DataSourceEnum.client, cacheId,
+              jsonEncode(response.body), apiClient.getHeader());
         }
 
       case DataSourceEnum.local:
-
-        String? cacheResponseData = await LocalClient.organize(DataSourceEnum.local, cacheId, null, null);
-        if(cacheResponseData != null) {
-          taxiBannerModel = TaxiBannerModel.fromJson(jsonDecode(cacheResponseData));
+        String? cacheResponseData = await LocalClient.organize(
+            DataSourceEnum.local, cacheId, null, null);
+        if (cacheResponseData != null) {
+          taxiBannerModel =
+              TaxiBannerModel.fromJson(jsonDecode(cacheResponseData));
         }
-
     }
     return taxiBannerModel;
   }
 
   @override
-  Future<List<TaxiCouponModel>?> getTaxiCouponList({DataSourceEnum source = DataSourceEnum.local}) async {
+  Future<List<TaxiCouponModel>?> getTaxiCouponList(
+      {DataSourceEnum source = DataSourceEnum.local}) async {
     List<TaxiCouponModel>? coupons;
     String cacheId = AppConstants.getTaxiCouponUri;
 
-    switch(source) {
+    switch (source) {
       case DataSourceEnum.client:
-        Response response = await apiClient.getData(AppConstants.getTaxiCouponUri);
+        Response response =
+            await apiClient.getData(AppConstants.getTaxiCouponUri);
         if (response.statusCode == 200) {
           coupons = [];
           response.body.forEach((v) {
             coupons!.add(TaxiCouponModel.fromJson(v));
           });
-          LocalClient.organize(DataSourceEnum.client, cacheId, jsonEncode(response.body), apiClient.getHeader());
+          LocalClient.organize(DataSourceEnum.client, cacheId,
+              jsonEncode(response.body), apiClient.getHeader());
         }
 
       case DataSourceEnum.local:
-
-        String? cacheResponseData = await LocalClient.organize(DataSourceEnum.local, cacheId, null, null);
-        if(cacheResponseData != null) {
+        String? cacheResponseData = await LocalClient.organize(
+            DataSourceEnum.local, cacheId, null, null);
+        if (cacheResponseData != null) {
           coupons = [];
           jsonDecode(cacheResponseData).forEach((v) {
             coupons!.add(TaxiCouponModel.fromJson(v));
           });
         }
-
     }
     return coupons;
   }
@@ -105,7 +112,8 @@ class TaxiHomeRepository implements TaxiHomeRepositoryInterface {
   Future<VehicleModel?> getVehicleDetails({required int id}) async {
     VehicleModel? vehicleDetailsModel;
 
-    Response response = await apiClient.getData('${AppConstants.getVehicleDetailsUri}/$id');
+    Response response =
+        await apiClient.getData('${AppConstants.getVehicleDetailsUri}/$id');
     if (response.statusCode == 200) {
       vehicleDetailsModel = VehicleModel.fromJson(response.body);
     }
@@ -113,17 +121,26 @@ class TaxiHomeRepository implements TaxiHomeRepositoryInterface {
   }
 
   @override
-  Future<SelectedCarsModel?> getSelectedCars({required int offset, String? name, String? tripType,
-    double? minPrice, double? maxPrice, List<int>? brandIds, List<String>? seatingCapacity,
-    bool? airCondition, bool? nonAirCondition, List<int>? categoryIds, required String pickupTime,
-    required LatLng pickupLocation}) async {
-
+  Future<SelectedCarsModel?> getSelectedCars(
+      {required int offset,
+      String? name,
+      String? tripType,
+      double? minPrice,
+      double? maxPrice,
+      List<int>? brandIds,
+      List<String>? seatingCapacity,
+      bool? airCondition,
+      bool? nonAirCondition,
+      List<int>? categoryIds,
+      required String pickupTime,
+      required LatLng pickupLocation}) async {
     SelectedCarsModel? selectedCarsModel;
     Map<String, String> pl = {
       'lat': pickupLocation.latitude.toString(),
       'lng': pickupLocation.longitude.toString(),
     };
-    Response response = await apiClient.getData('${AppConstants.getSelectVehiclesUri}?name=${name??''}&offset=$offset&limit=10'
+    Response response = await apiClient.getData(
+        '${AppConstants.getSelectVehiclesUri}?name=${name ?? ''}&offset=$offset&limit=10'
         '&trip_type=$tripType&min_price=$minPrice&max_price=$maxPrice&brand_ids=$brandIds&seating_capacity=$seatingCapacity'
         '&air_condition=${airCondition! ? 'true' : ''}&no_air_condition=${nonAirCondition! ? 'true' : ''}&category_ids=$categoryIds'
         '&date=$pickupTime&pickup_location=${jsonEncode(pl)}');
@@ -137,7 +154,8 @@ class TaxiHomeRepository implements TaxiHomeRepositoryInterface {
   Future<List<String>?> getSearchSuggestions({required String? name}) async {
     List<String>? vehicles;
 
-    Response response = await apiClient.getData('${AppConstants.getSearchVehicleSuggestionUri}?name=$name');
+    Response response = await apiClient
+        .getData('${AppConstants.getSearchVehicleSuggestionUri}?name=$name');
     if (response.statusCode == 200) {
       vehicles = [];
       response.body.forEach((v) {
@@ -149,10 +167,12 @@ class TaxiHomeRepository implements TaxiHomeRepositoryInterface {
   }
 
   @override
-  Future<VehicleCategoryModel?> getVehicleCategories({required int offset}) async {
+  Future<VehicleCategoryModel?> getVehicleCategories(
+      {required int offset}) async {
     VehicleCategoryModel? vehicleCategoryModel;
 
-    Response response = await apiClient.getData('${AppConstants.getVehicleCategoriesUri}?offset=$offset&limit=25');
+    Response response = await apiClient.getData(
+        '${AppConstants.getVehicleCategoriesUri}?offset=$offset&limit=25');
     if (response.statusCode == 200) {
       vehicleCategoryModel = VehicleCategoryModel.fromJson(response.body);
     }
@@ -163,7 +183,8 @@ class TaxiHomeRepository implements TaxiHomeRepositoryInterface {
   Future<TaxiBrandModel?> getTaxiBrandList(int offset) async {
     TaxiBrandModel? taxiBrandModel;
 
-    Response response = await apiClient.getData('${AppConstants.getTaxiBrandListUri}?offset=$offset&limit=10');
+    Response response = await apiClient
+        .getData('${AppConstants.getTaxiBrandListUri}?offset=$offset&limit=10');
     if (response.statusCode == 200) {
       taxiBrandModel = TaxiBrandModel.fromJson(response.body);
     }
@@ -174,7 +195,8 @@ class TaxiHomeRepository implements TaxiHomeRepositoryInterface {
   Future<List<PopularCarSuggestionModel>?> getPopularSearchList() async {
     List<PopularCarSuggestionModel>? popularCarSearchModel;
 
-    Response response = await apiClient.getData(AppConstants.getPopularTaxiSuggestionUri);
+    Response response =
+        await apiClient.getData(AppConstants.getPopularTaxiSuggestionUri);
     if (response.statusCode == 200) {
       popularCarSearchModel = [];
       response.body.forEach((vehicle) {
@@ -186,12 +208,14 @@ class TaxiHomeRepository implements TaxiHomeRepositoryInterface {
 
   @override
   Future<bool> saveSearchHistory(List<String> searchHistories) async {
-    return await sharedPreferences.setStringList(AppConstants.taxiSearchHistory, searchHistories);
+    return await sharedPreferences.setStringList(
+        AppConstants.taxiSearchHistory, searchHistories);
   }
 
   @override
   List<String> getSearchHistory() {
-    return sharedPreferences.getStringList(AppConstants.taxiSearchHistory) ?? [];
+    return sharedPreferences.getStringList(AppConstants.taxiSearchHistory) ??
+        [];
   }
 
   @override
@@ -239,6 +263,4 @@ class TaxiHomeRepository implements TaxiHomeRepositoryInterface {
     // TODO: implement update
     throw UnimplementedError();
   }
-
-  
 }

@@ -1,4 +1,4 @@
-enum NotificationType{
+enum NotificationType {
   message,
   order,
   general,
@@ -30,7 +30,6 @@ class NotificationBodyModel {
   String? image;
   String? name;
   String? receiverType;
-
 
   NotificationBodyModel({
     this.notificationType,
@@ -94,5 +93,4 @@ class NotificationBodyModel {
 
     return enumMap[enumString] ?? NotificationType.general;
   }
-
 }

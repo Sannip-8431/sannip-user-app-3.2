@@ -9,12 +9,12 @@ class VendorBannerModel {
 
   VendorBannerModel(
       {this.id,
-        this.title,
-        this.type,
-        this.image,
-        this.link,
-        this.providerId,
-        this.imageFullUrl});
+      this.title,
+      this.type,
+      this.image,
+      this.link,
+      this.providerId,
+      this.imageFullUrl});
 
   VendorBannerModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

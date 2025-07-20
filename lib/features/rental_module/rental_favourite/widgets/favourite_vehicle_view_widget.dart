@@ -7,12 +7,14 @@ import 'package:get/get.dart';
 class FavouriteVehicleViewWidget extends StatelessWidget {
   final bool isProvider;
   final bool isSearch;
-  const FavouriteVehicleViewWidget({super.key, required this.isProvider, this.isSearch = false});
+  const FavouriteVehicleViewWidget(
+      {super.key, required this.isProvider, this.isSearch = false});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GetBuilder<TaxiFavouriteController>(builder: (taxiFavouriteController) {
+      body: GetBuilder<TaxiFavouriteController>(
+          builder: (taxiFavouriteController) {
         return RefreshIndicator(
           onRefresh: () async {
             await taxiFavouriteController.getFavouriteTaxiList();
@@ -20,7 +22,8 @@ class FavouriteVehicleViewWidget extends StatelessWidget {
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             child: Padding(
-              padding: EdgeInsets.only(bottom: ResponsiveHelper.isDesktop(context) ? 0 : 80.0),
+              padding: EdgeInsets.only(
+                  bottom: ResponsiveHelper.isDesktop(context) ? 0 : 80.0),
               child: FavouriteTaxiView(
                 isProvider: isProvider,
                 vehicles: taxiFavouriteController.wishVehicleList,

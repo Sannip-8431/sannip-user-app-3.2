@@ -1,4 +1,3 @@
-
 import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:sixam_mart/api/api_client.dart';
 import 'package:sixam_mart/features/rental_module/common/models/trip_details_model.dart';
@@ -20,7 +19,9 @@ class TaxiOrderRepository implements TaxiOrderRepositoryInterface {
 
   @override
   Future delete(int? id) async {
-    Response response = await apiClient.putData('${AppConstants.tripCancelUri}?trip_id=$id${!AuthHelper.isLoggedIn() ? '&guest_id=${AuthHelper.getGuestId()}' : ''}', {'_method': 'put'});
+    Response response = await apiClient.putData(
+        '${AppConstants.tripCancelUri}?trip_id=$id${!AuthHelper.isLoggedIn() ? '&guest_id=${AuthHelper.getGuestId()}' : ''}',
+        {'_method': 'put'});
     return response.statusCode == 200;
   }
 
@@ -31,10 +32,12 @@ class TaxiOrderRepository implements TaxiOrderRepositoryInterface {
   }
 
   @override
-  Future<TripModel?> getTripList({required int offset, required String type}) async {
+  Future<TripModel?> getTripList(
+      {required int offset, required String type}) async {
     TripModel? tripModel;
 
-    Response response = await apiClient.getData('${AppConstants.tripListUri}/$type?offset=$offset&limit=10');
+    Response response = await apiClient
+        .getData('${AppConstants.tripListUri}/$type?offset=$offset&limit=10');
     if (response.statusCode == 200) {
       tripModel = TripModel.fromJson(response.body);
     }
@@ -42,10 +45,12 @@ class TaxiOrderRepository implements TaxiOrderRepositoryInterface {
   }
 
   @override
-  Future<TripDetailsModel?> getTripDetails({required int id, String? phone}) async {
+  Future<TripDetailsModel?> getTripDetails(
+      {required int id, String? phone}) async {
     TripDetailsModel? tripDetailsModel;
 
-    Response response = await apiClient.getData('${AppConstants.tripDetailsUri}?trip_id=$id${!AuthHelper.isLoggedIn() ? '&guest_id=${AuthHelper.getGuestId()}${phone != null ? '&contact_number=$phone' : ''}' : ''}');
+    Response response = await apiClient.getData(
+        '${AppConstants.tripDetailsUri}?trip_id=$id${!AuthHelper.isLoggedIn() ? '&guest_id=${AuthHelper.getGuestId()}${phone != null ? '&contact_number=$phone' : ''}' : ''}');
     if (response.statusCode == 200) {
       tripDetailsModel = TripDetailsModel.fromJson(response.body);
     }
@@ -53,11 +58,14 @@ class TaxiOrderRepository implements TaxiOrderRepositoryInterface {
   }
 
   @override
-  Future<Response> makeTripPayment({required int id, required String paymentMethod, String? paymentGateWayName}) async {
+  Future<Response> makeTripPayment(
+      {required int id,
+      required String paymentMethod,
+      String? paymentGateWayName}) async {
     Map<String, dynamic> body = {};
-    if(paymentGateWayName == null) {
+    if (paymentGateWayName == null) {
       body.addAll({"trip_id": id, "payment_method": paymentMethod});
-    }else {
+    } else {
       body.addAll({
         "trip_id": id,
         "payment_method": paymentMethod,
@@ -66,7 +74,9 @@ class TaxiOrderRepository implements TaxiOrderRepositoryInterface {
         "payment_platform": 'app'
       });
     }
-    return await apiClient.postData('${AppConstants.tripPaymentUri}${!AuthHelper.isLoggedIn() ? '?guest_id=${AuthHelper.getGuestId()}' : ''}', body);
+    return await apiClient.postData(
+        '${AppConstants.tripPaymentUri}${!AuthHelper.isLoggedIn() ? '?guest_id=${AuthHelper.getGuestId()}' : ''}',
+        body);
   }
 
   @override
@@ -82,7 +92,12 @@ class TaxiOrderRepository implements TaxiOrderRepositoryInterface {
   }
 
   @override
-  Future<bool> addVehicleReview({required int tripId, required int vehicleId, required int vehicleIdentityId, required int rating, required String comment}) async {
+  Future<bool> addVehicleReview(
+      {required int tripId,
+      required int vehicleId,
+      required int vehicleIdentityId,
+      required int rating,
+      required String comment}) async {
     Map<String, dynamic> data = {
       "trip_id": tripId,
       "vehicle_id": vehicleId,
@@ -90,8 +105,9 @@ class TaxiOrderRepository implements TaxiOrderRepositoryInterface {
       "rating": rating,
       "comment": comment,
     };
-    Response response = await apiClient.postData('${AppConstants.addTaxiReviewUri}${!AuthHelper.isLoggedIn() ? '?guest_id=${AuthHelper.getGuestId()}' : ''}', data);
+    Response response = await apiClient.postData(
+        '${AppConstants.addTaxiReviewUri}${!AuthHelper.isLoggedIn() ? '?guest_id=${AuthHelper.getGuestId()}' : ''}',
+        data);
     return response.statusCode == 200;
   }
-  
 }

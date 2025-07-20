@@ -28,28 +28,39 @@ class TripHistoryCard extends StatelessWidget {
       ),
       child: CustomInkWell(
         onTap: () {
-          Get.to(()=> TaxiOrderDetailsScreen(tripId: trip.id!));
+          Get.to(() => TaxiOrderDetailsScreen(tripId: trip.id!));
         },
         radius: Dimensions.radiusLarge,
-        padding: EdgeInsets.only(right: Get.find<LocalizationController>().isLtr ? 15 : 0, top: 9, bottom: 9),
-        child: Row(children: [
-          const SizedBox(width: Dimensions.paddingSizeSmall),
-
-          Container(
-            height: 80, width: 80,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: Theme.of(context).cardColor, width: 2),
-              boxShadow: [BoxShadow(color: Theme.of(context).disabledColor.withValues(alpha: 0.2), blurRadius: 5, offset: const Offset(0.005, 0.005))],
+        padding: EdgeInsets.only(
+            right: Get.find<LocalizationController>().isLtr ? 15 : 0,
+            top: 9,
+            bottom: 9),
+        child: Row(
+          children: [
+            const SizedBox(width: Dimensions.paddingSizeSmall),
+            Container(
+              height: 80,
+              width: 80,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border:
+                    Border.all(color: Theme.of(context).cardColor, width: 2),
+                boxShadow: [
+                  BoxShadow(
+                      color: Theme.of(context)
+                          .disabledColor
+                          .withValues(alpha: 0.2),
+                      blurRadius: 5,
+                      offset: const Offset(0.005, 0.005))
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: CustomImage(image: trip.provider?.logoFullUrl ?? ''),
+                // child: Image.asset(trip.provider!.logoFullUrl??'', fit: BoxFit.cover,),
+              ),
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: CustomImage(image: trip.provider?.logoFullUrl??''),
-              // child: Image.asset(trip.provider!.logoFullUrl??'', fit: BoxFit.cover,),
-            ),
-          ),
-          const SizedBox(width: Dimensions.paddingSizeSmall),
-
+            const SizedBox(width: Dimensions.paddingSizeSmall),
             Expanded(
               flex: 7,
               child: Padding(
@@ -57,19 +68,29 @@ class TripHistoryCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(trip.destinationLocation?.locationName??'',
-                      style: robotoMedium.copyWith(fontSize: Dimensions.fontSizeSmall),
-                      maxLines: 1, overflow: TextOverflow.ellipsis,
+                    Text(
+                      trip.destinationLocation?.locationName ?? '',
+                      style: robotoMedium.copyWith(
+                          fontSize: Dimensions.fontSizeSmall),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    Text(DateConverter.containTAndZToUTCFormat(trip.updatedAt!), style: robotoRegular.copyWith(fontSize: 11, color: Colors.grey.shade700),),
-                    Text('${PriceConverter.convertPrice(trip.tripAmount??0)} | ${trip.estimatedHours!>0 ? '${trip.estimatedHours?.toStringAsFixed(3)} ${'hrs'.tr}' : '${trip.distance?.toStringAsFixed(3)} ${'km'.tr}'}',
-                      style: robotoRegular.copyWith(fontSize: Dimensions.fontSizeSmall), maxLines: 1,overflow: TextOverflow.ellipsis,
+                    Text(
+                      DateConverter.containTAndZToUTCFormat(trip.updatedAt!),
+                      style: robotoRegular.copyWith(
+                          fontSize: 11, color: Colors.grey.shade700),
+                    ),
+                    Text(
+                      '${PriceConverter.convertPrice(trip.tripAmount ?? 0)} | ${trip.estimatedHours! > 0 ? '${trip.estimatedHours?.toStringAsFixed(3)} ${'hrs'.tr}' : '${trip.distance?.toStringAsFixed(3)} ${'km'.tr}'}',
+                      style: robotoRegular.copyWith(
+                          fontSize: Dimensions.fontSizeSmall),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
               ),
             ),
-
             Expanded(
               flex: Get.find<LocalizationController>().isLtr ? 1 : 2,
               child: Container(
@@ -77,18 +98,31 @@ class TripHistoryCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   shape: BoxShape.circle,
-                  boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2))],
+                  boxShadow: const [
+                    BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 4,
+                        offset: Offset(0, 2))
+                  ],
                 ),
                 child: CustomInkWell(
                   onTap: () {
-                    AddressModel from = AddressModel(address: trip.pickupLocation!.locationName, latitude: trip.pickupLocation!.lat.toString(), longitude: trip.pickupLocation!.lng.toString());
-                    AddressModel to = AddressModel(address: trip.destinationLocation!.locationName, latitude: trip.destinationLocation!.lat.toString(), longitude: trip.destinationLocation!.lng.toString());
-                    Get.to(()=> TaxiLocationScreen(fromAddress: from, toAddress: to));
+                    AddressModel from = AddressModel(
+                        address: trip.pickupLocation!.locationName,
+                        latitude: trip.pickupLocation!.lat.toString(),
+                        longitude: trip.pickupLocation!.lng.toString());
+                    AddressModel to = AddressModel(
+                        address: trip.destinationLocation!.locationName,
+                        latitude: trip.destinationLocation!.lat.toString(),
+                        longitude: trip.destinationLocation!.lng.toString());
+                    Get.to(() =>
+                        TaxiLocationScreen(fromAddress: from, toAddress: to));
                   },
                   child: Image.asset(Images.undoIcon, height: 20, width: 20),
                 ),
               ),
-            )],
+            )
+          ],
         ),
       ),
     );

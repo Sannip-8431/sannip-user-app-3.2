@@ -22,7 +22,6 @@ class TaxiHomeScreen extends StatefulWidget {
 }
 
 class _TaxiHomeScreenState extends State<TaxiHomeScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -31,7 +30,8 @@ class _TaxiHomeScreenState extends State<TaxiHomeScreen> {
     Get.find<TaxiHomeController>().getTopRatedCarList(1, false);
     if (AuthHelper.isLoggedIn()) {
       Get.find<AddressController>().getAddressList();
-      Get.find<TaxiOrderController>().getTripList(1, isRunning: false, fromHome: true);
+      Get.find<TaxiOrderController>()
+          .getTripList(1, isRunning: false, fromHome: true);
       Get.find<TaxiHomeController>().getTaxiCouponList(false);
       // Get.find<TaxiHomeController>().getHistoryTripList(1, false);
       Get.find<TaxiFavouriteController>().getFavouriteTaxiList();
@@ -41,11 +41,12 @@ class _TaxiHomeScreenState extends State<TaxiHomeScreen> {
   @override
   Widget build(BuildContext context) {
     bool isLoggedIn = AuthHelper.isLoggedIn();
-    return Container(color: Theme.of(context).cardColor,
+    return Container(
+      color: Theme.of(context).cardColor,
       child: SingleChildScrollView(
         child: SafeArea(
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             // Banner Image
             const BannerWidget(),
             const SizedBox(height: Dimensions.paddingSizeLarge),
@@ -53,27 +54,19 @@ class _TaxiHomeScreenState extends State<TaxiHomeScreen> {
             const SearchbarWidget(),
             const SizedBox(height: Dimensions.paddingSizeLarge),
 
-            if(isLoggedIn)
-              const MyAddressWidget(),
+            if (isLoggedIn) const MyAddressWidget(),
 
-            if(isLoggedIn)
-              const TripHistoryWidget(),
+            if (isLoggedIn) const TripHistoryWidget(),
 
             const TopRatedVehicleWidget(),
 
-            if(isLoggedIn)
-              const CouponWidget(),
+            if (isLoggedIn) const CouponWidget(),
 
             const ReferAndEarnCard(),
             const SizedBox(height: 60)
-
           ]),
         ),
       ),
     );
   }
 }
-
-
-
-

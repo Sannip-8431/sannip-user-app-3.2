@@ -19,7 +19,8 @@ class TaxiVendorController extends GetxController implements GetxService {
   VendorVehiclesModel? get taxiVendorVehicleList => _taxiVendorVehicleList;
 
   VendorVehicleCategoryModel? _vendorVehicleCategoryList;
-  VendorVehicleCategoryModel? get vendorVehicleCategoryList => _vendorVehicleCategoryList;
+  VendorVehicleCategoryModel? get vendorVehicleCategoryList =>
+      _vendorVehicleCategoryList;
 
   List<VehiclesCategory>? _categories;
   List<VehiclesCategory>? get categories => _categories;
@@ -56,32 +57,48 @@ class TaxiVendorController extends GetxController implements GetxService {
 
   void setCategoryId(int? id, {bool canUpdate = true}) {
     _categoryId = id;
-    if(canUpdate) {
+    if (canUpdate) {
       update();
     }
   }
 
   Future<void> getTaxiVendorDetails(int vendorId) async {
     _taxiVendor = null;
-    _taxiVendor = await taxiVendorServiceInterface.getTaxiVendorDetails(id: vendorId);
+    _taxiVendor =
+        await taxiVendorServiceInterface.getTaxiVendorDetails(id: vendorId);
     update();
   }
 
   Future<void> getVendorBannerList(int id) async {
     _vendorBannerList = null;
-    _vendorBannerList = await taxiVendorServiceInterface.getVendorBannerList(id: id);
+    _vendorBannerList =
+        await taxiVendorServiceInterface.getVendorBannerList(id: id);
     update();
   }
 
-  Future<void> getVendorVehicleList({required int offset, required int vendorId, int? categoryId, String? searchName, bool canUpdate = true, bool fromFilter = false}) async {
+  Future<void> getVendorVehicleList(
+      {required int offset,
+      required int vendorId,
+      int? categoryId,
+      String? searchName,
+      bool canUpdate = true,
+      bool fromFilter = false}) async {
     _taxiVendorVehicleList = null;
-    if(canUpdate) {
+    if (canUpdate) {
       update();
     }
-    VendorVehiclesModel? vendorVehiclesModel = await taxiVendorServiceInterface.getVendorVehicleList(
-      offset: offset, providerId: vendorId, categoryId: _categoryId, searchName:searchName,
-      minPrice: _minPrice, maxPrice: _maxPrice, brandIds: _selectedBrands, seatingCapacity: _selectedSeatingCapacity,
-      airCondition: _airCondition, nonAirCondition: _nonAirCondition,
+    VendorVehiclesModel? vendorVehiclesModel =
+        await taxiVendorServiceInterface.getVendorVehicleList(
+      offset: offset,
+      providerId: vendorId,
+      categoryId: _categoryId,
+      searchName: searchName,
+      minPrice: _minPrice,
+      maxPrice: _maxPrice,
+      brandIds: _selectedBrands,
+      seatingCapacity: _selectedSeatingCapacity,
+      airCondition: _airCondition,
+      nonAirCondition: _nonAirCondition,
     );
     if (vendorVehiclesModel != null) {
       if (offset == 1) {
@@ -91,7 +108,7 @@ class TaxiVendorController extends GetxController implements GetxService {
         _taxiVendorVehicleList!.offset = vendorVehiclesModel.offset;
         _taxiVendorVehicleList!.vehicles!.addAll(vendorVehiclesModel.vehicles!);
       }
-      if(!fromFilter) {
+      if (!fromFilter) {
         _maxPrice = _taxiVendorVehicleList!.maxPrice ?? 0;
       }
     }
@@ -99,8 +116,9 @@ class TaxiVendorController extends GetxController implements GetxService {
   }
 
   Future<void> getVendorVehicleCategoryList() async {
-    VendorVehicleCategoryModel? vendorVehicleCategoryModel = await taxiVendorServiceInterface.getVendorVehicleCategoryList();
-    if(vendorVehicleCategoryModel != null) {
+    VendorVehicleCategoryModel? vendorVehicleCategoryModel =
+        await taxiVendorServiceInterface.getVendorVehicleCategoryList();
+    if (vendorVehicleCategoryModel != null) {
       _vendorVehicleCategoryList = vendorVehicleCategoryModel;
       _categories = [];
       _categories!.add(VehiclesCategory(id: -1, name: 'all'.tr));
@@ -109,7 +127,6 @@ class TaxiVendorController extends GetxController implements GetxService {
     update();
   }
 
-
   void initFilterSetup({bool willUpdate = true, double? maxPrice}) {
     _minPrice = 0;
     _maxPrice = maxPrice ?? 1000;
@@ -117,7 +134,7 @@ class TaxiVendorController extends GetxController implements GetxService {
     _selectedSeatingCapacity = [];
     _airCondition = false;
     _nonAirCondition = false;
-    if(willUpdate) {
+    if (willUpdate) {
       update();
     }
   }
@@ -125,14 +142,14 @@ class TaxiVendorController extends GetxController implements GetxService {
   void setMinAndMaxPrice(double lower, double upper, {bool willUpdate = true}) {
     _minPrice = lower;
     _maxPrice = upper;
-    if(willUpdate) {
+    if (willUpdate) {
       update();
     }
   }
 
   void addOrRemoveSeatingCapacity(String count) {
-    if(_selectedSeatingCapacity.contains(count)) {
-      _selectedSeatingCapacity.removeWhere((i)=> (i==count));
+    if (_selectedSeatingCapacity.contains(count)) {
+      _selectedSeatingCapacity.removeWhere((i) => (i == count));
     } else {
       _selectedSeatingCapacity.add(count);
     }
@@ -140,8 +157,8 @@ class TaxiVendorController extends GetxController implements GetxService {
   }
 
   void addOrRemoveBrand(int id) {
-    if(_selectedBrands.contains(id)) {
-      _selectedBrands.removeWhere((i)=> (i==id));
+    if (_selectedBrands.contains(id)) {
+      _selectedBrands.removeWhere((i) => (i == id));
     } else {
       _selectedBrands.add(id);
     }
@@ -160,22 +177,24 @@ class TaxiVendorController extends GetxController implements GetxService {
 
   Future<void> getTaxiProviderReviewDetails(int providerId) async {
     _providerReviewDetails = null;
-    _providerReviewDetails = await taxiVendorServiceInterface.getTaxiProviderReviewDetails(id: providerId);
+    _providerReviewDetails = await taxiVendorServiceInterface
+        .getTaxiProviderReviewDetails(id: providerId);
     update();
     _providerReviewList = _providerReviewDetails!.reviews;
   }
 
   bool isProviderOpenNow(bool active, List<Schedules>? schedules) {
-    if(isProviderClosed(true, active, schedules)) {
+    if (isProviderClosed(true, active, schedules)) {
       return false;
     }
     int weekday = DateTime.now().weekday;
-    if(weekday == 7) {
+    if (weekday == 7) {
       weekday = 0;
     }
-    for(int index=0; index<schedules!.length; index++) {
-      if(weekday == schedules[index].day
-          && DateConverter.isAvailable(schedules[index].openingTime, schedules[index].closingTime)) {
+    for (int index = 0; index < schedules!.length; index++) {
+      if (weekday == schedules[index].day &&
+          DateConverter.isAvailable(
+              schedules[index].openingTime, schedules[index].closingTime)) {
         return true;
       }
     }
@@ -183,19 +202,19 @@ class TaxiVendorController extends GetxController implements GetxService {
   }
 
   bool isProviderClosed(bool today, bool active, List<Schedules>? schedules) {
-    if(!active) {
+    if (!active) {
       return true;
     }
     DateTime date = DateTime.now();
-    if(!today) {
+    if (!today) {
       date = date.add(const Duration(days: 1));
     }
     int weekday = date.weekday;
-    if(weekday == 7) {
+    if (weekday == 7) {
       weekday = 0;
     }
-    for(int index=0; index<schedules!.length; index++) {
-      if(weekday == schedules[index].day) {
+    for (int index = 0; index < schedules!.length; index++) {
+      if (weekday == schedules[index].day) {
         return false;
       }
     }
@@ -226,5 +245,4 @@ class TaxiVendorController extends GetxController implements GetxService {
   //     update();
   //   }
   // }
-
 }

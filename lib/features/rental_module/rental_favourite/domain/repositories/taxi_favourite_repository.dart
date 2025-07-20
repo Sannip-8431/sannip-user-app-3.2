@@ -8,13 +8,16 @@ import 'package:sixam_mart/util/app_constants.dart';
 class TaxiFavouriteRepository implements TaxiFavouriteRepositoryInterface {
   final ApiClient apiClient;
   final SharedPreferences sharedPreferences;
-  TaxiFavouriteRepository({required this.sharedPreferences, required this.apiClient});
-  
+  TaxiFavouriteRepository(
+      {required this.sharedPreferences, required this.apiClient});
 
   @override
   Future<ResponseModel> addVehicleFavouriteList(int id, bool isProvider) async {
     ResponseModel responseModel;
-    Response response = await apiClient.postData('${AppConstants.addTaxiWishListUri}?${isProvider ? 'provider_id=' : 'vehicle_id='}$id', null, handleError: false);
+    Response response = await apiClient.postData(
+        '${AppConstants.addTaxiWishListUri}?${isProvider ? 'provider_id=' : 'vehicle_id='}$id',
+        null,
+        handleError: false);
     if (response.statusCode == 200) {
       responseModel = ResponseModel(true, response.body['message']);
     } else {
@@ -26,7 +29,9 @@ class TaxiFavouriteRepository implements TaxiFavouriteRepositoryInterface {
   @override
   Future<ResponseModel> delete(int? id, {bool isProvider = false}) async {
     ResponseModel responseModel;
-    Response response = await apiClient.deleteData('${AppConstants.removeTaxiWishListUri}?${isProvider ? 'provider_id=' : 'vehicle_id='}$id', handleError: false);
+    Response response = await apiClient.deleteData(
+        '${AppConstants.removeTaxiWishListUri}?${isProvider ? 'provider_id=' : 'vehicle_id='}$id',
+        handleError: false);
     if (response.statusCode == 200) {
       responseModel = ResponseModel(true, response.body['message']);
     } else {

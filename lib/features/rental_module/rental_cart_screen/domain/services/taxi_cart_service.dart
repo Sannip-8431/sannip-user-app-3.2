@@ -17,13 +17,34 @@ class TaxiCartService implements TaxiCartServiceInterface {
   }
 
   @override
-  Future<Response> tripBook({required double tripAmount, required String tripType, required int providerId, required String note, String? guestName, String? guestPhone, String? guestEmail, String? couponCode, required String scheduleTime, required bool isSchedule}) async {
-    return await taxiCartRepositoryInterface.tripBook(tripAmount: tripAmount, tripType: tripType, providerId: providerId, note: note, guestName: guestName, guestPhone: guestPhone, guestEmail: guestEmail, couponCode: couponCode, scheduleTime: scheduleTime, isSchedule: isSchedule);
+  Future<Response> tripBook(
+      {required double tripAmount,
+      required String tripType,
+      required int providerId,
+      required String note,
+      String? guestName,
+      String? guestPhone,
+      String? guestEmail,
+      String? couponCode,
+      required String scheduleTime,
+      required bool isSchedule}) async {
+    return await taxiCartRepositoryInterface.tripBook(
+        tripAmount: tripAmount,
+        tripType: tripType,
+        providerId: providerId,
+        note: note,
+        guestName: guestName,
+        guestPhone: guestPhone,
+        guestEmail: guestEmail,
+        couponCode: couponCode,
+        scheduleTime: scheduleTime,
+        isSchedule: isSchedule);
   }
 
   @override
   Future<CarCartModel?> updateToCart(int cartId, int quantity) async {
-    return await taxiCartRepositoryInterface.update({"cart_id": cartId, "quantity": quantity, "_method": 'put'}, null);
+    return await taxiCartRepositoryInterface.update(
+        {"cart_id": cartId, "quantity": quantity, "_method": 'put'}, null);
   }
 
   @override
@@ -37,8 +58,16 @@ class TaxiCartService implements TaxiCartServiceInterface {
   }
 
   @override
-  Future<bool> clearTaxiCart({int? vehicleId, int? quantity, String? pickupTime, String? rentalType}) async {
-    return await taxiCartRepositoryInterface.clearTaxiCart(vehicleId: vehicleId, quantity: quantity, pickupTime: pickupTime, rentalType: rentalType);
+  Future<bool> clearTaxiCart(
+      {int? vehicleId,
+      int? quantity,
+      String? pickupTime,
+      String? rentalType}) async {
+    return await taxiCartRepositoryInterface.clearTaxiCart(
+        vehicleId: vehicleId,
+        quantity: quantity,
+        pickupTime: pickupTime,
+        rentalType: rentalType);
   }
 
   @override
@@ -48,7 +77,7 @@ class TaxiCartService implements TaxiCartServiceInterface {
 
   @override
   int? getCartId(int cartIndex, List<Carts> cartList) {
-    if(cartIndex != -1) {
+    if (cartIndex != -1) {
       return cartList.isNotEmpty ? cartList[cartIndex].id : null;
     } else {
       return null;
@@ -57,22 +86,23 @@ class TaxiCartService implements TaxiCartServiceInterface {
 
   @override
   int isExistInCart(List<Carts> cartList, int? vehicleID) {
-    for(int index=0; index<cartList.length; index++) {
-      if(cartList[index].vehicle!.id == vehicleID ) {
+    for (int index = 0; index < cartList.length; index++) {
+      if (cartList[index].vehicle!.id == vehicleID) {
         return index;
       }
     }
     return -1;
   }
 
-
   @override
-  Future<int> decideCarQuantity(bool isIncrement, List<Carts> cartList, int cartIndex, int? stock) async{
+  Future<int> decideCarQuantity(
+      bool isIncrement, List<Carts> cartList, int cartIndex, int? stock) async {
     int quantity = cartList[cartIndex].quantity!;
     if (isIncrement) {
-      if(stock != null && cartList[cartIndex].quantity! >= stock) {
-        showCustomSnackBar('${'you_cant_add_more_than'.tr} $stock ${'quantities_of_this_vehicle'.tr}');
-      }else {
+      if (stock != null && cartList[cartIndex].quantity! >= stock) {
+        showCustomSnackBar(
+            '${'you_cant_add_more_than'.tr} $stock ${'quantities_of_this_vehicle'.tr}');
+      } else {
         quantity = quantity + 1;
       }
     } else {
@@ -82,18 +112,33 @@ class TaxiCartService implements TaxiCartServiceInterface {
   }
 
   @override
-  Future<Response> updateUserData({required CarCart cart, required int userId}) async {
-    return await taxiCartRepositoryInterface.updateUserData(cart: cart, userId: userId);
+  Future<Response> updateUserData(
+      {required CarCart cart, required int userId}) async {
+    return await taxiCartRepositoryInterface.updateUserData(
+        cart: cart, userId: userId);
   }
 
   @override
-  Future<TaxiCouponModel?> applyTaxiCoupon(String couponCode, int? providerId) async {
-    return await taxiCartRepositoryInterface.applyTaxiCoupon(couponCode, providerId);
+  Future<TaxiCouponModel?> applyTaxiCoupon(
+      String couponCode, int? providerId) async {
+    return await taxiCartRepositoryInterface.applyTaxiCoupon(
+        couponCode, providerId);
   }
 
   @override
-  Future<Response> getTripTax({required double tripAmount, required String tripType, required int providerId, String? couponCode, required String scheduleTime, required bool isSchedule}) async {
-    return await taxiCartRepositoryInterface.getTripTax(tripAmount: tripAmount, tripType: tripType, providerId: providerId, couponCode: couponCode, scheduleTime: scheduleTime, isSchedule: isSchedule);
+  Future<Response> getTripTax(
+      {required double tripAmount,
+      required String tripType,
+      required int providerId,
+      String? couponCode,
+      required String scheduleTime,
+      required bool isSchedule}) async {
+    return await taxiCartRepositoryInterface.getTripTax(
+        tripAmount: tripAmount,
+        tripType: tripType,
+        providerId: providerId,
+        couponCode: couponCode,
+        scheduleTime: scheduleTime,
+        isSchedule: isSchedule);
   }
-
 }

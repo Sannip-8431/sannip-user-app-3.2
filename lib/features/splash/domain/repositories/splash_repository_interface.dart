@@ -9,7 +9,8 @@ abstract class SplashRepositoryInterface extends RepositoryInterface {
   void disableIntro();
   bool? showIntro();
   Future<void> setStoreCategory(int storeCategoryID);
-  Future<dynamic> getModules({Map<String, String>? headers, required DataSourceEnum source});
+  Future<dynamic> getModules(
+      {Map<String, String>? headers, required DataSourceEnum source});
   Future<void> setModule(ModuleModel? module);
   Future<ModuleModel?> setCacheModule(ModuleModel? module);
   ModuleModel? getCacheModule();
