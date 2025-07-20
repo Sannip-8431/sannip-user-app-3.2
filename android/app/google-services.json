@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "1060179371890",
+    "firebase_url": "https://sannip-dev-by-mdev-team-default-rtdb.firebaseio.com",
+    "project_id": "sannip-dev-by-mdev-team",
+    "storage_bucket": "sannip-dev-by-mdev-team.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1060179371890:android:f96170f429a90507309feb",
+        "android_client_info": {
+          "package_name": "com.sannip.driver"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXFqz8lyQh09xvmXRJkdESfOFXVFKFGbw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1060179371890:android:3da488e4ce2421b6309feb",
+        "android_client_info": {
+          "package_name": "com.sannip.order"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXFqz8lyQh09xvmXRJkdESfOFXVFKFGbw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1060179371890:android:872e0c724bcbcd54309feb",
+        "android_client_info": {
+          "package_name": "com.sannip.store"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXFqz8lyQh09xvmXRJkdESfOFXVFKFGbw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
